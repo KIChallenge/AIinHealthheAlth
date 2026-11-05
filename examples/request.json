@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "actors": ["Gesundheitsministerium", "Sozialversicherung", "Ärztekammer"],
+  "question": "Entwickeln Sie einen gemeinsamen Vorschlag zur Verbesserung der ambulanten Versorgung in Österreich innerhalb des geltenden Rechtsrahmens. Berücksichtigen Sie den Zugang zur Versorgung, personelle Auswirkungen und Finanzierung. Kennzeichnen Sie Annahmen, rechtliche Unsicherheiten und offene Datenfragen ausdrücklich.",
+  "reference_date": "2026-11-05",
+  "scenario_assumptions": [],
+  "hard_constraints": []
+}

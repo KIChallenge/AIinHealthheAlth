@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Debatten-Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-view="input" data-pane="chat">
+  <main id="input-view">
+    <section class="intro">
+      <h1>Debatten-Chat</h1>
+      <p>Anfrage als JSON hinein, Debatte Runde für Runde mitlesen. Du moderierst, die Institutionen und Prüfer sind mit dir in der Gruppe.</p>
+      <h2 id="saved-title" class="saved-title" hidden>Gespeicherte Debatten</h2>
+      <ul id="saved"></ul>
+    </section>
+    <section class="composer-card">
+      <label for="request" class="field-label">JSON-Eingabe</label>
+      <textarea id="request" spellcheck="false" rows="15"></textarea>
+      <div class="actions">
+        <button id="start" type="button" class="pill primary" disabled>Debatte starten</button>
+        <button id="open-pasted" type="button" class="pill">Als Ergebnis öffnen ›</button>
+        <label class="pill file">Ergebnis-Datei öffnen ›
+          <input id="file" type="file" accept=".json,application/json">
+        </label>
+        <button id="sample" type="button" class="pill">Beispiel einsetzen</button>
+      </div>
+      <p id="notice" role="status"></p>
+    </section>
+  </main>
+
+  <div id="chat-view">
+    <header class="debate-bar">
+      <div class="debate-text">
+        <p class="debate-label">Ursprüngliche Frage</p>
+        <p id="question"></p>
+      </div>
+      <div class="debate-meta">
+        <ul id="facts" class="chips"></ul>
+        <ul id="scores" class="chips plain"></ul>
+      </div>
+    </header>
+
+    <div class="window">
+      <aside class="sidebar">
+        <h2 class="sidebar-title">Chats</h2>
+        <ul id="chat-list"></ul>
+      </aside>
+      <section class="conversation">
+        <header class="chat-head">
+          <button id="back" type="button" class="pill back" aria-label="Zur Chatliste">‹ Chats</button>
+          <div id="chat-title" class="chat-title"></div>
+        </header>
+        <div id="log" class="log" tabindex="0" aria-live="polite"></div>
+        <footer class="stepper">
+          <button id="prev" type="button" class="pill" title="Vorige Runde (Pfeil links)">‹ Zurück</button>
+          <span id="step-label"></span>
+          <button id="next" type="button" class="pill primary" title="Nächste Runde (Pfeil rechts)">Weiter</button>
+          <span class="spacer"></span>
+          <button id="play" type="button" class="pill" aria-pressed="false" title="Abspielen (Leertaste)">Abspielen</button>
+          <button id="json-toggle" type="button" class="pill" aria-pressed="false" title="JSON dieser Runde (J)">JSON</button>
+          <button id="download" type="button" class="pill">Download</button>
+          <button id="close" type="button" class="pill" title="Zur Eingabe (Esc)">Eingabe</button>
+        </footer>
+      </section>
+    </div>
+  </div>
+  <script src="chats.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

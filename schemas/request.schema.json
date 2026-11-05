@@ -1,0 +1,188 @@
+{
+  "$defs": {
+    "Assumption": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "description"
+      ],
+      "title": "Assumption",
+      "type": "object"
+    },
+    "HardConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "metric": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Metric"
+        },
+        "operator": {
+          "anyOf": [
+            {
+              "enum": [
+                "<",
+                "<=",
+                "=",
+                ">=",
+                ">"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operator"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baseline"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Period"
+        }
+      },
+      "required": [
+        "description"
+      ],
+      "title": "HardConstraint",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "actors": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Actors",
+      "type": "array"
+    },
+    "question": {
+      "title": "Question",
+      "type": "string"
+    },
+    "reference_date": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reference Date"
+    },
+    "scenario_assumptions": {
+      "items": {
+        "$ref": "#/$defs/Assumption"
+      },
+      "title": "Scenario Assumptions",
+      "type": "array"
+    },
+    "hard_constraints": {
+      "items": {
+        "$ref": "#/$defs/HardConstraint"
+      },
+      "title": "Hard Constraints",
+      "type": "array"
+    }
+  },
+  "required": [
+    "actors",
+    "question"
+  ],
+  "title": "DebateRequest",
+  "type": "object"
+}

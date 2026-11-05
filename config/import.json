@@ -1,0 +1,11 @@
+{
+  "batch_size": 500,
+  "akteure_list_only": ["Krankenhäuser", "Patientenvertretung"],
+  "exclusions": [
+    {
+      "folder": "articles",
+      "pattern": "*_Pressespiegel_gesamt.md",
+      "reason": "compilation_not_single_article: daily press-review compilation that repeats the individual article files"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[
+  {"id": "gesundheitsministerium", "name": "Gesundheitsministerium", "folder": "Gesundheitsministerium",
+   "akteure_labels": ["Gesundheitsministerium"]},
+  {"id": "sozialversicherung", "name": "Sozialversicherung", "folder": "Sozialversicherung",
+   "akteure_labels": ["Dachverband SV"]},
+  {"id": "aerztekammer", "name": "Ärztekammer", "folder": "Aerztekammer",
+   "akteure_labels": ["Ärztekammer"]}
+]

@@ -1,0 +1,33 @@
+# Local Neo4j for the healthdb importer.
+# Passwords come from .env (see .env.example); docker compose reads it automatically.
+#   docker compose up -d neo4j                    -> main database  (bolt 7687, browser 7474)
+#   docker compose --profile test up -d neo4j-test -> throwaway test database (bolt 7688)
+services:
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: healthdb-neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: "neo4j/${NEO4J_PASSWORD:?set NEO4J_PASSWORD in .env}"
+      NEO4J_server_memory_heap_max__size: "2G"
+      NEO4J_server_memory_pagecache_size: "1G"
+    volumes:
+      - healthdb-neo4j-data:/data
+    restart: unless-stopped
+
+  neo4j-test:
+    image: neo4j:5.26-community
+    container_name: healthdb-neo4j-test
+    profiles: ["test"]
+    ports:
+      - "7688:7687"
+    environment:
+      NEO4J_AUTH: "neo4j/${NEO4J_TEST_PASSWORD:?set NEO4J_TEST_PASSWORD in .env}"
+      NEO4J_server_memory_heap_max__size: "1G"
+    tmpfs:
+      - /data   # test data is discarded when the container stops
+
+volumes:
+  healthdb-neo4j-data:

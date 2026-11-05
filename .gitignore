@@ -1,0 +1,50 @@
+# Secrets: only the template is committed
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Source data: 27k files / 200 MB of press clippings and law texts.
+# Not stored in git; see README for the expected layout under data/.
+/data/
+
+# Runtime output (STATE_DIR, offline runs, import reports)
+/state/
+/state_*/
+/reports/
+*.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Test and tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# OS and Office leftovers
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*

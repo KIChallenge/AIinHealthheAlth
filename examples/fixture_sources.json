@@ -1,0 +1,18 @@
+{
+  "_comment": "Künstliche Offline-Quellen für --sources fixture und Tests. Keine echten Dokumente.",
+  "actors": [
+    {"actor_id": "gesundheitsministerium", "name": "Gesundheitsministerium"},
+    {"actor_id": "sozialversicherung", "name": "Sozialversicherung"},
+    {"actor_id": "aerztekammer", "name": "Ärztekammer"}
+  ],
+  "documents": [
+    {"doc_id": "d-gm", "doc_type": "ActorData", "owner": "gesundheitsministerium", "title": "Fixture Strategie", "text": "Die Versorgung in Österreich soll den Zugang zur ambulanten Versorgung verbessern. Finanzierung und Personal werden gemeinsam geplant.", "content_hash": "hash-gm", "content_format": "markdown"},
+    {"doc_id": "d-sv", "doc_type": "ActorData", "owner": "sozialversicherung", "title": "Fixture Jahresbericht", "text": "Die Sozialversicherung finanziert die ambulante Versorgung und beobachtet Zugang sowie Personal.", "content_hash": "hash-sv", "content_format": "markdown"},
+    {"doc_id": "d-ak", "doc_type": "ActorData", "owner": "aerztekammer", "title": "Fixture Resolution", "text": "Die Kammer fordert genügend Personal für die ambulante Versorgung und einen raschen Zugang.", "content_hash": "hash-ak", "content_format": "markdown"},
+    {"doc_id": "d-a1", "doc_type": "Article", "matched": ["sozialversicherung", "aerztekammer"], "title": "Fixture Artikel Wartezeiten", "publisher": "Testzeitung", "publication_date": "2025-03-01", "text": "Ein Bericht beschreibt lange Wartezeiten in der ambulanten Versorgung und den Zugang im ländlichen Raum.", "content_hash": "hash-a1", "content_format": "markdown"},
+    {"doc_id": "d-a2", "doc_type": "Article", "matched": ["gesundheitsministerium"], "title": "Fixture Artikel Finanzierung", "publisher": "Testblatt", "publication_date": "2025-04-01", "text": "Die Finanzierung der ambulanten Versorgung bleibt Thema der Verhandlungen über Personal.", "content_hash": "hash-a2", "content_format": "markdown"},
+    {"doc_id": "d-l1", "doc_type": "LegalText", "title": "TestG § 1", "valid_from": "2020-01-01", "law_abbreviation": "TestG", "section_type": "PARA", "section_number": "1", "text": "Ambulante Versorgung und Finanzierung", "content_hash": "hash-l1", "content_format": "ris_xml", "original_content": "<sozdok dokid=\"TESTG=1\"><rvo><metadaten abkrvo=\"TestG\" gldart=\"PARA\" gldnr=\"1\"/><nutzdaten><abschnitt><ueberschrift>Geltungsbereich</ueberschrift><absatz><gldsym>§ 1.</gldsym> (1) Die ambulante Versorgung und ihre Finanzierung richten sich nach <rvolink abkrvo=\"TestG\" gldart=\"PARA\" gldnr=\"2\">§ 2</rvolink>.</absatz><absatz>(2) Für Personal gilt <rvolink abkrvo=\"FehltG\" gldart=\"PARA\" gldnr=\"9\">§ 9 FehltG</rvolink>.</absatz></abschnitt></nutzdaten></rvo></sozdok>"},
+    {"doc_id": "d-l2", "doc_type": "LegalText", "title": "TestG § 2", "valid_from": "2020-01-01", "law_abbreviation": "TestG", "section_type": "PARA", "section_number": "2", "text": "Begriffe der Versorgung", "content_hash": "hash-l2", "content_format": "ris_xml", "original_content": "<sozdok dokid=\"TESTG=2\"><rvo><metadaten abkrvo=\"TestG\" gldart=\"PARA\" gldnr=\"2\"/><nutzdaten><abschnitt><absatz><gldsym>§ 2.</gldsym> Versorgung umfasst ambulante Leistungen.</absatz></abschnitt></nutzdaten></rvo></sozdok>"},
+    {"doc_id": "d-e1", "doc_type": "EthicalText", "title": "Fixture Patientencharta", "text": "Der Zugang zur Versorgung muss gerecht sein. Die Autonomie der Patientinnen und Patienten ist zu achten.", "content_hash": "hash-e1", "content_format": "markdown"}
+  ]
+}

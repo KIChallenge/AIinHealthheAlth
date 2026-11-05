@@ -1,0 +1,2596 @@
+{
+  "$defs": {
+    "ActorRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "requested_name": {
+          "title": "Requested Name",
+          "type": "string"
+        },
+        "profile": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProfileRecord"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "initial_standpoint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Initial Standpoint"
+        },
+        "final_standpoint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Final Standpoint"
+        },
+        "priorities": {
+          "items": {
+            "$ref": "#/$defs/PriorityRecord"
+          },
+          "title": "Priorities",
+          "type": "array"
+        },
+        "latest_assessments": {
+          "items": {
+            "$ref": "#/$defs/AssessmentRecord"
+          },
+          "title": "Latest Assessments",
+          "type": "array"
+        },
+        "acceptance_decisions": {
+          "items": {
+            "$ref": "#/$defs/DecisionRecord"
+          },
+          "title": "Acceptance Decisions",
+          "type": "array"
+        },
+        "satisfaction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SatisfactionRecord"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "actor_id",
+        "name",
+        "requested_name",
+        "profile",
+        "initial_standpoint",
+        "final_standpoint",
+        "priorities",
+        "latest_assessments",
+        "acceptance_decisions",
+        "satisfaction"
+      ],
+      "title": "ActorRecord",
+      "type": "object"
+    },
+    "ArgumentRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "argument_id": {
+          "title": "Argument Id",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        },
+        "stage": {
+          "title": "Stage",
+          "type": "string"
+        },
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/ClaimRecord"
+          },
+          "title": "Claims",
+          "type": "array"
+        },
+        "change_explanation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Change Explanation"
+        },
+        "word_count": {
+          "title": "Word Count",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "incomplete"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "argument_id",
+        "actor_id",
+        "version",
+        "stage",
+        "round",
+        "claims",
+        "change_explanation",
+        "word_count",
+        "status"
+      ],
+      "title": "ArgumentRecord",
+      "type": "object"
+    },
+    "AssessmentRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "assessment_id": {
+          "title": "Assessment Id",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "priority_id": {
+          "title": "Priority Id",
+          "type": "string"
+        },
+        "baseline_version": {
+          "title": "Baseline Version",
+          "type": "integer"
+        },
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "proposal_id": {
+          "title": "Proposal Id",
+          "type": "string"
+        },
+        "proposal_version": {
+          "title": "Proposal Version",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "met",
+            "partly_met",
+            "unmet",
+            "unclear"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "previous_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "met",
+                "partly_met",
+                "unmet",
+                "unclear"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Previous Status"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "references": {
+          "items": {
+            "type": "string"
+          },
+          "title": "References",
+          "type": "array"
+        },
+        "reviewer_objections": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reviewer Objections",
+          "type": "array"
+        }
+      },
+      "required": [
+        "assessment_id",
+        "actor_id",
+        "priority_id",
+        "baseline_version",
+        "round",
+        "proposal_id",
+        "proposal_version",
+        "status",
+        "previous_status",
+        "reason",
+        "references",
+        "reviewer_objections"
+      ],
+      "title": "AssessmentRecord",
+      "type": "object"
+    },
+    "Assumption": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "description"
+      ],
+      "title": "Assumption",
+      "type": "object"
+    },
+    "Calculation": {
+      "additionalProperties": false,
+      "properties": {
+        "operation": {
+          "enum": [
+            "sum",
+            "difference",
+            "product",
+            "ratio",
+            "percent_change"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/CalculationInput"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "result": {
+          "title": "Result",
+          "type": "number"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation",
+        "inputs",
+        "result",
+        "unit"
+      ],
+      "title": "Calculation",
+      "type": "object"
+    },
+    "CalculationInput": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Period"
+        },
+        "quelle": {
+          "title": "Quelle",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "period",
+        "quelle"
+      ],
+      "title": "CalculationInput",
+      "type": "object"
+    },
+    "CapabilityRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "responses_api": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Responses Api"
+        },
+        "structured_outputs": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Structured Outputs"
+        },
+        "model_identity_verified": {
+          "title": "Model Identity Verified",
+          "type": "boolean"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "responses_api",
+        "structured_outputs",
+        "model_identity_verified",
+        "note"
+      ],
+      "title": "CapabilityRecord",
+      "type": "object"
+    },
+    "ChallengeRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "challenge_id": {
+          "title": "Challenge Id",
+          "type": "string"
+        },
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "stage": {
+          "title": "Stage",
+          "type": "string"
+        },
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "answered"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reply_decision": {
+          "anyOf": [
+            {
+              "enum": [
+                "uphold",
+                "amend",
+                "withdraw"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reply Decision"
+        },
+        "reply_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reply Reason"
+        }
+      },
+      "required": [
+        "challenge_id",
+        "finding_id",
+        "actor_id",
+        "stage",
+        "round",
+        "reason",
+        "status",
+        "reply_decision",
+        "reply_reason"
+      ],
+      "title": "ChallengeRecord",
+      "type": "object"
+    },
+    "ClaimRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "fact",
+            "reported",
+            "assumption",
+            "inference",
+            "proposal",
+            "prediction"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "behauptung": {
+          "title": "Behauptung",
+          "type": "string"
+        },
+        "begruendung": {
+          "title": "Begruendung",
+          "type": "string"
+        },
+        "beispiel": {
+          "title": "Beispiel",
+          "type": "string"
+        },
+        "beispiel_art": {
+          "enum": [
+            "source_based",
+            "hypothetical",
+            "unavailable"
+          ],
+          "title": "Beispiel Art",
+          "type": "string"
+        },
+        "quellen": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quellen",
+          "type": "array"
+        },
+        "berechnung": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Calculation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "berechnung_geprueft": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Berechnung Geprueft"
+        }
+      },
+      "required": [
+        "claim_id",
+        "kind",
+        "behauptung",
+        "begruendung",
+        "beispiel",
+        "beispiel_art",
+        "quellen",
+        "berechnung",
+        "berechnung_geprueft"
+      ],
+      "title": "ClaimRecord",
+      "type": "object"
+    },
+    "ClarificationQuestion": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "frage": {
+          "title": "Frage",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "frage"
+      ],
+      "title": "ClarificationQuestion",
+      "type": "object"
+    },
+    "ClauseRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "clause_id": {
+          "title": "Clause Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "provenance": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Provenance",
+          "type": "array"
+        },
+        "premises": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Premises",
+          "type": "array"
+        },
+        "legal_status": {
+          "enum": [
+            "not_reviewed",
+            "no_conflict_identified",
+            "defensible_with_conditions",
+            "unresolved_issue",
+            "apparent_legal_conflict",
+            "requires_legal_amendment"
+          ],
+          "title": "Legal Status",
+          "type": "string"
+        },
+        "law_amendment_detected": {
+          "title": "Law Amendment Detected",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "clause_id",
+        "text",
+        "provenance",
+        "premises",
+        "legal_status",
+        "law_amendment_detected"
+      ],
+      "title": "ClauseRecord",
+      "type": "object"
+    },
+    "ConstraintCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "constraint_id": {
+          "title": "Constraint Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "satisfied",
+            "violated",
+            "unclear"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "constraint_id",
+        "status",
+        "reason"
+      ],
+      "title": "ConstraintCheck",
+      "type": "object"
+    },
+    "DebateEvolution": {
+      "additionalProperties": false,
+      "properties": {
+        "narrative": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Narrative"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        },
+        "word_count": {
+          "title": "Word Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "narrative",
+        "refs",
+        "word_count"
+      ],
+      "title": "DebateEvolution",
+      "type": "object"
+    },
+    "DebateRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "actors": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Actors",
+          "type": "array"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "reference_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Date"
+        },
+        "scenario_assumptions": {
+          "items": {
+            "$ref": "#/$defs/Assumption"
+          },
+          "title": "Scenario Assumptions",
+          "type": "array"
+        },
+        "hard_constraints": {
+          "items": {
+            "$ref": "#/$defs/HardConstraint"
+          },
+          "title": "Hard Constraints",
+          "type": "array"
+        }
+      },
+      "required": [
+        "actors",
+        "question"
+      ],
+      "title": "DebateRequest",
+      "type": "object"
+    },
+    "DecisionRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "decision_id": {
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "target_version": {
+          "title": "Target Version",
+          "type": "integer"
+        },
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "at": {
+          "title": "At",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "accept",
+            "reject",
+            "conditional",
+            "withdraw"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "conditions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Conditions",
+          "type": "array"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "decision_id",
+        "actor_id",
+        "target_id",
+        "target_version",
+        "round",
+        "at",
+        "kind",
+        "conditions",
+        "reason"
+      ],
+      "title": "DecisionRecord",
+      "type": "object"
+    },
+    "FindingRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "reviewer": {
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "assessment": {
+          "title": "Assessment",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "reference": {
+          "title": "Reference",
+          "type": "string"
+        },
+        "correction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Correction"
+        }
+      },
+      "required": [
+        "finding_id",
+        "reviewer",
+        "target_id",
+        "assessment",
+        "reason",
+        "reference",
+        "correction"
+      ],
+      "title": "FindingRecord",
+      "type": "object"
+    },
+    "HardConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "metric": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Metric"
+        },
+        "operator": {
+          "anyOf": [
+            {
+              "enum": [
+                "<",
+                "<=",
+                "=",
+                ">=",
+                ">"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operator"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baseline"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Period"
+        }
+      },
+      "required": [
+        "description"
+      ],
+      "title": "HardConstraint",
+      "type": "object"
+    },
+    "Message": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "Message",
+      "type": "object"
+    },
+    "MetricsRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "completed_rounds": {
+          "title": "Completed Rounds",
+          "type": "integer"
+        },
+        "success_streak": {
+          "title": "Success Streak",
+          "type": "integer"
+        },
+        "satisfaction": {
+          "items": {
+            "$ref": "#/$defs/SatisfactionRecord"
+          },
+          "title": "Satisfaction",
+          "type": "array"
+        }
+      },
+      "required": [
+        "completed_rounds",
+        "success_streak",
+        "satisfaction"
+      ],
+      "title": "MetricsRecord",
+      "type": "object"
+    },
+    "ModelRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "expected_model": {
+          "title": "Expected Model",
+          "type": "string"
+        },
+        "reported_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reported Model"
+        },
+        "deployment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Deployment"
+        },
+        "capabilities": {
+          "$ref": "#/$defs/CapabilityRecord"
+        },
+        "settings": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Settings",
+          "type": "object"
+        }
+      },
+      "required": [
+        "expected_model",
+        "reported_model",
+        "deployment",
+        "capabilities",
+        "settings"
+      ],
+      "title": "ModelRecord",
+      "type": "object"
+    },
+    "NegotiationRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {
+          "title": "Item Id",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "offer",
+            "counteroffer",
+            "concession",
+            "condition",
+            "disagreement"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "priority_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Priority Ids",
+          "type": "array"
+        },
+        "quellen": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quellen",
+          "type": "array"
+        }
+      },
+      "required": [
+        "item_id",
+        "actor_id",
+        "round",
+        "kind",
+        "text",
+        "priority_ids",
+        "quellen"
+      ],
+      "title": "NegotiationRecord",
+      "type": "object"
+    },
+    "PriorityRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "priority_id": {
+          "title": "Priority Id",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "baseline_version": {
+          "title": "Baseline Version",
+          "type": "integer"
+        },
+        "objective": {
+          "title": "Objective",
+          "type": "string"
+        },
+        "acceptance_condition": {
+          "title": "Acceptance Condition",
+          "type": "string"
+        },
+        "quellen": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quellen",
+          "type": "array"
+        },
+        "evidence_basis": {
+          "enum": [
+            "documented",
+            "reported",
+            "inferred",
+            "unknown"
+          ],
+          "title": "Evidence Basis",
+          "type": "string"
+        },
+        "condition_is_simulated": {
+          "title": "Condition Is Simulated",
+          "type": "boolean"
+        },
+        "law_scope_conflict": {
+          "title": "Law Scope Conflict",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "priority_id",
+        "actor_id",
+        "baseline_version",
+        "objective",
+        "acceptance_condition",
+        "quellen",
+        "evidence_basis",
+        "condition_is_simulated",
+        "law_scope_conflict"
+      ],
+      "title": "PriorityRecord",
+      "type": "object"
+    },
+    "ProfileEntryRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "enum": [
+            "documented",
+            "reported",
+            "inferred",
+            "unknown"
+          ],
+          "title": "Label",
+          "type": "string"
+        },
+        "aussage": {
+          "title": "Aussage",
+          "type": "string"
+        },
+        "quellen": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quellen",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "aussage",
+        "quellen"
+      ],
+      "title": "ProfileEntryRecord",
+      "type": "object"
+    },
+    "ProfileRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "entries": {
+          "items": {
+            "$ref": "#/$defs/ProfileEntryRecord"
+          },
+          "title": "Entries",
+          "type": "array"
+        },
+        "standpunkt": {
+          "title": "Standpunkt",
+          "type": "string"
+        },
+        "standpunkt_label": {
+          "enum": [
+            "documented",
+            "reported",
+            "inferred",
+            "unknown"
+          ],
+          "title": "Standpunkt Label",
+          "type": "string"
+        },
+        "word_count": {
+          "title": "Word Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "entries",
+        "standpunkt",
+        "standpunkt_label",
+        "word_count"
+      ],
+      "title": "ProfileRecord",
+      "type": "object"
+    },
+    "ProposalRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "proposal_id": {
+          "title": "Proposal Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        },
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "clauses": {
+          "items": {
+            "$ref": "#/$defs/ClauseRecord"
+          },
+          "title": "Clauses",
+          "type": "array"
+        },
+        "meta_update": {
+          "title": "Meta Update",
+          "type": "string"
+        },
+        "constraint_checks": {
+          "items": {
+            "$ref": "#/$defs/ConstraintCheck"
+          },
+          "title": "Constraint Checks",
+          "type": "array"
+        },
+        "legal_admissibility": {
+          "enum": [
+            "admissible_within_reviewed_sources",
+            "conditional",
+            "unresolved",
+            "inadmissible",
+            "not_reviewed"
+          ],
+          "title": "Legal Admissibility",
+          "type": "string"
+        },
+        "review_complete": {
+          "title": "Review Complete",
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "current",
+            "superseded",
+            "frozen"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "proposal_id",
+        "version",
+        "round",
+        "created_at",
+        "clauses",
+        "meta_update",
+        "constraint_checks",
+        "legal_admissibility",
+        "review_complete",
+        "status"
+      ],
+      "title": "ProposalRecord",
+      "type": "object"
+    },
+    "Report": {
+      "additionalProperties": false,
+      "properties": {
+        "Frage": {
+          "$ref": "#/$defs/ReportFrage"
+        },
+        "Agenten": {
+          "items": {
+            "$ref": "#/$defs/ReportAgent"
+          },
+          "title": "Agenten",
+          "type": "array"
+        },
+        "Verlauf": {
+          "$ref": "#/$defs/ReportVerlauf"
+        },
+        "Konflikte": {
+          "items": {
+            "$ref": "#/$defs/ReportConflict"
+          },
+          "title": "Konflikte",
+          "type": "array"
+        },
+        "Kompromisse": {
+          "items": {
+            "$ref": "#/$defs/ReportCompromise"
+          },
+          "title": "Kompromisse",
+          "type": "array"
+        },
+        "Konsens": {
+          "$ref": "#/$defs/ReportKonsens"
+        },
+        "Offene_Punkte": {
+          "items": {
+            "$ref": "#/$defs/ReportOpenPoint"
+          },
+          "title": "Offene Punkte",
+          "type": "array"
+        },
+        "Auswirkungen": {
+          "items": {
+            "$ref": "#/$defs/ReportImpact"
+          },
+          "title": "Auswirkungen",
+          "type": "array"
+        },
+        "fehlende_abschnitte": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Fehlende Abschnitte",
+          "type": "array"
+        }
+      },
+      "required": [
+        "Frage",
+        "Agenten",
+        "Verlauf",
+        "Konflikte",
+        "Kompromisse",
+        "Konsens",
+        "Offene_Punkte",
+        "Auswirkungen",
+        "fehlende_abschnitte"
+      ],
+      "title": "Report",
+      "type": "object"
+    },
+    "ReportAgent": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "standpunkt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Standpunkt"
+        },
+        "prioritaeten": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Prioritaeten",
+          "type": "array"
+        },
+        "entscheidung": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Entscheidung"
+        },
+        "zufriedenheit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SatisfactionRecord"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "actor_id",
+        "name",
+        "standpunkt",
+        "prioritaeten",
+        "entscheidung",
+        "zufriedenheit"
+      ],
+      "title": "ReportAgent",
+      "type": "object"
+    },
+    "ReportCompromise": {
+      "additionalProperties": false,
+      "properties": {
+        "art": {
+          "enum": [
+            "concession",
+            "alternative",
+            "compromise"
+          ],
+          "title": "Art",
+          "type": "string"
+        },
+        "beschreibung": {
+          "title": "Beschreibung",
+          "type": "string"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "art",
+        "beschreibung",
+        "refs"
+      ],
+      "title": "ReportCompromise",
+      "type": "object"
+    },
+    "ReportConflict": {
+      "additionalProperties": false,
+      "properties": {
+        "thema": {
+          "title": "Thema",
+          "type": "string"
+        },
+        "beschreibung": {
+          "title": "Beschreibung",
+          "type": "string"
+        },
+        "beteiligte": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Beteiligte",
+          "type": "array"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "thema",
+        "beschreibung",
+        "beteiligte",
+        "refs"
+      ],
+      "title": "ReportConflict",
+      "type": "object"
+    },
+    "ReportFrage": {
+      "additionalProperties": false,
+      "properties": {
+        "frage": {
+          "title": "Frage",
+          "type": "string"
+        },
+        "stichtag": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stichtag"
+        },
+        "geltungsbereich": {
+          "title": "Geltungsbereich",
+          "type": "string"
+        },
+        "annahmen": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Annahmen",
+          "type": "array"
+        },
+        "einordnung": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Einordnung"
+        }
+      },
+      "required": [
+        "frage",
+        "stichtag",
+        "geltungsbereich",
+        "annahmen",
+        "einordnung"
+      ],
+      "title": "ReportFrage",
+      "type": "object"
+    },
+    "ReportImpact": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "enum": [
+            "evidence",
+            "assumption",
+            "prediction"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "beschreibung": {
+          "title": "Beschreibung",
+          "type": "string"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "basis",
+        "beschreibung",
+        "refs"
+      ],
+      "title": "ReportImpact",
+      "type": "object"
+    },
+    "ReportKonsens": {
+      "additionalProperties": false,
+      "properties": {
+        "einschaetzung": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Einschaetzung"
+        },
+        "schwelle_erreicht_von": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Schwelle Erreicht Von",
+          "type": "array"
+        },
+        "akzeptiert_von": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Akzeptiert Von",
+          "type": "array"
+        },
+        "bedingt_akzeptiert_von": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Bedingt Akzeptiert Von",
+          "type": "array"
+        },
+        "abgelehnt_von": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Abgelehnt Von",
+          "type": "array"
+        },
+        "rechtliche_zulaessigkeit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rechtliche Zulaessigkeit"
+        },
+        "auflagen": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Auflagen",
+          "type": "array"
+        }
+      },
+      "required": [
+        "einschaetzung",
+        "schwelle_erreicht_von",
+        "akzeptiert_von",
+        "bedingt_akzeptiert_von",
+        "abgelehnt_von",
+        "rechtliche_zulaessigkeit",
+        "auflagen"
+      ],
+      "title": "ReportKonsens",
+      "type": "object"
+    },
+    "ReportOpenPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "art": {
+          "enum": [
+            "legal",
+            "evidence",
+            "ethical",
+            "negotiation",
+            "data"
+          ],
+          "title": "Art",
+          "type": "string"
+        },
+        "punkt": {
+          "title": "Punkt",
+          "type": "string"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "art",
+        "punkt",
+        "refs"
+      ],
+      "title": "ReportOpenPoint",
+      "type": "object"
+    },
+    "ReportVerlauf": {
+      "additionalProperties": false,
+      "properties": {
+        "zusammenfassung": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Zusammenfassung"
+        },
+        "runden": {
+          "title": "Runden",
+          "type": "integer"
+        },
+        "vorschlagsversionen": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Vorschlagsversionen",
+          "type": "array"
+        },
+        "ereignis_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Ereignis Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "zusammenfassung",
+        "runden",
+        "vorschlagsversionen",
+        "ereignis_refs"
+      ],
+      "title": "ReportVerlauf",
+      "type": "object"
+    },
+    "ReviewRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "review_id": {
+          "title": "Review Id",
+          "type": "string"
+        },
+        "reviewer": {
+          "title": "Reviewer",
+          "type": "string"
+        },
+        "stage": {
+          "title": "Stage",
+          "type": "string"
+        },
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "actor_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Actor Id"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/FindingRecord"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "coverage": {
+          "enum": [
+            "complete",
+            "incomplete"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "unreviewed_targets": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unreviewed Targets",
+          "type": "array"
+        },
+        "coverage_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Coverage Note"
+        },
+        "framework": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Framework"
+        },
+        "word_count": {
+          "title": "Word Count",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "incomplete"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "review_id",
+        "reviewer",
+        "stage",
+        "round",
+        "actor_id",
+        "findings",
+        "coverage",
+        "unreviewed_targets",
+        "coverage_note",
+        "framework",
+        "word_count",
+        "status"
+      ],
+      "title": "ReviewRecord",
+      "type": "object"
+    },
+    "SatisfactionRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "met_count": {
+          "title": "Met Count",
+          "type": "integer"
+        },
+        "priority_count": {
+          "title": "Priority Count",
+          "type": "integer"
+        },
+        "percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Percent"
+        },
+        "threshold_reached": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Threshold Reached"
+        },
+        "disputed": {
+          "title": "Disputed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "actor_id",
+        "met_count",
+        "priority_count",
+        "percent",
+        "threshold_reached",
+        "disputed"
+      ],
+      "title": "SatisfactionRecord",
+      "type": "object"
+    },
+    "SourceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "passage_id": {
+          "title": "Passage Id",
+          "type": "string"
+        },
+        "doc_id": {
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "doc_type": {
+          "title": "Doc Type",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "publisher": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Publisher"
+        },
+        "publication_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Publication Date"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Valid From"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Valid Until"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Url"
+        },
+        "content_hash": {
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "source_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Path"
+        },
+        "locator": {
+          "title": "Locator",
+          "type": "string"
+        },
+        "machine_locator": {
+          "title": "Machine Locator",
+          "type": "string"
+        },
+        "date_unknown": {
+          "title": "Date Unknown",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passage_id",
+        "doc_id",
+        "doc_type",
+        "title",
+        "publisher",
+        "publication_date",
+        "valid_from",
+        "valid_until",
+        "source_url",
+        "content_hash",
+        "source_path",
+        "locator",
+        "machine_locator",
+        "date_unknown"
+      ],
+      "title": "SourceRecord",
+      "type": "object"
+    },
+    "TaskRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "reference_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reference Date"
+        },
+        "assumptions": {
+          "items": {
+            "$ref": "#/$defs/Assumption"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "constraints": {
+          "items": {
+            "$ref": "#/$defs/HardConstraint"
+          },
+          "title": "Constraints",
+          "type": "array"
+        },
+        "legal_scope": {
+          "title": "Legal Scope",
+          "type": "string"
+        },
+        "rulebook_version": {
+          "title": "Rulebook Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question",
+        "reference_date",
+        "assumptions",
+        "constraints",
+        "legal_scope",
+        "rulebook_version"
+      ],
+      "title": "TaskRecord",
+      "type": "object"
+    },
+    "TimelineRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "title": "Event Id",
+          "type": "string"
+        },
+        "at": {
+          "title": "At",
+          "type": "string"
+        },
+        "role": {
+          "title": "Role",
+          "type": "string"
+        },
+        "round": {
+          "title": "Round",
+          "type": "integer"
+        },
+        "phase": {
+          "title": "Phase",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "visibility": {
+          "title": "Visibility",
+          "type": "string"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        },
+        "causes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Causes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "event_id",
+        "at",
+        "role",
+        "round",
+        "phase",
+        "type",
+        "visibility",
+        "refs",
+        "causes"
+      ],
+      "title": "TimelineRecord",
+      "type": "object"
+    },
+    "TimingRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "deliberation_started_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Deliberation Started At"
+        },
+        "deliberation_deadline_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Deliberation Deadline At"
+        },
+        "deliberation_ended_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Deliberation Ended At"
+        },
+        "finalization_started_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Finalization Started At"
+        },
+        "finalization_deadline_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Finalization Deadline At"
+        },
+        "finalization_ended_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Finalization Ended At"
+        },
+        "deliberation_elapsed_seconds": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Deliberation Elapsed Seconds"
+        },
+        "finalization_elapsed_seconds": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Finalization Elapsed Seconds"
+        },
+        "deliberation_budget_seconds": {
+          "title": "Deliberation Budget Seconds",
+          "type": "number"
+        },
+        "finalization_budget_seconds": {
+          "title": "Finalization Budget Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "deliberation_started_at",
+        "deliberation_deadline_at",
+        "deliberation_ended_at",
+        "finalization_started_at",
+        "finalization_deadline_at",
+        "finalization_ended_at",
+        "deliberation_elapsed_seconds",
+        "finalization_elapsed_seconds",
+        "deliberation_budget_seconds",
+        "finalization_budget_seconds"
+      ],
+      "title": "TimingRecord",
+      "type": "object"
+    },
+    "UsageRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "reasoning_tokens": {
+          "title": "Reasoning Tokens",
+          "type": "integer"
+        },
+        "requests": {
+          "title": "Requests",
+          "type": "integer"
+        },
+        "retries": {
+          "title": "Retries",
+          "type": "integer"
+        },
+        "repairs": {
+          "title": "Repairs",
+          "type": "integer"
+        },
+        "throttled": {
+          "title": "Throttled",
+          "type": "integer"
+        },
+        "queue_seconds": {
+          "title": "Queue Seconds",
+          "type": "number"
+        },
+        "calls_without_usage": {
+          "title": "Calls Without Usage",
+          "type": "integer"
+        },
+        "missing_measurements": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Measurements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "reasoning_tokens",
+        "requests",
+        "retries",
+        "repairs",
+        "throttled",
+        "queue_seconds",
+        "calls_without_usage",
+        "missing_measurements"
+      ],
+      "title": "UsageRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "debate_id": {
+      "title": "Debate Id",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "incomplete",
+        "needs_clarification",
+        "invalid_input",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "stop_reason": {
+      "anyOf": [
+        {
+          "enum": [
+            "satisfaction_threshold",
+            "deliberation_deadline",
+            "execution_error"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Stop Reason"
+    },
+    "request": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DebateRequest"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "task": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TaskRecord"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "model": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ModelRecord"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "timing": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TimingRecord"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "usage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UsageRecord"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "metrics": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MetricsRecord"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "final_proposal": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProposalRecord"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "actors": {
+      "items": {
+        "$ref": "#/$defs/ActorRecord"
+      },
+      "title": "Actors",
+      "type": "array"
+    },
+    "arguments": {
+      "items": {
+        "$ref": "#/$defs/ArgumentRecord"
+      },
+      "title": "Arguments",
+      "type": "array"
+    },
+    "negotiation": {
+      "items": {
+        "$ref": "#/$defs/NegotiationRecord"
+      },
+      "title": "Negotiation",
+      "type": "array"
+    },
+    "reviews": {
+      "items": {
+        "$ref": "#/$defs/ReviewRecord"
+      },
+      "title": "Reviews",
+      "type": "array"
+    },
+    "challenges": {
+      "items": {
+        "$ref": "#/$defs/ChallengeRecord"
+      },
+      "title": "Challenges",
+      "type": "array"
+    },
+    "proposal_history": {
+      "items": {
+        "$ref": "#/$defs/ProposalRecord"
+      },
+      "title": "Proposal History",
+      "type": "array"
+    },
+    "priority_history": {
+      "items": {
+        "$ref": "#/$defs/AssessmentRecord"
+      },
+      "title": "Priority History",
+      "type": "array"
+    },
+    "decisions": {
+      "items": {
+        "$ref": "#/$defs/DecisionRecord"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "timeline": {
+      "items": {
+        "$ref": "#/$defs/TimelineRecord"
+      },
+      "title": "Timeline",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/SourceRecord"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "report": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Report"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "debate_evolution": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DebateEvolution"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "clarification_questions": {
+      "items": {
+        "$ref": "#/$defs/ClarificationQuestion"
+      },
+      "title": "Clarification Questions",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "$ref": "#/$defs/Message"
+      },
+      "title": "Warnings",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "$ref": "#/$defs/Message"
+      },
+      "title": "Errors",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "debate_id",
+    "status",
+    "stop_reason",
+    "request",
+    "task",
+    "model",
+    "timing",
+    "usage",
+    "metrics",
+    "final_proposal",
+    "actors",
+    "arguments",
+    "negotiation",
+    "reviews",
+    "challenges",
+    "proposal_history",
+    "priority_history",
+    "decisions",
+    "timeline",
+    "sources",
+    "report",
+    "debate_evolution",
+    "clarification_questions",
+    "warnings",
+    "errors"
+  ],
+  "title": "DebateResult",
+  "type": "object"
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "debate_id": "0f5bc60bea674a8cacc4bf76b5fb5430",
+  "status": "needs_clarification",
+  "stop_reason": null,
+  "request": {
+    "schema_version": "1.0",
+    "actors": [
+      "Gesundheitsministerium"
+    ],
+    "question": "Welche Gesetzesänderung im ASVG sichert die ambulante Versorgung?",
+    "reference_date": null,
+    "scenario_assumptions": [],
+    "hard_constraints": []
+  },
+  "task": null,
+  "model": null,
+  "timing": null,
+  "usage": null,
+  "metrics": null,
+  "final_proposal": null,
+  "actors": [],
+  "arguments": [],
+  "negotiation": [],
+  "reviews": [],
+  "challenges": [],
+  "proposal_history": [],
+  "priority_history": [],
+  "decisions": [],
+  "timeline": [],
+  "sources": [],
+  "report": null,
+  "debate_evolution": null,
+  "clarification_questions": [
+    {
+      "code": "law_change_out_of_scope",
+      "frage": "Die Anfrage zielt auf eine Rechtsänderung. Der Simulator arbeitet ausschließlich innerhalb des geltenden Rechts: Alle Lösungen müssen innerhalb des zum Stichtag geltenden Rechtsrahmens umgesetzt werden können. Änderungen von Gesetzen oder verbindlichen Verordnungen sind als Lösung ausgeschlossen. Bitte formulieren Sie die Frage so, dass sie innerhalb des bestehenden Rechtsrahmens beantwortet werden kann."
+    },
+    {
+      "code": "reference_date_missing",
+      "frage": "Welcher Stichtag (JJJJ-MM-TT) gilt für das Szenario? Er bestimmt das anwendbare Recht und die zulässigen Quellen und wird nicht stillschweigend ergänzt."
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}

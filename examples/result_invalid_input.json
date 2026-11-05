@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "debate_id": "60af30d79c9f43e0889a89e740a23fa9",
+  "status": "invalid_input",
+  "stop_reason": null,
+  "request": {
+    "schema_version": "1.0",
+    "actors": [
+      "Unbekannte Institution"
+    ],
+    "question": "Frage",
+    "reference_date": "2026-11-05",
+    "scenario_assumptions": [],
+    "hard_constraints": []
+  },
+  "task": null,
+  "model": null,
+  "timing": null,
+  "usage": null,
+  "metrics": null,
+  "final_proposal": null,
+  "actors": [],
+  "arguments": [],
+  "negotiation": [],
+  "reviews": [],
+  "challenges": [],
+  "proposal_history": [],
+  "priority_history": [],
+  "decisions": [],
+  "timeline": [],
+  "sources": [],
+  "report": null,
+  "debate_evolution": null,
+  "clarification_questions": [],
+  "warnings": [],
+  "errors": [
+    {
+      "code": "unknown_actor",
+      "message": "Unbekannter Akteur: Unbekannte Institution."
+    }
+  ]
+}

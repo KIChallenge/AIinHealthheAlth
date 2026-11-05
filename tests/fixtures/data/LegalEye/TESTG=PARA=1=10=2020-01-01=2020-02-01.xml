@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sozdok dokid="TESTG=PARA=1=10=2020-01-01=2020-02-01"><rvo>
+<metadaten gldart="PARA" titrvo="Testgesetz 2020" abkrvo="TestG" urheber="Bund" pubdat="2020-01-01" ikra="2020-02-01" akra="8888-08-08" fassung="2023-01-01" gldnr="1"/>
+<nutzdaten><abschnitt>
+<ueberschrift level="2" typ="para">Geltungsbereich</ueberschrift>
+<absatz typ="abs"><gldsym>§ 1.</gldsym> (1) Dieses Gesetz gilt für <rvolink abkrvo="ASVG">§ 2 ASVG</rvolink> Versicherte.</absatz>
+<liste><ziffernliste ebene="1"><listelem><symbol>1.</symbol>Ärztinnen&#160;und Ärzte;</listelem></ziffernliste></liste>
+<absatz typ="abs">Siehe <wwwlink url="https://example.invalid/bgbl">BGBl. I Nr. 1/2020</wwwlink><gdash/>Anlage.</absatz>
+<binary nr="1" datatype="jpg"><src>QUJDREVGRw==</src></binary>
+</abschnitt></nutzdaten></rvo></sozdok>

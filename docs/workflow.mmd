@@ -1,0 +1,167 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	validate_request(validate_request)
+	release_question(release_question)
+	prepare_actor(prepare_actor)
+	prepare_barrier(prepare_barrier)
+	revise_actor(revise_actor)
+	revision_barrier(revision_barrier)
+	publish_package(publish_package)
+	negotiate_actor(negotiate_actor)
+	negotiation_barrier(negotiation_barrier)
+	assemble_candidate(assemble_candidate)
+	amend_candidate(amend_candidate)
+	assess_actor(assess_actor)
+	assess_barrier(assess_barrier)
+	close_round(close_round)
+	freeze(freeze)
+	final_actor(final_actor)
+	final_actor_barrier(final_actor_barrier)
+	final_review(final_review)
+	final_review_barrier(final_review_barrier)
+	meta_report(meta_report)
+	meta_evolution(meta_evolution)
+	report_barrier(report_barrier)
+	build_output(build_output)
+	initial_review(initial_review)
+	initial_review_barrier(initial_review_barrier)
+	initial_challenge(initial_challenge)
+	initial_challenge_barrier(initial_challenge_barrier)
+	initial_reply(initial_reply)
+	initial_reply_barrier(initial_reply_barrier)
+	second_review(second_review)
+	second_review_barrier(second_review_barrier)
+	second_challenge(second_challenge)
+	second_challenge_barrier(second_challenge_barrier)
+	second_reply(second_reply)
+	second_reply_barrier(second_reply_barrier)
+	candidate_review(candidate_review)
+	candidate_review_barrier(candidate_review_barrier)
+	candidate_challenge(candidate_challenge)
+	candidate_challenge_barrier(candidate_challenge_barrier)
+	candidate_reply(candidate_reply)
+	candidate_reply_barrier(candidate_reply_barrier)
+	assessment_review(assessment_review)
+	assessment_review_barrier(assessment_review_barrier)
+	assessment_challenge(assessment_challenge)
+	assessment_challenge_barrier(assessment_challenge_barrier)
+	assessment_reply(assessment_reply)
+	assessment_reply_barrier(assessment_reply_barrier)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> validate_request;
+	amend_candidate -.-> build_output;
+	amend_candidate -.-> candidate_review;
+	amend_candidate -.-> close_round;
+	amend_candidate -.-> freeze;
+	assemble_candidate -.-> build_output;
+	assemble_candidate -.-> candidate_review;
+	assemble_candidate -.-> close_round;
+	assemble_candidate -.-> freeze;
+	assess_actor --> assess_barrier;
+	assess_barrier -.-> assessment_review;
+	assess_barrier -.-> build_output;
+	assess_barrier -.-> freeze;
+	assessment_challenge --> assessment_challenge_barrier;
+	assessment_challenge_barrier -.-> assessment_reply;
+	assessment_challenge_barrier -.-> build_output;
+	assessment_challenge_barrier -.-> close_round;
+	assessment_challenge_barrier -.-> freeze;
+	assessment_reply --> assessment_reply_barrier;
+	assessment_reply_barrier -.-> build_output;
+	assessment_reply_barrier -.-> close_round;
+	assessment_reply_barrier -.-> freeze;
+	assessment_review --> assessment_review_barrier;
+	assessment_review_barrier -.-> assessment_challenge;
+	assessment_review_barrier -.-> build_output;
+	assessment_review_barrier -.-> close_round;
+	assessment_review_barrier -.-> freeze;
+	candidate_challenge --> candidate_challenge_barrier;
+	candidate_challenge_barrier -.-> amend_candidate;
+	candidate_challenge_barrier -.-> assess_actor;
+	candidate_challenge_barrier -.-> build_output;
+	candidate_challenge_barrier -.-> candidate_reply;
+	candidate_challenge_barrier -.-> close_round;
+	candidate_challenge_barrier -.-> freeze;
+	candidate_reply --> candidate_reply_barrier;
+	candidate_reply_barrier -.-> amend_candidate;
+	candidate_reply_barrier -.-> assess_actor;
+	candidate_reply_barrier -.-> build_output;
+	candidate_reply_barrier -.-> close_round;
+	candidate_reply_barrier -.-> freeze;
+	candidate_review --> candidate_review_barrier;
+	candidate_review_barrier -.-> amend_candidate;
+	candidate_review_barrier -.-> assess_actor;
+	candidate_review_barrier -.-> build_output;
+	candidate_review_barrier -.-> candidate_challenge;
+	candidate_review_barrier -.-> close_round;
+	candidate_review_barrier -.-> freeze;
+	close_round -.-> build_output;
+	close_round -.-> freeze;
+	close_round -.-> negotiate_actor;
+	final_actor --> final_actor_barrier;
+	final_actor_barrier -.-> build_output;
+	final_actor_barrier -.-> final_review;
+	final_review --> final_review_barrier;
+	final_review_barrier -.-> build_output;
+	final_review_barrier -.-> meta_evolution;
+	final_review_barrier -.-> meta_report;
+	freeze -.-> build_output;
+	freeze -.-> final_actor;
+	initial_challenge --> initial_challenge_barrier;
+	initial_challenge_barrier -.-> build_output;
+	initial_challenge_barrier -.-> freeze;
+	initial_challenge_barrier -.-> initial_reply;
+	initial_challenge_barrier -.-> revise_actor;
+	initial_reply --> initial_reply_barrier;
+	initial_reply_barrier -.-> build_output;
+	initial_reply_barrier -.-> freeze;
+	initial_reply_barrier -.-> revise_actor;
+	initial_review --> initial_review_barrier;
+	initial_review_barrier -.-> build_output;
+	initial_review_barrier -.-> freeze;
+	initial_review_barrier -.-> initial_challenge;
+	initial_review_barrier -.-> revise_actor;
+	meta_evolution --> report_barrier;
+	meta_report --> report_barrier;
+	negotiate_actor --> negotiation_barrier;
+	negotiation_barrier -.-> assemble_candidate;
+	negotiation_barrier -.-> build_output;
+	negotiation_barrier -.-> freeze;
+	prepare_actor --> prepare_barrier;
+	prepare_barrier -.-> build_output;
+	prepare_barrier -.-> freeze;
+	prepare_barrier -.-> initial_review;
+	publish_package -.-> build_output;
+	publish_package -.-> freeze;
+	publish_package -.-> negotiate_actor;
+	release_question -.-> prepare_actor;
+	report_barrier --> build_output;
+	revise_actor --> revision_barrier;
+	revision_barrier -.-> build_output;
+	revision_barrier -.-> freeze;
+	revision_barrier -.-> second_review;
+	second_challenge --> second_challenge_barrier;
+	second_challenge_barrier -.-> build_output;
+	second_challenge_barrier -.-> freeze;
+	second_challenge_barrier -.-> publish_package;
+	second_challenge_barrier -.-> second_reply;
+	second_reply --> second_reply_barrier;
+	second_reply_barrier -.-> build_output;
+	second_reply_barrier -.-> freeze;
+	second_reply_barrier -.-> publish_package;
+	second_review --> second_review_barrier;
+	second_review_barrier -.-> build_output;
+	second_review_barrier -.-> freeze;
+	second_review_barrier -.-> publish_package;
+	second_review_barrier -.-> second_challenge;
+	validate_request -.-> build_output;
+	validate_request -.-> release_question;
+	build_output --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

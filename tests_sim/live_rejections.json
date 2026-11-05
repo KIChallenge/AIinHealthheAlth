@@ -1,0 +1,499 @@
+{
+ "_comment": "Echte, vom Modell erzeugte und abgelehnte Ausgaben aus der ersten Live-Debatte (Tests).",
+ "law_texts": [
+  "Alle Klauseln bleiben bei organisatorischer Umsetzung, bestehenden Strukturen und geltendem Recht; Rechtsänderungen, neue Fonds und neue Verordnungen werden ausgeschlossen.",
+  "Alle Klauseln bleiben bei organisatorischer und budgetärer Umsetzung innerhalb bestehender Zuständigkeiten; Rechtsänderungen, neue Fonds und neue Verordnungen werden nicht verlangt.",
+  "Alle Klauseln bleiben innerhalb bestehender Verträge, Selbstverwaltung und Finanzierungsstrukturen; keine Klausel verlangt eine Gesetzes- oder Verordnungsänderung.",
+  "Der Protokollstand zeigt einen rechtskonformen Kernansatz zur Verbesserung der ambulanten Versorgung in Österreich: schrittweiser Ausbau von Primärversorgung, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, Clearing und regionalen Servicestellen, ergänzt um digitale Entlastung, Pilotierung sowie Monitoring. Der Vorschlag bleibt bewusst innerhalb bestehender Strukturen und vermeidet Rechtsänderungen als Lösungsweg. Zugleich bestehen weiterhin offene Rechts-, Daten- und Umsetzungsfragen, insbesondere zur Verbindlichkeit der Patientenlenkung, zur zulässigen Zweckwidmung einzelner Mittel und zur bundesweit vergleichbaren Datengrundlage. [PROP-1-v5, PROP-1-v6, D-7-gesundheitsministerium-v5, D-7-sozialversicherung-v5, D-7-aerztekammer-v5]",
+  "Die Positionen konvergieren auf einen gestuften Ausbau über bestehende Strukturen, mit 1450 als freiwilligem Erstkontakt, regionaler Priorisierung und Monitoring. Korrigiert wurde ausdrücklich: keine Rechtsänderung als Lösung. Offen bleiben die bundesweit einheitliche Lenkung ohne belastbare Daten, die zulässige Zweckwidmung einzelner Mittel und die Vergleichbarkeit von Wartezeit- und Abdeckungsdaten.",
+  "Einigkeit besteht über die Nutzung bestehender Sozialversicherungs-, Zielsteuerungs- und 15a-Strukturen. Offen blieb jedoch die rechtssichere Zweckwidmung einzelner Mittel und die konkrete Mittelbindung; neue Gesetze, Verordnungen oder neue Fonds wurden nicht als Lösung vorausgesetzt. [NEG-9-gesundheitsministerium-1, NEG-9-sozialversicherung-3, NEG-9-gesundheitsministerium-4, D-7-gesundheitsministerium-v5, D-7-sozialversicherung-v5]",
+  "Einigung: Ein gemeinsamer Kern ist vorhanden: Ausbau von Primärversorgung, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, Clearing und regionalen Servicestellen, ergänzt um digitale Entlastung, Pilotierung und Monitoring. Schwellenwert: Ein formaler Zustimmungs- oder Annahmeschwellenwert wurde nicht erreicht; die letzten Bewertungen blieben überwiegend bedingt zustimmend. Bedingungen: Vor Umsetzung sind eine Baseline zu Erstkontakt, Weiterleitung, Wartezeiten, Abdeckung und Personal sowie ein 6-/12-Monats-Monitoring zu fixieren; die organisatorische Umsetzbarkeit in den Regionen ist zu bestätigen; die rechtliche Zulässigkeit der Zweckwidmung ist vorab zu klären. Rechtslage: Der Vorschlag bleibt an bestehende Instrumente gebunden und kommt ohne Rechtsänderung aus. Verbindliche Patientenwege, soweit vorgesehen, sollen erst nach nachgewiesener Kapazität eingeführt werden; neue Gesetze, Verordnungen oder neue Fonds sind nicht Teil des zulässigen Lösungswegs. [PROP-1-v5, PROP-1-v6, D-7-gesundheitsministerium-v5, D-7-sozialversicherung-v5, D-7-aerztekammer-v5, NEG-9-gesundheitsministerium-4, NEG-9-sozialversicherung-3, NEG-9-aerztekammer-4]",
+  "Einigung: Es besteht ein gemeinsamer, bedingt zustimmungsfähiger Kern: Ausbau von Primärversorgung, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, Clearing und regionalen Servicestellen, ergänzt um digitale Entlastung, Pilotierung und Monitoring. Schwellenwert: Ein formaler Annahme- oder Zustimmungsdurchbruch wurde nicht erreicht; die Endlage ist daher keine Voll-Einigung, sondern eine konditionierte Annäherung. Bedingungen: Vor Umsetzung sind eine Baseline zu Erstkontakt, Weiterleitung, Wartezeiten, Abdeckung und Personal sowie ein 6-/12-Monats-Monitoring zu fixieren; die organisatorische Umsetzbarkeit in den Regionen ist zu bestätigen; die rechtliche Zulässigkeit der Zweckwidmung ist vorab zu klären. Rechtslage: Der Vorschlag bleibt an bestehende Instrumente gebunden und kommt ohne Rechtsänderung aus. Verbindliche Patientenwege sind nicht als Startbedingung festgelegt, sondern erst nach nachgewiesener Kapazität vorgesehen; neue Gesetze, Verordnungen oder neue Fonds sind nicht Teil des zulässigen Lösungswegs. [PROP-1-v5, PROP-1-v6, D-7-gesundheitsministerium-v5, D-7-sozialversicherung-v5, D-7-aerztekammer-v5, NEG-9-gesundheitsministerium-4, NEG-9-sozialversicherung-3, NEG-9-aerztekammer-4]",
+  "Es liegt ein bedingt konsensfähiger, rechtskonformer Kernvorschlag zur Verbesserung der ambulanten Versorgung in Österreich vor: Ausbau von Primärversorgung, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, Clearing und regionalen Servicestellen, ergänzt um digitale Entlastung, Pilotierung und Monitoring. Der Vorschlag bleibt innerhalb bestehender Instrumente und setzt keine Rechtsänderung voraus. Offen bleiben vor allem Verbindlichkeit der Patientenlenkung, rechtssichere Zweckwidmung einzelner Mittel und die bundesweit vergleichbare Datengrundlage. [PROP-1-v5, PROP-1-v6, D-7-gesundheitsministerium-v5, D-7-sozialversicherung-v5, D-7-aerztekammer-v5]",
+  "Es werden keine Gesetzes- oder Verordnungsänderungen verlangt; umgesetzt wird nur über bestehende Strukturen und Befugnisse.",
+  "Es wird angenommen, dass die vorhandenen Schnittstellen, regionalen Servicestellen und Monitoringstrukturen organisatorisch ausreichen, um einen gestuften Start ohne Rechtsänderung zu tragen. Diese Annahme ist im Protokoll ausdrücklich nicht abschließend belegt. [PROP-1-v5, NEG-9-sozialversicherung-2]",
+  "Es wird ein stufenweises Paket zur Stärkung der ambulanten Versorgung umgesetzt: Primärversorgungseinheiten, Kassen- und Gruppenpraxen, Bereitschaftsdienste, 1450, Clearing und regionale Servicestellen, vorrangig in unterversorgten Regionen und Randzeiten. Die Umsetzung erfolgt ausschließlich über bestehende Zielsteuerungs-, Sozialversicherungs- und 15a-Strukturen; neue Gesetze, Fonds oder Verordnungen werden nicht vorausgesetzt.",
+  "Finanziell setzt der Vorschlag auf bestehende Zielsteuerungs-, Sozialversicherungs- und 15a-Strukturen und vermeidet neue gesetzliche oder verordnungsrechtliche Instrumente. Die konkrete Zweckwidmung einzelner Mittel bleibt jedoch rechtlich offen und muss vor Umsetzung geprüft werden. [NEG-9-gesundheitsministerium-1, NEG-9-sozialversicherung-3, D-7-sozialversicherung-v5]",
+  "Finanzierung nur aus bestehenden Sozialversicherungs-, 15a- und Zielsteuerungsstrukturen; neue Fonds oder Gesetzesänderungen bleiben ausgeschlossen.",
+  "Finanzierung über bestehende Instrumente statt neuer Rechtsakte: Nutzung vorhandener Zielsteuerungs-, Sozialversicherungs- und 15a-Strukturen mit transparenter Dokumentation und Evaluation; neue Gesetze, Verordnungen oder Fonds werden nicht als Lösung vorausgesetzt.",
+  "Finanzierung über bestehende Instrumente statt neuer Rechtsakte: Nutzung vorhandener Zielsteuerungs-, Sozialversicherungs- und 15a-Strukturen mit transparenter Dokumentation und Evaluation; neue Gesetze, Verordnungen oder Fonds werden nicht als Lösung vorausgesetzt. [NEG-9-gesundheitsministerium-1, NEG-9-sozialversicherung-1, D-7-gesundheitsministerium-v5, D-7-sozialversicherung-v5]",
+  "Fortschritt: Die Runde convergiert auf einen gestuften Ausbau über bestehende Strukturen, mit 1450 als freiwilligem Erstkontakt, regionaler Priorisierung und Monitoring. Offene Punkte bleiben die bundesweit einheitliche Lenkung ohne belastbare Daten, die zulässige Zweckwidmung einzelner Mittel und die Vergleichbarkeit von Wartezeit- und Abdeckungsdaten. Alle Beiträge halten am Verzicht auf Rechtsänderungen fest; verbindliche Pfade erst nach Angebotsaufbau und Datennachweis.",
+  "Fortschritt: Ein gemeinsamer Kern liegt als Umsetzungsbündel ohne Rechtsänderung vor; Zugang, Personal, Finanzierung und Monitoring sind verknüpft. Offen bleiben bundesweit vergleichbare Wartezeit-/Abdeckungsdaten, die zulässige Zweckwidmung einzelner Mittel in bestehenden Budgets und der Zeitpunkt, ab dem verbindliche Verweiswege datenbasiert aktiviert werden können.",
+  "Fortschritt: Ein gemeinsamer Kern liegt nun als Umsetzungsbündel ohne Rechtsänderung vor; Zugang, Personal, Finanzierung und Monitoring sind miteinander verknüpft. Offen bleiben drei Punkte: bundesweit vergleichbare Wartezeit-/Abdeckungsdaten, die zulässige Zweckwidmung einzelner Mittel in bestehenden Budgets und die Frage, wann verbindliche Verweiswege datenbasiert aktiviert werden können.",
+  "Gemeinsamer Kern ist der gestufte Ausbau von Primärversorgungseinheiten, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, regionalen Servicestellen und vor Spitälern angesiedelten Versorgungseinheiten. Die Umsetzung erfolgt ausschließlich organisatorisch im geltenden Recht und über bestehende Verträge und Selbstverwaltungsstrukturen; eine Rechtsänderung ist nicht erforderlich.",
+  "Gemeinsamer Kern ist ein Ausbaupaket aus Primärversorgungseinheiten, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, regionalen Servicestellen und, wo sinnvoll, vor Spitälern liegenden Versorgungseinheiten. Die Maßnahmen dienen der besseren Erstversorgung und Entlastung ambulanter Strukturen und werden ausschließlich organisatorisch im geltenden Recht umgesetzt; neue Gesetze, neue Verordnungen oder neue Fonds sind ausgeschlossen.",
+  "Gemeinsamer Kern ist ein Ausbaupaket aus Primärversorgungseinheiten, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, regionalen Servicestellen und, wo sinnvoll, vor Spitälern liegenden Versorgungseinheiten. Die Maßnahmen werden organisatorisch und budgetär innerhalb der bestehenden Zuständigkeiten umgesetzt; neue gesetzliche Instrumente oder neue Fonds sind nicht Teil des Vorschlags.",
+  "Gemeinsamer Kern ist ein gestufter Ausbau von Primärversorgungseinheiten, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, regionalen Servicestellen und vor Spitälern angesiedelten Versorgungseinheiten. Die Umsetzung erfolgt nur organisatorisch im geltenden Recht und über bestehende Verträge/Selbstverwaltung; neue gesetzliche Lenkung ist keine Voraussetzung.",
+  "Gemeinsamer Kern ist ein stufenweiser Ausbau von Primärversorgungseinheiten, Kassen-/Gruppenpraxen, Bereitschaftsdiensten, 1450, Clearing und regionalen Servicestellen, vorrangig in unterversorgten Regionen und Randzeiten. Die Umsetzung erfolgt ausschließlich über bestehende Zielsteuerungs-, Sozialversicherungs- und 15a-Strukturen; neue Gesetze, Fonds oder Verordnungen werden nicht verlangt.",
+  "Nur umsetzbar ohne Gesetzes- oder Verordnungsänderung; Annahme: bestehende Schnittstellen reichen. Offen: Wartezeiten, Erstkontaktquote, Abdeckung.",
+  "Umsetzung nur ohne Gesetzes- oder Verordnungsänderung; regional über Vertrag, Selbstverwaltung und Planung. Offene Datenfrage: Wartezeiten, Erstkontaktquote, unbesetzte Kassenstellen.",
+  "Voraussetzung: Umsetzung ohne Gesetzes- oder Verordnungsänderung; Annahme: bestehende Schnittstellen reichen aus. Offene Datenfrage: regionale Wartezeiten, Erstkontaktquote und Abdeckung vor Start klären."
+ ],
+ "over_limit_reviews": [
+  {
+   "role": "truthseeker",
+   "reason": "Prüfbericht: 133 Wörter überschreiten das Limit von 100.",
+   "output": {
+    "findings": [
+     {
+      "target_id": "PR-sozialversicherung-1",
+      "assessment": "qualified_support",
+      "reason": "Die genannten Instrumente sind belegt; die Aussage zur Umsetzbarkeit ohne Rechtsänderung ist plausibel, aber die Quellen zeigen vor allem bestehende Ansätze, nicht den vollständigen Umsetzungsweg.",
+      "reference": "P-e1ad1a84c32b; P-29dcb726b9f7; P-7fdb60ccc329; P-8b6faf2ea361",
+      "correction": "Als organisatorisch umsetzbare Zielrichtung formulieren und offene Umsetzungsdaten nennen."
+     },
+     {
+      "target_id": "PR-sozialversicherung-2",
+      "assessment": "insufficient_information",
+      "reason": "Zu Teamarbeit, digitaler Entlastung und Personalbindung liefern die Quellen nur allgemeine Hinweise auf Personalzielsetzungen und Ausbildungsstellen, aber keinen belastbaren Nachweis, dass keine zusätzliche, nicht gedeckte Personalbindung entsteht.",
+      "reference": "P-14d1178422b7",
+      "correction": "Personelle Auswirkungen als Annahme kennzeichnen und vor Start ein Personalmonitoring fordern."
+     },
+     {
+      "target_id": "PR-sozialversicherung-3",
+      "assessment": "supported",
+      "reason": "Der Innovations- und Zielsteuerungsfonds ist gesetzlich vorgesehen und finanziert Gesundheitsreformprojekte; die Quellen stützen die Finanzierung über bestehende Fonds und Mechanismen.",
+      "reference": "P-f603681672b1; P-bdf362e55551",
+      "correction": null
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Zugang und Finanzierung sind weitgehend belegt; die personellen Auswirkungen bleiben mangels Daten zu tatsächlicher Zusatzbindung und regionaler Kapazität offen."
+   }
+  },
+  {
+   "role": "truthseeker",
+   "reason": "Prüfbericht: 168 Wörter überschreiten das Limit von 100.",
+   "output": {
+    "findings": [
+     {
+      "target_id": "PR-gesundheitsministerium-1",
+      "assessment": "insufficient_information",
+      "reason": "1450, Primärversorgung und Servicestellen werden genannt; ein einheitlicher bundesweiter Verweisweg und Mindestdaten zu Wartezeiten sind jedoch nicht belegt.",
+      "reference": "P-7fdb60ccc329; P-1015b00fa990",
+      "correction": "Als Annahme kennzeichnen oder mit Quelle zu konkreten bundesweiten Prozess- und Datenvorgaben belegen."
+     },
+     {
+      "target_id": "PR-gesundheitsministerium-2",
+      "assessment": "qualified_support",
+      "reason": "Personal- und Ausbildungsindikatoren sowie digitale/hybride Entlastung werden als Arbeitsfelder genannt; die jährliche Aktualisierung und konkrete ambulante Wirkung bleiben offen.",
+      "reference": "P-8ca7a8965362; P-3340a68690bf",
+      "correction": "Als Umsetzungsannahme markieren und fehlende regionale Personaldaten ergänzen."
+     },
+     {
+      "target_id": "PR-gesundheitsministerium-3",
+      "assessment": "qualified_support",
+      "reason": "15a-Strukturen und gemeinsame Finanzierung werden gestützt, aber die zulässige Zweckwidmung einzelner Mittel bleibt in den Quellen unklar.",
+      "reference": "P-cc45671bb577; P-7fdb60ccc329",
+      "correction": "Rechtliche Unsicherheit ausdrücklich nennen und das Finanzierungskonzept auf bestehende Vereinbarungen begrenzen."
+     },
+     {
+      "target_id": "ARG-gesundheitsministerium-v1-B1",
+      "assessment": "supported",
+      "reason": "ÖSG, LKF, Primärversorgung, KJP, Qualitätsarbeit und Personalindikatoren werden als laufende Arbeitsfelder genannt.",
+      "reference": "P-8ca7a8965362; P-1bab368cc1cb",
+      "correction": null
+     },
+     {
+      "target_id": "ARG-gesundheitsministerium-v1-B2",
+      "assessment": "supported",
+      "reason": "Die Quelle nennt zuerst Ausbau des Angebots und Entlastung der Ambulanzen; verbindliche Patientenwege sollen erst danach folgen.",
+      "reference": "P-7fdb60ccc329",
+      "correction": null
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Zugang, Personal und Finanzierung sind nur teilweise prüfbar; offene Daten zu Wartezeiten, regionaler Unter-/Überdeckung und zulässiger Mittelverwendung bleiben ungeklärt."
+   }
+  },
+  {
+   "role": "truthseeker",
+   "reason": "Prüfbericht: 130 Wörter überschreiten das Limit von 100.",
+   "output": {
+    "findings": [
+     {
+      "target_id": "PR-aerztekammer-2",
+      "assessment": "supported",
+      "reason": "1450 wird als österreichweit einheitlich beschrieben; Telemedizin und Bereitschaftsdienste werden als Lenkungs- und Versorgungsinstrumente genannt.",
+      "reference": "P-98ea88ac84a1; P-1147452b4f84",
+      "correction": null
+     },
+     {
+      "target_id": "PR-aerztekammer-4",
+      "assessment": "insufficient_information",
+      "reason": "Die Quellen nennen ein Zielbild „Finanzierung aus einer Hand“, belegen aber nicht, dass dies ohne Rechtsänderung bereits umsetzbar ist.",
+      "reference": "P-615001119370; P-a2932d608e3f; P-7fdb60ccc329",
+      "correction": "Rechtsunsicherheit ausdrücklich nennen oder auf umsetzbare Teilmaßnahmen beschränken."
+     },
+     {
+      "target_id": "PR-aerztekammer-5",
+      "assessment": "no_support",
+      "reason": "Monitoring wird gestützt, aber fixe Vorher-/Nachher-Zeitpunkte nach 6 und 12 Monaten sind in den Quellen nicht belegt.",
+      "reference": "P-e2b1b4eb3b4e; P-be2b0b59fd48",
+      "correction": "Nur ein regelmäßiges Monitoring ohne feste Fristen behaupten."
+     },
+     {
+      "target_id": "ARG-aerztekammer-v1-B1",
+      "assessment": "supported",
+      "reason": "Mehr Vertragskapazitäten, längere Öffnungszeiten und Bereitschaftsdienste werden als zentrale Hebel zur Entlastung und Zugangssicherung genannt.",
+      "reference": "P-1147452b4f84; P-7fdb60ccc329; P-0df8700ef31f",
+      "correction": null
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Zugang und Lenkung sind geprüft; Finanzierung ohne Rechtsänderung, Personalwirkungen und die Datenlage zu Wartezeiten/Kapazitäten bleiben nur teilweise belegt."
+   }
+  },
+  {
+   "role": "legaleye",
+   "reason": "Prüfbericht: 106 Wörter überschreiten das Limit von 100. Befund 1: Bewertung insufficient_information gehört nicht zu di",
+   "output": {
+    "findings": [
+     {
+      "target_id": "PR-sozialversicherung-1",
+      "assessment": "insufficient_information",
+      "reason": "Primärversorgung, Clearingstellen und 1450 sind in den vorgelegten Quellen nicht rechts- und lagekonkret belegt.",
+      "reference": "P-ca807c1e5313; P-ab6e877fbf2f",
+      "correction": "Als Annahme kennzeichnen oder Belege zur aktuellen Umsetzungs- und Zuständigkeitslage nachreichen."
+     },
+     {
+      "target_id": "PR-sozialversicherung-3",
+      "assessment": "qualified_support",
+      "reason": "Bestehende zweckgebundene Mittel für eHealth und 1450 sind belegt; die konkrete Nennung des Innovations- und Zielsteuerungsfonds bleibt aber offen.",
+      "reference": "P-3c7a91b98c66",
+      "correction": "Formulierung auf bestehende, rechtlich zulässige Zweckmittel beschränken."
+     },
+     {
+      "target_id": "ARG-sozialversicherung-v1-B1",
+      "assessment": "no_support",
+      "reason": "Die behauptete ausdrückliche Finanzierung von hausärztlicher Versorgung, Prävention und e-Health durch den Fonds wird in den vorgelegten Quellen nicht bestätigt.",
+      "reference": "P-3c7a91b98c66",
+      "correction": "Konkrete Fondsnorm bzw. aktuelle Fondsordnung belegen."
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Offen bleiben Primärversorgung, 1450/e-card-Nutzung, Clearingstellen, Personalwirkungen und die exakte Fondszuordnung."
+   }
+  },
+  {
+   "role": "legaleye",
+   "reason": "Prüfbericht: 143 Wörter überschreiten das Limit von 100. Befund 2: Bewertung insufficient_information gehört nicht zu di",
+   "output": {
+    "findings": [
+     {
+      "target_id": "PR-gesundheitsministerium-1",
+      "assessment": "unresolved_issue",
+      "reason": "Die Quellen zeigen RSG-/Transportregeln, aber keinen bundesweit einheitlichen 1450-Verweisweg oder Wartezeitstandard.",
+      "reference": "P-9b5f355220c7; P-3d4fb928cbe6",
+      "correction": "Als Pilot- und Koordinationsvorschlag mit offener Datenerhebung formulieren."
+     },
+     {
+      "target_id": "PR-gesundheitsministerium-2",
+      "assessment": "insufficient_information",
+      "reason": "Zu jährlicher Aktualisierung der Personal-/Ausbildungsindikatoren und zu digitalen Entlastungsmaßnahmen fehlt ein belastbarer Beleg.",
+      "reference": "P-9b5f355220c7; P-1267729a5c42",
+      "correction": "Nur als umsetzbare Option innerhalb bestehender Programme nennen."
+     },
+     {
+      "target_id": "PR-gesundheitsministerium-3",
+      "assessment": "unresolved_issue",
+      "reason": "Die Quellen belegen bestehende Kassen-/Satzungsmechanismen, aber keine konkrete bundesweite Zweckwidmung in 15a-Strukturen.",
+      "reference": "P-1267729a5c42; P-c4a25c6639e6; P-8efb3a649bcc",
+      "correction": "Finanzierung über vorhandene Satzungs- und Vertragsinstrumente samt Evaluierung darstellen."
+     },
+     {
+      "target_id": "ARG-gesundheitsministerium-v1-B1",
+      "assessment": "supported",
+      "reason": "§5 OESG-VO nennt Primärversorgung, ambulante Fachversorgung und regionale Planungsmatrix.",
+      "reference": "P-9b5f355220c7; P-b41ff28bd694",
+      "correction": null
+     },
+     {
+      "target_id": "ARG-gesundheitsministerium-v1-B2",
+      "assessment": "unresolved_issue",
+      "reason": "Die Reihenfolge „erst Ausbau, dann Lenkung“ ist politisch plausibel, aber rechtlich nicht belegt.",
+      "reference": "ARG-gesundheitsministerium-v1-B2",
+      "correction": "Als politische Priorität, nicht als Rechtsfolge, kennzeichnen."
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Wesentliche Punkte bleiben offen: 1450-Rolle, regionale Wartezeitdaten, konkrete 15a-Finanzierung und Personaldaten sind in den Quellen nicht hinreichend belegt."
+   }
+  },
+  {
+   "role": "legaleye",
+   "reason": "Prüfbericht: 154 Wörter überschreiten das Limit von 100.",
+   "output": {
+    "findings": [
+     {
+      "target_id": "PR-aerztekammer-2",
+      "assessment": "unresolved_issue",
+      "reason": "1450 und eine bundeseinheitliche 24/7-Lenkung sind in den vorliegenden Quellen nicht belegt; P-1b308... stützt nur Telemedizin, Patientenlenkung und Wochenendangebote.",
+      "reference": "P-1b308371d19a",
+      "correction": "1450 nur als optionale Umsetzungsvariante nennen und getrennt auf Zuständigkeit prüfen."
+     },
+     {
+      "target_id": "PR-aerztekammer-4",
+      "assessment": "defensible_with_conditions",
+      "reason": "Der GRFG-Zweck erfasst Verbesserungen der niedergelassenen Versorgung, Telemedizin und Patientenströme; Bereitschaftsdienste und neue Einheiten sind nur bei gedeckter Zuständigkeit und Zweckbindung sicher erfasst.",
+      "reference": "P-1b308371d19a",
+      "correction": "Finanzierung ausdrücklich auf vom Fondszweck gedeckte Maßnahmen beschränken."
+     },
+     {
+      "target_id": "PR-aerztekammer-5",
+      "assessment": "unresolved_issue",
+      "reason": "Die Quellen nennen offene Datenfragen; belastbare regionale Daten zu Kapazität, Wartezeit und Personal sind hier nicht hinreichend belegt.",
+      "reference": "P-aerztekammer-v1",
+      "correction": "Datenquellen, Erhebungsgrundlage und Berichtsfristen vorab festlegen."
+     },
+     {
+      "target_id": "ARG-aerztekammer-v1-B2",
+      "assessment": "defensible_with_conditions",
+      "reason": "Die Beschränkung auf ohne Gesetzesänderung umsetzbare Maßnahmen ist rechtlich vorsichtig; sie trägt aber nur, wenn Maßnahmen mit Außenwirkung tatsächlich in bestehenden Kompetenzen verbleiben.",
+      "reference": "P-1b308371d19a",
+      "correction": "Den Vorschlag auf bestehende Vertrags-, Planungs- und Fondsinstrumente begrenzen."
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Nicht geprüft bleiben v.a. Vertragsausbau, Sonderfächer, Hausapotheken/Dispensierrecht und die personellen Folgen einzelner Maßnahmen."
+   }
+  }
+ ],
+ "wrong_target_reviews": [
+  {
+   "role": "truthseeker",
+   "reason": "Befund 1: Ziel n/a gehört nicht zu dieser Prüfung.",
+   "output": {
+    "findings": [
+     {
+      "target_id": "n/a",
+      "assessment": "insufficient_information",
+      "reason": "Es fehlt der zu prüfende Vorschlag bzw. eine Ziel-ID; damit lässt sich keine Belegprüfung zu Zugang, Personal oder Finanzierung vornehmen.",
+      "reference": "Argument: Ziel-IDs sind leer, ein Prüftext wurde nicht übermittelt.",
+      "correction": "Bitte den konkreten Vorschlag mit Ziel-IDs nachreichen."
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Wesentliche Prüfpunkte bleiben ungeprüft, weil kein zu bewertender Text und keine Ziel-IDs vorliegen."
+   }
+  },
+  {
+   "role": "ethicmind",
+   "reason": "Befund 1: Ziel gesamt gehört nicht zu dieser Prüfung. Befund 2: Ziel gesamt gehört nicht zu dieser Prüfung. Befund 3: Ziel gesamt gehört nicht zu dieser Prüfung",
+   "output": {
+    "findings": [
+     {
+      "target_id": "gesamt",
+      "assessment": "insufficient_information",
+      "reason": "Ein konkreter Umsetzungsplan fehlt; Zugang, Personalwirkung und Finanzierung sind daher nicht prüfbar.",
+      "reference": "P-1c62e4442ae7; P-004ee620f2e8; P-2fc847d5f8d6",
+      "correction": "Konkrete Maßnahmen, Zielgruppen, Personalannahmen und Finanzierungslogik mit Datenquellen angeben."
+     },
+     {
+      "target_id": "gesamt",
+      "assessment": "concern_with_mitigation",
+      "reason": "Verbesserungen der ambulanten Versorgung können Zugang und Gerechtigkeit stärken, bergen aber Exklusionsrisiken für vulnerable Gruppen.",
+      "reference": "P-9e04ce8e7440; P-a9e3d0279f1e",
+      "correction": "Barrierefreiheit, niederschwelligen Zugang und Ausgleich für benachteiligte Gruppen verbindlich vorsehen."
+     },
+     {
+      "target_id": "gesamt",
+      "assessment": "insufficient_information",
+      "reason": "Die Rechtsumsetzbarkeit innerhalb des geltenden Rechts und Budgetfolgen sind offen.",
+      "reference": "P-cfdc45188fcf; P-122f709d7b0d",
+      "correction": "Rechtliche Unsicherheiten und offene Datenfragen ausdrücklich ausweisen; keine Gesetzesänderung als Lösung anführen."
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Wesentliche Punkte bleiben ungeprüft, weil kein ausformulierter Vorschlag vorliegt."
+   }
+  },
+  {
+   "role": "legaleye",
+   "reason": "Befund 1: Ziel allgemein gehört nicht zu dieser Prüfung.",
+   "output": {
+    "findings": [
+     {
+      "target_id": "allgemein",
+      "assessment": "defensible_with_conditions",
+      "reason": "Die Finanzierung und Modernisierung ambulanter Leistungen kann auf bestehende Fonds- und Vertragsstrukturen gestützt werden; die Quellen nennen Förderung niedergelassener Versorgung, Telemedizin und Qualitäts-/Effizienzmaßnahmen.",
+      "reference": "P-1b308371d19a; P-ca807c1e5313; P-3c7a91b98c66",
+      "correction": "Vorschlag nur als bestehende, zweckgebundene Maßnahme von Kasse/Kammer ausarbeiten; keine neue gesetzliche Zuständigkeit, keine verbindlichen Patientenwege ohne ausdrückliche Rechtsgrundlage."
+     }
+    ],
+    "coverage": "incomplete",
+    "coverage_note": "Keine konkrete Maßnahmenfassung, keine Ziel-IDs und keine belastbaren Daten zu Personal- und Kapazitätseffekten liegen vor; daher bleiben Zugang, Personalauswirkungen und Finanzierungsvolumen nur teilweise prüfbar."
+   }
+  }
+ ],
+ "invented_constraint_checks": [
+  [
+   {
+    "constraint_id": "rechtsrahmen_unveraendert",
+    "status": "satisfied",
+    "reason": "Alle Klauseln bleiben bei organisatorischer Umsetzung, bestehenden Strukturen und geltendem Recht; Rechtsänderungen, neue Fonds und neue Verordnungen werden ausgeschlossen."
+   },
+   {
+    "constraint_id": "max_8_klauseln",
+    "status": "satisfied",
+    "reason": "Der Vorschlag enthält 6 Klauseln und bleibt damit unter der Höchstzahl von 8."
+   },
+   {
+    "constraint_id": "wortlimit_je_klausel",
+    "status": "satisfied",
+    "reason": "Jede Klausel bleibt nach knapper Zählung unter 100 Wörtern."
+   },
+   {
+    "constraint_id": "sprache_deutsch",
+    "status": "satisfied",
+    "reason": "Alle Inhalte sind in präzisem, professionellem Deutsch formuliert."
+   },
+   {
+    "constraint_id": "annahmen_und_unsicherheiten_markiert",
+    "status": "satisfied",
+    "reason": "Annahmen, rechtliche Unsicherheiten und offene Datenfragen werden ausdrücklich genannt."
+   }
+  ],
+  [
+   {
+    "constraint_id": "rechtsrahmen_unveraendert",
+    "status": "satisfied",
+    "reason": "Alle Klauseln bleiben bei organisatorischer und budgetärer Umsetzung innerhalb bestehender Zuständigkeiten; Rechtsänderungen, neue Fonds und neue Verordnungen werden nicht verlangt."
+   },
+   {
+    "constraint_id": "max_8_klauseln",
+    "status": "satisfied",
+    "reason": "Der Vorschlag enthält 6 Klauseln und bleibt damit unter der Höchstzahl von 8."
+   },
+   {
+    "constraint_id": "wortlimit_je_klausel",
+    "status": "satisfied",
+    "reason": "Jede Klausel bleibt nach knapper Prüfung unter 100 Wörtern."
+   },
+   {
+    "constraint_id": "sprache_deutsch",
+    "status": "satisfied",
+    "reason": "Alle Inhalte sind in präzisem, professionellem Deutsch formuliert."
+   },
+   {
+    "constraint_id": "annahmen_und_unsicherheiten_markiert",
+    "status": "satisfied",
+    "reason": "Annahmen, rechtliche Unsicherheiten und offene Datenfragen werden ausdrücklich genannt."
+   }
+  ]
+ ],
+ "final_outputs": [
+  {
+   "reason": "Prioritätsbewertung: 127 Wörter überschreiten das Limit von 100. Unbekannte Prioritäten bewertet: PR-gesundheitsministerium-1, PR-gesundheitsministerium-2, PR-g",
+   "output": {
+    "summary": "Die ministerielle Position unterstützt einen gemeinsamen, rechtskonformen Ausbau der ambulanten Versorgung innerhalb der bestehenden Zielsteuerungs-, Sozialversicherungs- und 15a-Strukturen. Im Mittelpunkt stehen bessere Zugänge, koordiniertes Vorgehen und eine finanzierbare Umsetzung ohne neue gesetzliche oder verbindliche verordnungsrechtliche Instrumente. Annahmen, rechtliche Unsicherheiten und offene Datenfragen sind ausdrücklich mitzuführen; ohne belastbare Datengrundlage bleibt die Ausgestaltung nur teilweise operationalisiert.",
+    "assessments": [
+     {
+      "priority_id": "PR-gesundheitsministerium-1",
+      "status": "partly_met",
+      "reason": "Das Ziel einer besseren Erreichbarkeit der ambulanten Versorgung entspricht der ministeriellen Linie. Der Zugang über Primärversorgung, 1450 und regionale Servicestellen ist als Richtung gedeckt. Nicht belegt sind jedoch ein bundesweit einheitlicher Verweisweg sowie ausreichende, vergleichbare Wartezeitdaten; daher ist die Priorität nur teilweise erfüllt.",
+      "references": []
+     },
+     {
+      "priority_id": "PR-gesundheitsministerium-2",
+      "status": "partly_met",
+      "reason": "Die personellen Auswirkungen werden dem Grundsatz nach adressiert: Personalplanung, digitale Entlastung und Ausbildungssteuerung sind als relevante Handlungsfelder benannt. Es fehlt aber eine gesicherte, aktuelle und regionale Datenlage zur Unter- und Überdeckung sowie eine vollständig operationalisierte Umsetzung; daher nur teilweise erfüllt.",
+      "references": []
+     },
+     {
+      "priority_id": "PR-gesundheitsministerium-3",
+      "status": "partly_met",
+      "reason": "Die Finanzierung soll innerhalb bestehender 15a- und Zielsteuerungsstrukturen erfolgen; das ist mit der ministeriellen Position vereinbar. Offen bleibt jedoch die konkrete rechtlich zulässige Zweckwidmung einzelner Mittel innerhalb bestehender Vereinbarungen. Mangels vollständiger Ausgestaltung ist die Priorität nur teilweise erfüllt.",
+      "references": []
+     }
+    ],
+    "decision": "conditional",
+    "decision_reason": "Die ministerielle Grundposition ist mit den Prioritäten vereinbar, aber der vorliegende Stand enthält keine vollständig ausformulierte, daten- und rechtsgeprüfte Lösung. Eine Zustimmung ist daher nur unter der Bedingung möglich, dass die offenen Datenfragen und die rechtliche Ausgestaltung innerhalb des bestehenden Rechtsrahmens geklärt werden.",
+    "conditions": [
+     "Offene Datenfragen zu Wartezeiten, Abdeckung und Personal sind vor einer verbindlichen Umsetzung zu klären.",
+     "Die rechtliche Zulässigkeit der konkreten Mittelverwendung innerhalb bestehender Vereinbarungen ist zu prüfen.",
+     "Annahmen zur Belastbarkeit vorhandener Schnittstellen sind im Monitoring zu verifizieren."
+    ]
+   }
+  },
+  {
+   "reason": "Prioritätsbewertung: 121 Wörter überschreiten das Limit von 100. Unbekannte Prioritäten bewertet: PR-sozialversicherung-1, PR-sozialversicherung-2, PR-sozialver",
+   "output": {
+    "summary": "Aus Sicht der Sozialversicherung ist der vorgelegte Ansatz in der Stoßrichtung grundsätzlich anschlussfähig: Er setzt auf wohnortnahe Erstkontakte, bestehende digitale Zugangswege und Finanzierung innerhalb vorhandener Mechanismen. Der Vorschlag bleibt jedoch nur teilweise ausformuliert, weil zentrale Datenfragen, die personellen Wirkungen und die rechtliche Zweckwidmung einzelner Mittel noch nicht hinreichend geklärt sind.",
+    "assessments": [
+     {
+      "priority_id": "PR-sozialversicherung-1",
+      "status": "partly_met",
+      "reason": "Der Zugang soll über Primärversorgungseinheiten, Kassen-/Gruppenpraxen, 1450, Clearing und regionale Servicestellen verbessert werden und nutzt ausdrücklich bestehende Strukturen. Offen bleiben jedoch die belastbare Datengrundlage zu Wartezeiten, Erstkontaktquote und regionaler Abdeckung sowie die praktische Nachweisbarkeit ausreichender Kapazitäten.",
+      "references": []
+     },
+     {
+      "priority_id": "PR-sozialversicherung-2",
+      "status": "partly_met",
+      "reason": "Der Vorschlag setzt auf Teammodelle, planbare Dienste, digitale Vorabklärung und Monitoring und zielt damit auf Entlastung statt zusätzlicher ungedeckter Personalbindung. Gleichzeitig sind bundesweit vergleichbare Personal- und Abdeckungsdaten nicht gesichert; damit bleibt die personelle Wirkung vorerst nur teilweise prüfbar.",
+      "references": []
+     },
+     {
+      "priority_id": "PR-sozialversicherung-3",
+      "status": "partly_met",
+      "reason": "Die Finanzierung wird auf bestehende Sozialversicherungs-, Zielsteuerungs- und 15a-Mechanismen gestützt und damit innerhalb zulässiger Mittelwege gehalten. Die exakte Zweckwidmung einzelner Mittel innerhalb vorhandener Budgets bleibt aber als rechtliche und datenbezogene Unsicherheit offen; eine vollständige Transparenz der Mittelbindung liegt noch nicht vor.",
+      "references": []
+     }
+    ],
+    "decision": "conditional",
+    "decision_reason": "Der Ansatz ist mit dem Standpunkt der Sozialversicherung grundsätzlich vereinbar und bewegt sich innerhalb des geltenden Rechtsrahmens. Er ist aber erst dann zustimmungsfähig, wenn die offenen Datenfragen zu Zugang, Personal und Finanzierung innerhalb der bestehenden Berichtssysteme geklärt sind und die Umsetzung ohne neue Rechtsgrundlage bestätigt wird.",
+    "conditions": [
+     "Vor Start sind belastbare Basisdaten zu Erstkontakt, Weiterleitung, Wartezeiten und regionaler Abdeckung vorzulegen.",
+     "Vor Start ist ein Personalmonitoring zu Besetzung, Öffnungszeiten und regionalen Versorgungslücken zu dokumentieren.",
+     "Die Mittelverwendung ist innerhalb der bestehenden Fonds- und Zielsteuerungsmechanismen transparent nachzuweisen.",
+     "Rechtliche Unsicherheiten zur Zweckwidmung einzelner Mittel bleiben als Prüfpunkt ausgewiesen, dürfen aber keinen Rechtsänderungsbedarf begründen."
+    ]
+   }
+  },
+  {
+   "reason": "Prioritätsbewertung: 172 Wörter überschreiten das Limit von 100. Unbekannte Prioritäten bewertet: PR-aerztekammer-1, PR-aerztekammer-2, PR-aerztekammer-3, PR-ae",
+   "output": {
+    "summary": "Die Ärztekammer bewertet den Vorschlag als grundsätzlich anschlussfähig, weil er den Ausbau ambulanter Kapazitäten, Patientenlenkung, Entlastung des Personals und Finanzierung innerhalb bestehender Strukturen zusammenführt. Aus Sicht der Institution bleiben jedoch bei Prioritätsschärfe, Datenlage und rechtlicher Absicherung einzelne Punkte offen. Die Stellungnahme ist daher zustimmungsfähig unter Vorbehalt der Klärung der genannten Unsicherheiten.",
+    "assessments": [
+     {
+      "priority_id": "PR-aerztekammer-1",
+      "status": "partly_met",
+      "reason": "Der Vorschlag nennt den Ausbau von Primärversorgungseinheiten sowie Kassen- und Gruppenpraxen in unterversorgten Regionen. Die ausdrückliche Priorisierung von Pädiatrie und Sonderfächern sowie die messbare Verringerung langer Anfahrtswege und Aufnahmestopps werden jedoch nicht hinreichend konkretisiert.",
+      "references": []
+     },
+     {
+      "priority_id": "PR-aerztekammer-2",
+      "status": "partly_met",
+      "reason": "1450, digitale Vorabklärung und regionale Servicestellen sind vorgesehen. Eine bundesweit einheitliche, verlässlich 24/7 verfügbare Ersteinschätzung mit klarer regionaler Ausgestaltung und nachweisbarer Umlenkung nicht dringlicher Fälle ist im Vorschlag aber noch nicht ausreichend abgesichert.",
+      "references": []
+     },
+     {
+      "priority_id": "PR-aerztekammer-3",
+      "status": "partly_met",
+      "reason": "Planbare Dienste, Teammodelle und Monitoring zielen auf Entlastung des Personals. Es fehlt aber die klare Absicherung, dass Randzeiten, Wochenenden und Bereitschaftsanteile tatsächlich in Verträgen verankert werden und dass die Zahl besetzter Stellen dadurch messbar steigt.",
+      "references": []
+     },
+     {
+      "priority_id": "PR-aerztekammer-4",
+      "status": "met",
+      "reason": "Die Finanzierung wird auf bestehende Sozialversicherungs-, Zielsteuerungs- und 15a-Mechanismen gestützt; neue Gesetze oder verbindliche Verordnungen sind nicht vorgesehen. Damit bleibt die Umsetzung innerhalb des geltenden Rechtsrahmens grundsätzlich möglich.",
+      "references": []
+     },
+     {
+      "priority_id": "PR-aerztekammer-5",
+      "status": "met",
+      "reason": "Vor Start sowie nach 6 und 12 Monaten sind Baseline, Monitoring und Berichte vorgesehen; offene Datenfragen werden ausdrücklich benannt. Damit ist die geforderte Transparenz über Kapazitäten, Wartezeiten, Öffnungszeiten und Personal grundsätzlich abgedeckt.",
+      "references": []
+     }
+    ],
+    "decision": "conditional",
+    "decision_reason": "Der Vorschlag trägt die Kernposition der Ärztekammer in wesentlichen Teilen, ist aber noch nicht in allen Prioritäten ausreichend präzise und belastbar. Eine Zustimmung ist daher nur unter Vorbehalt der Klärung der offenen Daten- und Umsetzungsfragen möglich.",
+    "conditions": [
+     "Die offenen Datenfragen zu regionaler Abdeckung, Wartezeiten und Personaleinsatz bleiben vor Start und im Monitoring ausdrücklich ausgewiesen.",
+     "Die rechtliche Unsicherheit zur Zweckwidmung einzelner Mittel innerhalb bestehender Budgets wird als Prüfpunkt dokumentiert.",
+     "Die regionale und fachliche Priorisierung, insbesondere für unterversorgte Bereiche, bleibt im Umsetzungsmonitoring nachvollziehbar getrennt ausgewiesen."
+    ]
+   }
+  }
+ ]
+}

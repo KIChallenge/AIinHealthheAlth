@@ -1,0 +1,32 @@
+{
+  "_comment": "Non-secret defaults. Environment variables and .env override these. See README_SIMULATOR.md.",
+  "LLM_PROVIDER": "azure_openai",
+  "LLM_MODEL": "gpt-5.4-mini",
+  "LLM_API_MODE": "responses_v1",
+  "LLM_REASONING_EFFORT": "low",
+  "LLM_MAX_CONCURRENCY": 9,
+  "LLM_RATE_LIMIT_TPS": 200000,
+  "LLM_REQUEST_TIMEOUT_SECONDS": 45,
+  "LLM_FINAL_REPORT_TIMEOUT_SECONDS": 60,
+  "LLM_MAX_RETRIES": 1,
+  "LLM_INPUT_BUDGET_TOKENS": 32768,
+  "LLM_MAX_OUTPUT_TOKENS": 4096,
+  "LLM_INITIAL_MAX_OUTPUT_TOKENS": 8192,
+  "LLM_FINAL_MAX_OUTPUT_TOKENS": 16384,
+  "DELIBERATION_TIMEOUT_SECONDS": 600,
+  "FINALIZATION_TIMEOUT_SECONDS": 180,
+  "STATE_DIR": "./state",
+  "role_reasoning": {},
+  "actor_aliases": {"OeAK": "Ärztekammer", "ÖÄK": "Ärztekammer", "Dachverband SV": "Sozialversicherung"},
+  "retrieval": {"max_terms": 12, "actor_documents": 8, "reviewer_documents": 6, "passages_per_document": 2, "passage_words": 160, "max_cross_references": 3},
+  "limits": {"max_clauses": 8, "max_priority_corrections_per_actor": 1},
+  "graph_mapping": {
+    "actor_id": "actor_id", "actor_name": "name", "moderator_id": "moderator_id",
+    "doc_id": "doc_id", "doc_type": "doc_type", "title": "title", "text": "text",
+    "original_content": "original_content", "content_format": "content_format",
+    "content_hash": "content_hash", "source_path": "source_path", "publisher": "publisher",
+    "publication_date": "publication_date", "valid_from": "valid_from", "valid_until": "valid_until",
+    "source_url": "source_url", "law_abbreviation": "law_abbreviation",
+    "section_type": "section_type", "section_number": "section_number"
+  }
+}

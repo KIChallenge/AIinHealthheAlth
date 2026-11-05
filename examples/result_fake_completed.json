@@ -1,0 +1,3936 @@
+{
+  "schema_version": "1.0",
+  "debate_id": "34ddfb01d0a44cd6bcb8ae47abed0a25",
+  "status": "completed",
+  "stop_reason": "satisfaction_threshold",
+  "request": {
+    "schema_version": "1.0",
+    "actors": [
+      "Gesundheitsministerium",
+      "Sozialversicherung",
+      "Ärztekammer"
+    ],
+    "question": "Entwickeln Sie einen gemeinsamen Vorschlag zur Verbesserung der ambulanten Versorgung in Österreich innerhalb des geltenden Rechtsrahmens. Berücksichtigen Sie den Zugang zur Versorgung, personelle Auswirkungen und Finanzierung. Kennzeichnen Sie Annahmen, rechtliche Unsicherheiten und offene Datenfragen ausdrücklich.",
+    "reference_date": "2026-11-05",
+    "scenario_assumptions": [],
+    "hard_constraints": []
+  },
+  "task": {
+    "question": "Entwickeln Sie einen gemeinsamen Vorschlag zur Verbesserung der ambulanten Versorgung in Österreich innerhalb des geltenden Rechtsrahmens. Berücksichtigen Sie den Zugang zur Versorgung, personelle Auswirkungen und Finanzierung. Kennzeichnen Sie Annahmen, rechtliche Unsicherheiten und offene Datenfragen ausdrücklich.",
+    "reference_date": "2026-11-05",
+    "assumptions": [],
+    "constraints": [],
+    "legal_scope": "Alle Lösungen müssen innerhalb des zum Stichtag geltenden Rechtsrahmens umgesetzt werden können. Änderungen von Gesetzen oder verbindlichen Verordnungen sind als Lösung ausgeschlossen.",
+    "rulebook_version": "1.0"
+  },
+  "model": {
+    "expected_model": "gpt-5.4-mini",
+    "reported_model": "fake-adapter",
+    "deployment": "gpt-5-4-mini",
+    "capabilities": {
+      "responses_api": true,
+      "structured_outputs": true,
+      "model_identity_verified": false,
+      "note": "Die Antwort nennt nur das Deployment; die Modellfamilie gpt-5.4-mini ist ohne Verwaltungszugriff nicht bestätigt."
+    },
+    "settings": {
+      "provider": "azure_openai",
+      "expected_model": "gpt-5.4-mini",
+      "api_mode": "responses_v1",
+      "deployment": "gpt-5-4-mini",
+      "endpoint": "https://aif-dvsv-dev-hackathon-02-we-14.services.ai.azure.com/openai/v1/",
+      "reasoning_effort": "medium",
+      "max_concurrency": 9,
+      "rate_limit_tps": 200000,
+      "rate_limit_rpm": null,
+      "rate_limit_tpm": null,
+      "request_timeout_seconds": 45.0,
+      "final_report_timeout_seconds": 60.0,
+      "max_retries": 1,
+      "input_budget_tokens": 32768,
+      "max_output_tokens": 4096,
+      "initial_max_output_tokens": 8192,
+      "final_max_output_tokens": 16384
+    }
+  },
+  "timing": {
+    "deliberation_started_at": "2026-11-05T22:12:29+00:00",
+    "deliberation_deadline_at": "2026-11-05T22:22:29+00:00",
+    "deliberation_ended_at": "2026-11-05T22:12:30+00:00",
+    "finalization_started_at": "2026-11-05T22:12:30+00:00",
+    "finalization_deadline_at": "2026-11-05T22:15:30+00:00",
+    "finalization_ended_at": "2026-11-05T22:12:30+00:00",
+    "deliberation_elapsed_seconds": 0.33,
+    "finalization_elapsed_seconds": 0.05,
+    "deliberation_budget_seconds": 600.0,
+    "finalization_budget_seconds": 180.0
+  },
+  "usage": {
+    "input_tokens": 7000,
+    "output_tokens": 3500,
+    "reasoning_tokens": 700,
+    "requests": 70,
+    "retries": 0,
+    "repairs": 0,
+    "throttled": 0,
+    "queue_seconds": 0.002,
+    "calls_without_usage": 0,
+    "missing_measurements": [
+      "LLM_RATE_LIMIT_RPM",
+      "LLM_RATE_LIMIT_TPM"
+    ]
+  },
+  "metrics": {
+    "completed_rounds": 2,
+    "success_streak": 2,
+    "satisfaction": [
+      {
+        "actor_id": "gesundheitsministerium",
+        "met_count": 2,
+        "priority_count": 2,
+        "percent": 100.0,
+        "threshold_reached": true,
+        "disputed": false
+      },
+      {
+        "actor_id": "sozialversicherung",
+        "met_count": 2,
+        "priority_count": 2,
+        "percent": 100.0,
+        "threshold_reached": true,
+        "disputed": false
+      },
+      {
+        "actor_id": "aerztekammer",
+        "met_count": 2,
+        "priority_count": 2,
+        "percent": 100.0,
+        "threshold_reached": true,
+        "disputed": false
+      }
+    ]
+  },
+  "final_proposal": {
+    "proposal_id": "PROP-1",
+    "version": 2,
+    "round": 2,
+    "created_at": "2026-11-05T22:12:29+00:00",
+    "clauses": [
+      {
+        "clause_id": "KL-v2-1",
+        "text": "Die Partner stimmen die Versorgungsplanung regional mit bestehenden Instrumenten ab und entlasten das Personal organisatorisch.",
+        "provenance": [
+          "NEG-1-gesundheitsministerium-1"
+        ],
+        "premises": [
+          "P-2af16a1e81f4"
+        ],
+        "legal_status": "no_conflict_identified",
+        "law_amendment_detected": false
+      }
+    ],
+    "meta_update": "Ein erster gemeinsamer Vorschlag liegt vor.",
+    "constraint_checks": [],
+    "legal_admissibility": "admissible_within_reviewed_sources",
+    "review_complete": true,
+    "status": "frozen"
+  },
+  "actors": [
+    {
+      "actor_id": "gesundheitsministerium",
+      "name": "Gesundheitsministerium",
+      "requested_name": "Gesundheitsministerium",
+      "profile": {
+        "entries": [
+          {
+            "label": "reported",
+            "aussage": "Die Institution berichtet über ihre Aufgaben in der ambulanten Versorgung.",
+            "quellen": [
+              "P-81dc535ebcf9"
+            ]
+          }
+        ],
+        "standpunkt": "Die ambulante Versorgung soll innerhalb des geltenden Rechts gestärkt werden.",
+        "standpunkt_label": "inferred",
+        "word_count": 21
+      },
+      "initial_standpoint": "Die ambulante Versorgung soll innerhalb des geltenden Rechts gestärkt werden.",
+      "final_standpoint": "Die Institution stellt ihren Standpunkt zum eingefrorenen Vorschlag abschließend dar.",
+      "priorities": [
+        {
+          "priority_id": "PR-gesundheitsministerium-1",
+          "actor_id": "gesundheitsministerium",
+          "baseline_version": 1,
+          "objective": "Besseren Zugang zur ambulanten Versorgung sichern.",
+          "acceptance_condition": "Der Vorschlag verkürzt Wartezeiten mit bestehenden Instrumenten.",
+          "quellen": [
+            "P-81dc535ebcf9"
+          ],
+          "evidence_basis": "reported",
+          "condition_is_simulated": true,
+          "law_scope_conflict": false
+        },
+        {
+          "priority_id": "PR-gesundheitsministerium-2",
+          "actor_id": "gesundheitsministerium",
+          "baseline_version": 1,
+          "objective": "Personelle Belastung im Versorgungsalltag begrenzen.",
+          "acceptance_condition": "Der Vorschlag enthält eine Maßnahme zur Entlastung des Personals.",
+          "quellen": [
+            "P-81dc535ebcf9"
+          ],
+          "evidence_basis": "reported",
+          "condition_is_simulated": true,
+          "law_scope_conflict": false
+        }
+      ],
+      "latest_assessments": [
+        {
+          "assessment_id": "AS-final-PR-gesundheitsministerium-1-v2",
+          "actor_id": "gesundheitsministerium",
+          "priority_id": "PR-gesundheitsministerium-1",
+          "baseline_version": 1,
+          "round": 2,
+          "proposal_id": "PROP-1",
+          "proposal_version": 2,
+          "status": "met",
+          "previous_status": "met",
+          "reason": "Die Klausel erfüllt dies.",
+          "references": [],
+          "reviewer_objections": []
+        },
+        {
+          "assessment_id": "AS-final-PR-gesundheitsministerium-2-v2",
+          "actor_id": "gesundheitsministerium",
+          "priority_id": "PR-gesundheitsministerium-2",
+          "baseline_version": 1,
+          "round": 2,
+          "proposal_id": "PROP-1",
+          "proposal_version": 2,
+          "status": "met",
+          "previous_status": "met",
+          "reason": "Die Klausel erfüllt dies.",
+          "references": [],
+          "reviewer_objections": []
+        }
+      ],
+      "acceptance_decisions": [
+        {
+          "decision_id": "D-1-gesundheitsministerium-v1",
+          "actor_id": "gesundheitsministerium",
+          "target_id": "PROP-1-v1",
+          "target_version": 1,
+          "round": 1,
+          "at": "2026-11-05T22:12:29+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        },
+        {
+          "decision_id": "D-2-gesundheitsministerium-v2",
+          "actor_id": "gesundheitsministerium",
+          "target_id": "PROP-1-v2",
+          "target_version": 2,
+          "round": 2,
+          "at": "2026-11-05T22:12:29+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        },
+        {
+          "decision_id": "D-final-gesundheitsministerium-v2",
+          "actor_id": "gesundheitsministerium",
+          "target_id": "PROP-1-v2",
+          "target_version": 2,
+          "round": 2,
+          "at": "2026-11-05T22:12:30+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        }
+      ],
+      "satisfaction": {
+        "actor_id": "gesundheitsministerium",
+        "met_count": 2,
+        "priority_count": 2,
+        "percent": 100.0,
+        "threshold_reached": true,
+        "disputed": false
+      }
+    },
+    {
+      "actor_id": "sozialversicherung",
+      "name": "Sozialversicherung",
+      "requested_name": "Sozialversicherung",
+      "profile": {
+        "entries": [
+          {
+            "label": "reported",
+            "aussage": "Die Institution berichtet über ihre Aufgaben in der ambulanten Versorgung.",
+            "quellen": [
+              "P-a90e8369291b"
+            ]
+          }
+        ],
+        "standpunkt": "Die ambulante Versorgung soll innerhalb des geltenden Rechts gestärkt werden.",
+        "standpunkt_label": "inferred",
+        "word_count": 21
+      },
+      "initial_standpoint": "Die ambulante Versorgung soll innerhalb des geltenden Rechts gestärkt werden.",
+      "final_standpoint": "Die Institution stellt ihren Standpunkt zum eingefrorenen Vorschlag abschließend dar.",
+      "priorities": [
+        {
+          "priority_id": "PR-sozialversicherung-1",
+          "actor_id": "sozialversicherung",
+          "baseline_version": 1,
+          "objective": "Besseren Zugang zur ambulanten Versorgung sichern.",
+          "acceptance_condition": "Der Vorschlag verkürzt Wartezeiten mit bestehenden Instrumenten.",
+          "quellen": [
+            "P-a90e8369291b"
+          ],
+          "evidence_basis": "reported",
+          "condition_is_simulated": true,
+          "law_scope_conflict": false
+        },
+        {
+          "priority_id": "PR-sozialversicherung-2",
+          "actor_id": "sozialversicherung",
+          "baseline_version": 1,
+          "objective": "Personelle Belastung im Versorgungsalltag begrenzen.",
+          "acceptance_condition": "Der Vorschlag enthält eine Maßnahme zur Entlastung des Personals.",
+          "quellen": [
+            "P-a90e8369291b"
+          ],
+          "evidence_basis": "reported",
+          "condition_is_simulated": true,
+          "law_scope_conflict": false
+        }
+      ],
+      "latest_assessments": [
+        {
+          "assessment_id": "AS-final-PR-sozialversicherung-1-v2",
+          "actor_id": "sozialversicherung",
+          "priority_id": "PR-sozialversicherung-1",
+          "baseline_version": 1,
+          "round": 2,
+          "proposal_id": "PROP-1",
+          "proposal_version": 2,
+          "status": "met",
+          "previous_status": "met",
+          "reason": "Die Klausel erfüllt dies.",
+          "references": [],
+          "reviewer_objections": []
+        },
+        {
+          "assessment_id": "AS-final-PR-sozialversicherung-2-v2",
+          "actor_id": "sozialversicherung",
+          "priority_id": "PR-sozialversicherung-2",
+          "baseline_version": 1,
+          "round": 2,
+          "proposal_id": "PROP-1",
+          "proposal_version": 2,
+          "status": "met",
+          "previous_status": "met",
+          "reason": "Die Klausel erfüllt dies.",
+          "references": [],
+          "reviewer_objections": []
+        }
+      ],
+      "acceptance_decisions": [
+        {
+          "decision_id": "D-1-sozialversicherung-v1",
+          "actor_id": "sozialversicherung",
+          "target_id": "PROP-1-v1",
+          "target_version": 1,
+          "round": 1,
+          "at": "2026-11-05T22:12:29+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        },
+        {
+          "decision_id": "D-2-sozialversicherung-v2",
+          "actor_id": "sozialversicherung",
+          "target_id": "PROP-1-v2",
+          "target_version": 2,
+          "round": 2,
+          "at": "2026-11-05T22:12:29+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        },
+        {
+          "decision_id": "D-final-sozialversicherung-v2",
+          "actor_id": "sozialversicherung",
+          "target_id": "PROP-1-v2",
+          "target_version": 2,
+          "round": 2,
+          "at": "2026-11-05T22:12:30+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        }
+      ],
+      "satisfaction": {
+        "actor_id": "sozialversicherung",
+        "met_count": 2,
+        "priority_count": 2,
+        "percent": 100.0,
+        "threshold_reached": true,
+        "disputed": false
+      }
+    },
+    {
+      "actor_id": "aerztekammer",
+      "name": "Ärztekammer",
+      "requested_name": "Ärztekammer",
+      "profile": {
+        "entries": [
+          {
+            "label": "reported",
+            "aussage": "Die Institution berichtet über ihre Aufgaben in der ambulanten Versorgung.",
+            "quellen": [
+              "P-d1cbf90b690b"
+            ]
+          }
+        ],
+        "standpunkt": "Die ambulante Versorgung soll innerhalb des geltenden Rechts gestärkt werden.",
+        "standpunkt_label": "inferred",
+        "word_count": 21
+      },
+      "initial_standpoint": "Die ambulante Versorgung soll innerhalb des geltenden Rechts gestärkt werden.",
+      "final_standpoint": "Die Institution stellt ihren Standpunkt zum eingefrorenen Vorschlag abschließend dar.",
+      "priorities": [
+        {
+          "priority_id": "PR-aerztekammer-1",
+          "actor_id": "aerztekammer",
+          "baseline_version": 1,
+          "objective": "Besseren Zugang zur ambulanten Versorgung sichern.",
+          "acceptance_condition": "Der Vorschlag verkürzt Wartezeiten mit bestehenden Instrumenten.",
+          "quellen": [
+            "P-d1cbf90b690b"
+          ],
+          "evidence_basis": "reported",
+          "condition_is_simulated": true,
+          "law_scope_conflict": false
+        },
+        {
+          "priority_id": "PR-aerztekammer-2",
+          "actor_id": "aerztekammer",
+          "baseline_version": 1,
+          "objective": "Personelle Belastung im Versorgungsalltag begrenzen.",
+          "acceptance_condition": "Der Vorschlag enthält eine Maßnahme zur Entlastung des Personals.",
+          "quellen": [
+            "P-d1cbf90b690b"
+          ],
+          "evidence_basis": "reported",
+          "condition_is_simulated": true,
+          "law_scope_conflict": false
+        }
+      ],
+      "latest_assessments": [
+        {
+          "assessment_id": "AS-final-PR-aerztekammer-1-v2",
+          "actor_id": "aerztekammer",
+          "priority_id": "PR-aerztekammer-1",
+          "baseline_version": 1,
+          "round": 2,
+          "proposal_id": "PROP-1",
+          "proposal_version": 2,
+          "status": "met",
+          "previous_status": "met",
+          "reason": "Die Klausel erfüllt dies.",
+          "references": [],
+          "reviewer_objections": []
+        },
+        {
+          "assessment_id": "AS-final-PR-aerztekammer-2-v2",
+          "actor_id": "aerztekammer",
+          "priority_id": "PR-aerztekammer-2",
+          "baseline_version": 1,
+          "round": 2,
+          "proposal_id": "PROP-1",
+          "proposal_version": 2,
+          "status": "met",
+          "previous_status": "met",
+          "reason": "Die Klausel erfüllt dies.",
+          "references": [],
+          "reviewer_objections": []
+        }
+      ],
+      "acceptance_decisions": [
+        {
+          "decision_id": "D-1-aerztekammer-v1",
+          "actor_id": "aerztekammer",
+          "target_id": "PROP-1-v1",
+          "target_version": 1,
+          "round": 1,
+          "at": "2026-11-05T22:12:29+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        },
+        {
+          "decision_id": "D-2-aerztekammer-v2",
+          "actor_id": "aerztekammer",
+          "target_id": "PROP-1-v2",
+          "target_version": 2,
+          "round": 2,
+          "at": "2026-11-05T22:12:29+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        },
+        {
+          "decision_id": "D-final-aerztekammer-v2",
+          "actor_id": "aerztekammer",
+          "target_id": "PROP-1-v2",
+          "target_version": 2,
+          "round": 2,
+          "at": "2026-11-05T22:12:30+00:00",
+          "kind": "accept",
+          "conditions": [],
+          "reason": "Der Vorschlag ist tragfähig."
+        }
+      ],
+      "satisfaction": {
+        "actor_id": "aerztekammer",
+        "met_count": 2,
+        "priority_count": 2,
+        "percent": 100.0,
+        "threshold_reached": true,
+        "disputed": false
+      }
+    }
+  ],
+  "arguments": [
+    {
+      "argument_id": "ARG-aerztekammer-v1",
+      "actor_id": "aerztekammer",
+      "version": 1,
+      "stage": "initial",
+      "round": 0,
+      "claims": [
+        {
+          "claim_id": "ARG-aerztekammer-v1-B1",
+          "kind": "reported",
+          "behauptung": "Die ambulante Versorgung braucht bessere Abstimmung.",
+          "begruendung": "Die Quelle stützt diese Einschätzung.",
+          "beispiel": "Beispiel nicht verfügbar.",
+          "beispiel_art": "unavailable",
+          "quellen": [
+            "P-d1cbf90b690b"
+          ],
+          "berechnung": null,
+          "berechnung_geprueft": null
+        }
+      ],
+      "change_explanation": null,
+      "word_count": 15,
+      "status": "complete"
+    },
+    {
+      "argument_id": "ARG-aerztekammer-v2",
+      "actor_id": "aerztekammer",
+      "version": 2,
+      "stage": "second",
+      "round": 0,
+      "claims": [
+        {
+          "claim_id": "ARG-aerztekammer-v2-B1",
+          "kind": "reported",
+          "behauptung": "Die überarbeitete Position stützt regionale Abstimmung.",
+          "begruendung": "Die Quelle stützt diese Einschätzung.",
+          "beispiel": "Beispiel nicht verfügbar.",
+          "beispiel_art": "unavailable",
+          "quellen": [
+            "P-7b5f41639cd7"
+          ],
+          "berechnung": null,
+          "berechnung_geprueft": null
+        }
+      ],
+      "change_explanation": "Die Rückmeldungen wurden berücksichtigt.",
+      "word_count": 15,
+      "status": "complete"
+    },
+    {
+      "argument_id": "ARG-gesundheitsministerium-v1",
+      "actor_id": "gesundheitsministerium",
+      "version": 1,
+      "stage": "initial",
+      "round": 0,
+      "claims": [
+        {
+          "claim_id": "ARG-gesundheitsministerium-v1-B1",
+          "kind": "reported",
+          "behauptung": "Die ambulante Versorgung braucht bessere Abstimmung.",
+          "begruendung": "Die Quelle stützt diese Einschätzung.",
+          "beispiel": "Beispiel nicht verfügbar.",
+          "beispiel_art": "unavailable",
+          "quellen": [
+            "P-81dc535ebcf9"
+          ],
+          "berechnung": null,
+          "berechnung_geprueft": null
+        }
+      ],
+      "change_explanation": null,
+      "word_count": 15,
+      "status": "complete"
+    },
+    {
+      "argument_id": "ARG-gesundheitsministerium-v2",
+      "actor_id": "gesundheitsministerium",
+      "version": 2,
+      "stage": "second",
+      "round": 0,
+      "claims": [
+        {
+          "claim_id": "ARG-gesundheitsministerium-v2-B1",
+          "kind": "reported",
+          "behauptung": "Die überarbeitete Position stützt regionale Abstimmung.",
+          "begruendung": "Die Quelle stützt diese Einschätzung.",
+          "beispiel": "Beispiel nicht verfügbar.",
+          "beispiel_art": "unavailable",
+          "quellen": [
+            "P-81dc535ebcf9"
+          ],
+          "berechnung": null,
+          "berechnung_geprueft": null
+        }
+      ],
+      "change_explanation": "Die Rückmeldungen wurden berücksichtigt.",
+      "word_count": 15,
+      "status": "complete"
+    },
+    {
+      "argument_id": "ARG-sozialversicherung-v1",
+      "actor_id": "sozialversicherung",
+      "version": 1,
+      "stage": "initial",
+      "round": 0,
+      "claims": [
+        {
+          "claim_id": "ARG-sozialversicherung-v1-B1",
+          "kind": "reported",
+          "behauptung": "Die ambulante Versorgung braucht bessere Abstimmung.",
+          "begruendung": "Die Quelle stützt diese Einschätzung.",
+          "beispiel": "Beispiel nicht verfügbar.",
+          "beispiel_art": "unavailable",
+          "quellen": [
+            "P-a90e8369291b"
+          ],
+          "berechnung": null,
+          "berechnung_geprueft": null
+        }
+      ],
+      "change_explanation": null,
+      "word_count": 15,
+      "status": "complete"
+    },
+    {
+      "argument_id": "ARG-sozialversicherung-v2",
+      "actor_id": "sozialversicherung",
+      "version": 2,
+      "stage": "second",
+      "round": 0,
+      "claims": [
+        {
+          "claim_id": "ARG-sozialversicherung-v2-B1",
+          "kind": "reported",
+          "behauptung": "Die überarbeitete Position stützt regionale Abstimmung.",
+          "begruendung": "Die Quelle stützt diese Einschätzung.",
+          "beispiel": "Beispiel nicht verfügbar.",
+          "beispiel_art": "unavailable",
+          "quellen": [
+            "P-7b5f41639cd7"
+          ],
+          "berechnung": null,
+          "berechnung_geprueft": null
+        }
+      ],
+      "change_explanation": "Die Rückmeldungen wurden berücksichtigt.",
+      "word_count": 15,
+      "status": "complete"
+    }
+  ],
+  "negotiation": [
+    {
+      "item_id": "NEG-1-aerztekammer-1",
+      "actor_id": "aerztekammer",
+      "round": 1,
+      "kind": "offer",
+      "text": "Wir bieten eine abgestimmte Versorgungsplanung an.",
+      "priority_ids": [],
+      "quellen": []
+    },
+    {
+      "item_id": "NEG-1-gesundheitsministerium-1",
+      "actor_id": "gesundheitsministerium",
+      "round": 1,
+      "kind": "offer",
+      "text": "Wir bieten eine abgestimmte Versorgungsplanung an.",
+      "priority_ids": [],
+      "quellen": []
+    },
+    {
+      "item_id": "NEG-1-sozialversicherung-1",
+      "actor_id": "sozialversicherung",
+      "round": 1,
+      "kind": "offer",
+      "text": "Wir bieten eine abgestimmte Versorgungsplanung an.",
+      "priority_ids": [],
+      "quellen": []
+    },
+    {
+      "item_id": "NEG-2-aerztekammer-1",
+      "actor_id": "aerztekammer",
+      "round": 2,
+      "kind": "offer",
+      "text": "Wir bieten eine abgestimmte Versorgungsplanung an.",
+      "priority_ids": [],
+      "quellen": []
+    },
+    {
+      "item_id": "NEG-2-gesundheitsministerium-1",
+      "actor_id": "gesundheitsministerium",
+      "round": 2,
+      "kind": "offer",
+      "text": "Wir bieten eine abgestimmte Versorgungsplanung an.",
+      "priority_ids": [],
+      "quellen": []
+    },
+    {
+      "item_id": "NEG-2-sozialversicherung-1",
+      "actor_id": "sozialversicherung",
+      "round": 2,
+      "kind": "offer",
+      "text": "Wir bieten eine abgestimmte Versorgungsplanung an.",
+      "priority_ids": [],
+      "quellen": []
+    }
+  ],
+  "reviews": [
+    {
+      "review_id": "R-assessment-1-v1-ethicmind-aerztekammer-0",
+      "reviewer": "ethicmind",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-ethicmind-aerztekammer-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "AS-1-PR-aerztekammer-1-v1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-aerztekammer-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-1-v1-ethicmind-gesundheitsministerium-0",
+      "reviewer": "ethicmind",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-ethicmind-gesundheitsministerium-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "AS-1-PR-gesundheitsministerium-1-v1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-gesundheitsministerium-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-1-v1-ethicmind-sozialversicherung-0",
+      "reviewer": "ethicmind",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-ethicmind-sozialversicherung-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "AS-1-PR-sozialversicherung-1-v1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-sozialversicherung-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-1-v1-legaleye-aerztekammer-0",
+      "reviewer": "legaleye",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-legaleye-aerztekammer-0-1",
+          "reviewer": "legaleye",
+          "target_id": "AS-1-PR-aerztekammer-1-v1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-aerztekammer-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-1-v1-legaleye-gesundheitsministerium-0",
+      "reviewer": "legaleye",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-legaleye-gesundheitsministerium-0-1",
+          "reviewer": "legaleye",
+          "target_id": "AS-1-PR-gesundheitsministerium-1-v1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-gesundheitsministerium-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-1-v1-legaleye-sozialversicherung-0",
+      "reviewer": "legaleye",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-legaleye-sozialversicherung-0-1",
+          "reviewer": "legaleye",
+          "target_id": "AS-1-PR-sozialversicherung-1-v1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-sozialversicherung-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-1-v1-truthseeker-aerztekammer-0",
+      "reviewer": "truthseeker",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-truthseeker-aerztekammer-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "AS-1-PR-aerztekammer-1-v1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-aerztekammer-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-1-v1-truthseeker-gesundheitsministerium-0",
+      "reviewer": "truthseeker",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-truthseeker-gesundheitsministerium-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "AS-1-PR-gesundheitsministerium-1-v1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-gesundheitsministerium-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-1-v1-truthseeker-sozialversicherung-0",
+      "reviewer": "truthseeker",
+      "stage": "assessment",
+      "round": 1,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-assessment-1-v1-truthseeker-sozialversicherung-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "AS-1-PR-sozialversicherung-1-v1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-1-PR-sozialversicherung-1-v1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-ethicmind-aerztekammer-0",
+      "reviewer": "ethicmind",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-ethicmind-aerztekammer-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "AS-2-PR-aerztekammer-1-v2",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-aerztekammer-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-ethicmind-gesundheitsministerium-0",
+      "reviewer": "ethicmind",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-ethicmind-gesundheitsministerium-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "AS-2-PR-gesundheitsministerium-1-v2",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-gesundheitsministerium-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-ethicmind-sozialversicherung-0",
+      "reviewer": "ethicmind",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-ethicmind-sozialversicherung-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "AS-2-PR-sozialversicherung-1-v2",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-sozialversicherung-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-legaleye-aerztekammer-0",
+      "reviewer": "legaleye",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-legaleye-aerztekammer-0-1",
+          "reviewer": "legaleye",
+          "target_id": "AS-2-PR-aerztekammer-1-v2",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-aerztekammer-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-legaleye-gesundheitsministerium-0",
+      "reviewer": "legaleye",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-legaleye-gesundheitsministerium-0-1",
+          "reviewer": "legaleye",
+          "target_id": "AS-2-PR-gesundheitsministerium-1-v2",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-gesundheitsministerium-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-legaleye-sozialversicherung-0",
+      "reviewer": "legaleye",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-legaleye-sozialversicherung-0-1",
+          "reviewer": "legaleye",
+          "target_id": "AS-2-PR-sozialversicherung-1-v2",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-sozialversicherung-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-truthseeker-aerztekammer-0",
+      "reviewer": "truthseeker",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-truthseeker-aerztekammer-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "AS-2-PR-aerztekammer-1-v2",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-aerztekammer-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-truthseeker-gesundheitsministerium-0",
+      "reviewer": "truthseeker",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-truthseeker-gesundheitsministerium-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "AS-2-PR-gesundheitsministerium-1-v2",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-gesundheitsministerium-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-assessment-2-v2-truthseeker-sozialversicherung-0",
+      "reviewer": "truthseeker",
+      "stage": "assessment",
+      "round": 2,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-assessment-2-v2-truthseeker-sozialversicherung-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "AS-2-PR-sozialversicherung-1-v2",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "AS-2-PR-sozialversicherung-1-v2",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-candidate-1-v1-ethicmind-alle-0",
+      "reviewer": "ethicmind",
+      "stage": "candidate",
+      "round": 1,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-candidate-1-v1-ethicmind-alle-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "KL-v1-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v1-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-candidate-1-v1-legaleye-alle-0",
+      "reviewer": "legaleye",
+      "stage": "candidate",
+      "round": 1,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-candidate-1-v1-legaleye-alle-0-1",
+          "reviewer": "legaleye",
+          "target_id": "KL-v1-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v1-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-candidate-1-v1-truthseeker-alle-0",
+      "reviewer": "truthseeker",
+      "stage": "candidate",
+      "round": 1,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-candidate-1-v1-truthseeker-alle-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "KL-v1-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v1-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-candidate-2-v2-ethicmind-alle-0",
+      "reviewer": "ethicmind",
+      "stage": "candidate",
+      "round": 2,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-candidate-2-v2-ethicmind-alle-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "KL-v2-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v2-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-candidate-2-v2-legaleye-alle-0",
+      "reviewer": "legaleye",
+      "stage": "candidate",
+      "round": 2,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-candidate-2-v2-legaleye-alle-0-1",
+          "reviewer": "legaleye",
+          "target_id": "KL-v2-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v2-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-candidate-2-v2-truthseeker-alle-0",
+      "reviewer": "truthseeker",
+      "stage": "candidate",
+      "round": 2,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-candidate-2-v2-truthseeker-alle-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "KL-v2-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v2-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-final-2-v2-ethicmind-alle-0",
+      "reviewer": "ethicmind",
+      "stage": "final",
+      "round": 2,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-final-2-v2-ethicmind-alle-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "KL-v2-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v2-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-final-2-v2-legaleye-alle-0",
+      "reviewer": "legaleye",
+      "stage": "final",
+      "round": 2,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-final-2-v2-legaleye-alle-0-1",
+          "reviewer": "legaleye",
+          "target_id": "KL-v2-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v2-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-final-2-v2-truthseeker-alle-0",
+      "reviewer": "truthseeker",
+      "stage": "final",
+      "round": 2,
+      "actor_id": null,
+      "findings": [
+        {
+          "finding_id": "F-final-2-v2-truthseeker-alle-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "KL-v2-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "KL-v2-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-ethicmind-aerztekammer-0",
+      "reviewer": "ethicmind",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-ethicmind-aerztekammer-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "PR-aerztekammer-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-aerztekammer-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-ethicmind-gesundheitsministerium-0",
+      "reviewer": "ethicmind",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-ethicmind-gesundheitsministerium-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "PR-gesundheitsministerium-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-gesundheitsministerium-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-ethicmind-sozialversicherung-0",
+      "reviewer": "ethicmind",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-ethicmind-sozialversicherung-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "PR-sozialversicherung-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-sozialversicherung-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-legaleye-aerztekammer-0",
+      "reviewer": "legaleye",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-legaleye-aerztekammer-0-1",
+          "reviewer": "legaleye",
+          "target_id": "PR-aerztekammer-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-aerztekammer-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-legaleye-gesundheitsministerium-0",
+      "reviewer": "legaleye",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-legaleye-gesundheitsministerium-0-1",
+          "reviewer": "legaleye",
+          "target_id": "PR-gesundheitsministerium-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-gesundheitsministerium-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-legaleye-sozialversicherung-0",
+      "reviewer": "legaleye",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-legaleye-sozialversicherung-0-1",
+          "reviewer": "legaleye",
+          "target_id": "PR-sozialversicherung-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-sozialversicherung-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-truthseeker-aerztekammer-0",
+      "reviewer": "truthseeker",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-truthseeker-aerztekammer-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "PR-aerztekammer-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-aerztekammer-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-truthseeker-gesundheitsministerium-0",
+      "reviewer": "truthseeker",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-truthseeker-gesundheitsministerium-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "PR-gesundheitsministerium-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-gesundheitsministerium-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-initial-0-v0-truthseeker-sozialversicherung-0",
+      "reviewer": "truthseeker",
+      "stage": "initial",
+      "round": 0,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-initial-0-v0-truthseeker-sozialversicherung-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "PR-sozialversicherung-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-sozialversicherung-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-ethicmind-aerztekammer-0",
+      "reviewer": "ethicmind",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-ethicmind-aerztekammer-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "PR-aerztekammer-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-aerztekammer-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-ethicmind-gesundheitsministerium-0",
+      "reviewer": "ethicmind",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-ethicmind-gesundheitsministerium-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "PR-gesundheitsministerium-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-gesundheitsministerium-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-ethicmind-sozialversicherung-0",
+      "reviewer": "ethicmind",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-ethicmind-sozialversicherung-0-1",
+          "reviewer": "ethicmind",
+          "target_id": "PR-sozialversicherung-1",
+          "assessment": "no_concern_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-sozialversicherung-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": "Fixture Patientencharta",
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-legaleye-aerztekammer-0",
+      "reviewer": "legaleye",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-legaleye-aerztekammer-0-1",
+          "reviewer": "legaleye",
+          "target_id": "PR-aerztekammer-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-aerztekammer-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-legaleye-gesundheitsministerium-0",
+      "reviewer": "legaleye",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-legaleye-gesundheitsministerium-0-1",
+          "reviewer": "legaleye",
+          "target_id": "PR-gesundheitsministerium-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-gesundheitsministerium-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-legaleye-sozialversicherung-0",
+      "reviewer": "legaleye",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-legaleye-sozialversicherung-0-1",
+          "reviewer": "legaleye",
+          "target_id": "PR-sozialversicherung-1",
+          "assessment": "no_conflict_identified",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-sozialversicherung-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-truthseeker-aerztekammer-0",
+      "reviewer": "truthseeker",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "aerztekammer",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-truthseeker-aerztekammer-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "PR-aerztekammer-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-aerztekammer-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-truthseeker-gesundheitsministerium-0",
+      "reviewer": "truthseeker",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "gesundheitsministerium",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-truthseeker-gesundheitsministerium-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "PR-gesundheitsministerium-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-gesundheitsministerium-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    },
+    {
+      "review_id": "R-second-0-v0-truthseeker-sozialversicherung-0",
+      "reviewer": "truthseeker",
+      "stage": "second",
+      "round": 0,
+      "actor_id": "sozialversicherung",
+      "findings": [
+        {
+          "finding_id": "F-second-0-v0-truthseeker-sozialversicherung-0-1",
+          "reviewer": "truthseeker",
+          "target_id": "PR-sozialversicherung-1",
+          "assessment": "supported",
+          "reason": "Innerhalb der geprüften Quellen ist kein Mangel erkennbar.",
+          "reference": "PR-sozialversicherung-1",
+          "correction": null
+        }
+      ],
+      "coverage": "complete",
+      "unreviewed_targets": [],
+      "coverage_note": null,
+      "framework": null,
+      "word_count": 9,
+      "status": "complete"
+    }
+  ],
+  "challenges": [],
+  "proposal_history": [
+    {
+      "proposal_id": "PROP-1",
+      "version": 1,
+      "round": 1,
+      "created_at": "2026-11-05T22:12:29+00:00",
+      "clauses": [
+        {
+          "clause_id": "KL-v1-1",
+          "text": "Die Partner stimmen die Versorgungsplanung regional mit bestehenden Instrumenten ab und entlasten das Personal organisatorisch.",
+          "provenance": [
+            "NEG-1-gesundheitsministerium-1"
+          ],
+          "premises": [
+            "P-2af16a1e81f4"
+          ],
+          "legal_status": "no_conflict_identified",
+          "law_amendment_detected": false
+        }
+      ],
+      "meta_update": "Ein erster gemeinsamer Vorschlag liegt vor.",
+      "constraint_checks": [],
+      "legal_admissibility": "admissible_within_reviewed_sources",
+      "review_complete": true,
+      "status": "superseded"
+    },
+    {
+      "proposal_id": "PROP-1",
+      "version": 2,
+      "round": 2,
+      "created_at": "2026-11-05T22:12:29+00:00",
+      "clauses": [
+        {
+          "clause_id": "KL-v2-1",
+          "text": "Die Partner stimmen die Versorgungsplanung regional mit bestehenden Instrumenten ab und entlasten das Personal organisatorisch.",
+          "provenance": [
+            "NEG-1-gesundheitsministerium-1"
+          ],
+          "premises": [
+            "P-2af16a1e81f4"
+          ],
+          "legal_status": "no_conflict_identified",
+          "law_amendment_detected": false
+        }
+      ],
+      "meta_update": "Ein erster gemeinsamer Vorschlag liegt vor.",
+      "constraint_checks": [],
+      "legal_admissibility": "admissible_within_reviewed_sources",
+      "review_complete": true,
+      "status": "frozen"
+    }
+  ],
+  "priority_history": [
+    {
+      "assessment_id": "AS-1-PR-aerztekammer-1-v1",
+      "actor_id": "aerztekammer",
+      "priority_id": "PR-aerztekammer-1",
+      "baseline_version": 1,
+      "round": 1,
+      "proposal_id": "PROP-1",
+      "proposal_version": 1,
+      "status": "met",
+      "previous_status": null,
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v1-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-1-PR-aerztekammer-2-v1",
+      "actor_id": "aerztekammer",
+      "priority_id": "PR-aerztekammer-2",
+      "baseline_version": 1,
+      "round": 1,
+      "proposal_id": "PROP-1",
+      "proposal_version": 1,
+      "status": "met",
+      "previous_status": null,
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v1-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-1-PR-gesundheitsministerium-1-v1",
+      "actor_id": "gesundheitsministerium",
+      "priority_id": "PR-gesundheitsministerium-1",
+      "baseline_version": 1,
+      "round": 1,
+      "proposal_id": "PROP-1",
+      "proposal_version": 1,
+      "status": "met",
+      "previous_status": null,
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v1-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-1-PR-gesundheitsministerium-2-v1",
+      "actor_id": "gesundheitsministerium",
+      "priority_id": "PR-gesundheitsministerium-2",
+      "baseline_version": 1,
+      "round": 1,
+      "proposal_id": "PROP-1",
+      "proposal_version": 1,
+      "status": "met",
+      "previous_status": null,
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v1-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-1-PR-sozialversicherung-1-v1",
+      "actor_id": "sozialversicherung",
+      "priority_id": "PR-sozialversicherung-1",
+      "baseline_version": 1,
+      "round": 1,
+      "proposal_id": "PROP-1",
+      "proposal_version": 1,
+      "status": "met",
+      "previous_status": null,
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v1-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-1-PR-sozialversicherung-2-v1",
+      "actor_id": "sozialversicherung",
+      "priority_id": "PR-sozialversicherung-2",
+      "baseline_version": 1,
+      "round": 1,
+      "proposal_id": "PROP-1",
+      "proposal_version": 1,
+      "status": "met",
+      "previous_status": null,
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v1-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-2-PR-aerztekammer-1-v2",
+      "actor_id": "aerztekammer",
+      "priority_id": "PR-aerztekammer-1",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v2-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-2-PR-aerztekammer-2-v2",
+      "actor_id": "aerztekammer",
+      "priority_id": "PR-aerztekammer-2",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v2-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-2-PR-gesundheitsministerium-1-v2",
+      "actor_id": "gesundheitsministerium",
+      "priority_id": "PR-gesundheitsministerium-1",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v2-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-2-PR-gesundheitsministerium-2-v2",
+      "actor_id": "gesundheitsministerium",
+      "priority_id": "PR-gesundheitsministerium-2",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v2-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-2-PR-sozialversicherung-1-v2",
+      "actor_id": "sozialversicherung",
+      "priority_id": "PR-sozialversicherung-1",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v2-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-2-PR-sozialversicherung-2-v2",
+      "actor_id": "sozialversicherung",
+      "priority_id": "PR-sozialversicherung-2",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [
+        "KL-v2-1"
+      ],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-final-PR-aerztekammer-1-v2",
+      "actor_id": "aerztekammer",
+      "priority_id": "PR-aerztekammer-1",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-final-PR-aerztekammer-2-v2",
+      "actor_id": "aerztekammer",
+      "priority_id": "PR-aerztekammer-2",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-final-PR-gesundheitsministerium-1-v2",
+      "actor_id": "gesundheitsministerium",
+      "priority_id": "PR-gesundheitsministerium-1",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-final-PR-gesundheitsministerium-2-v2",
+      "actor_id": "gesundheitsministerium",
+      "priority_id": "PR-gesundheitsministerium-2",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-final-PR-sozialversicherung-1-v2",
+      "actor_id": "sozialversicherung",
+      "priority_id": "PR-sozialversicherung-1",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [],
+      "reviewer_objections": []
+    },
+    {
+      "assessment_id": "AS-final-PR-sozialversicherung-2-v2",
+      "actor_id": "sozialversicherung",
+      "priority_id": "PR-sozialversicherung-2",
+      "baseline_version": 1,
+      "round": 2,
+      "proposal_id": "PROP-1",
+      "proposal_version": 2,
+      "status": "met",
+      "previous_status": "met",
+      "reason": "Die Klausel erfüllt dies.",
+      "references": [],
+      "reviewer_objections": []
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "D-1-aerztekammer-v1",
+      "actor_id": "aerztekammer",
+      "target_id": "PROP-1-v1",
+      "target_version": 1,
+      "round": 1,
+      "at": "2026-11-05T22:12:29+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    },
+    {
+      "decision_id": "D-1-gesundheitsministerium-v1",
+      "actor_id": "gesundheitsministerium",
+      "target_id": "PROP-1-v1",
+      "target_version": 1,
+      "round": 1,
+      "at": "2026-11-05T22:12:29+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    },
+    {
+      "decision_id": "D-1-sozialversicherung-v1",
+      "actor_id": "sozialversicherung",
+      "target_id": "PROP-1-v1",
+      "target_version": 1,
+      "round": 1,
+      "at": "2026-11-05T22:12:29+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    },
+    {
+      "decision_id": "D-2-aerztekammer-v2",
+      "actor_id": "aerztekammer",
+      "target_id": "PROP-1-v2",
+      "target_version": 2,
+      "round": 2,
+      "at": "2026-11-05T22:12:29+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    },
+    {
+      "decision_id": "D-2-gesundheitsministerium-v2",
+      "actor_id": "gesundheitsministerium",
+      "target_id": "PROP-1-v2",
+      "target_version": 2,
+      "round": 2,
+      "at": "2026-11-05T22:12:29+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    },
+    {
+      "decision_id": "D-2-sozialversicherung-v2",
+      "actor_id": "sozialversicherung",
+      "target_id": "PROP-1-v2",
+      "target_version": 2,
+      "round": 2,
+      "at": "2026-11-05T22:12:29+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    },
+    {
+      "decision_id": "D-final-aerztekammer-v2",
+      "actor_id": "aerztekammer",
+      "target_id": "PROP-1-v2",
+      "target_version": 2,
+      "round": 2,
+      "at": "2026-11-05T22:12:30+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    },
+    {
+      "decision_id": "D-final-gesundheitsministerium-v2",
+      "actor_id": "gesundheitsministerium",
+      "target_id": "PROP-1-v2",
+      "target_version": 2,
+      "round": 2,
+      "at": "2026-11-05T22:12:30+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    },
+    {
+      "decision_id": "D-final-sozialversicherung-v2",
+      "actor_id": "sozialversicherung",
+      "target_id": "PROP-1-v2",
+      "target_version": 2,
+      "round": 2,
+      "at": "2026-11-05T22:12:30+00:00",
+      "kind": "accept",
+      "conditions": [],
+      "reason": "Der Vorschlag ist tragfähig."
+    }
+  ],
+  "timeline": [
+    {
+      "event_id": "regelwerk",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "meta",
+      "round": 0,
+      "phase": "deliberation",
+      "type": "rulebook_released",
+      "visibility": "public",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "ARG-gesundheitsministerium-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 0,
+      "phase": "preparation",
+      "type": "argument_submitted",
+      "visibility": "private",
+      "refs": [
+        "ARG-gesundheitsministerium-v1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "ARG-sozialversicherung-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 0,
+      "phase": "preparation",
+      "type": "argument_submitted",
+      "visibility": "private",
+      "refs": [
+        "ARG-sozialversicherung-v1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "ARG-aerztekammer-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 0,
+      "phase": "preparation",
+      "type": "argument_submitted",
+      "visibility": "private",
+      "refs": [
+        "ARG-aerztekammer-v1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "barriere:vorbereitung",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 0,
+      "phase": "preparation",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-truthseeker-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-truthseeker-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-legaleye-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-legaleye-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-ethicmind-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-ethicmind-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-truthseeker-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-truthseeker-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-legaleye-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-legaleye-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-ethicmind-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-ethicmind-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-truthseeker-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-truthseeker-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-legaleye-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-legaleye-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-initial-0-v0-ethicmind-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-initial-0-v0-ethicmind-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "barriere:initial:0:0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 0,
+      "phase": "review",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "ARG-gesundheitsministerium-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 0,
+      "phase": "revision",
+      "type": "argument_revised",
+      "visibility": "private",
+      "refs": [
+        "ARG-gesundheitsministerium-v2"
+      ],
+      "causes": [
+        "ARG-gesundheitsministerium-v1"
+      ]
+    },
+    {
+      "event_id": "ARG-sozialversicherung-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 0,
+      "phase": "revision",
+      "type": "argument_revised",
+      "visibility": "private",
+      "refs": [
+        "ARG-sozialversicherung-v2"
+      ],
+      "causes": [
+        "ARG-sozialversicherung-v1"
+      ]
+    },
+    {
+      "event_id": "ARG-aerztekammer-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 0,
+      "phase": "revision",
+      "type": "argument_revised",
+      "visibility": "private",
+      "refs": [
+        "ARG-aerztekammer-v2"
+      ],
+      "causes": [
+        "ARG-aerztekammer-v1"
+      ]
+    },
+    {
+      "event_id": "barriere:revision",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 0,
+      "phase": "revision",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-truthseeker-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-truthseeker-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-legaleye-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-legaleye-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-ethicmind-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-ethicmind-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-truthseeker-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-truthseeker-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-legaleye-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-legaleye-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-ethicmind-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-ethicmind-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-truthseeker-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-truthseeker-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-legaleye-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-legaleye-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-second-0-v0-ethicmind-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 0,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-second-0-v0-ethicmind-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "barriere:second:0:0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 0,
+      "phase": "review",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "publikation",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 1,
+      "phase": "publication",
+      "type": "package_published",
+      "visibility": "public",
+      "refs": [
+        "PR-gesundheitsministerium-1",
+        "PR-gesundheitsministerium-2",
+        "PR-sozialversicherung-1",
+        "PR-sozialversicherung-2",
+        "PR-aerztekammer-1",
+        "PR-aerztekammer-2"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "NEG-1-gesundheitsministerium-1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 1,
+      "phase": "negotiation",
+      "type": "negotiation_item",
+      "visibility": "public",
+      "refs": [
+        "NEG-1-gesundheitsministerium-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "NEG-1-sozialversicherung-1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 1,
+      "phase": "negotiation",
+      "type": "negotiation_item",
+      "visibility": "public",
+      "refs": [
+        "NEG-1-sozialversicherung-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "NEG-1-aerztekammer-1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 1,
+      "phase": "negotiation",
+      "type": "negotiation_item",
+      "visibility": "public",
+      "refs": [
+        "NEG-1-aerztekammer-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "PROP-1-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "meta",
+      "round": 1,
+      "phase": "candidate",
+      "type": "proposal_created",
+      "visibility": "public",
+      "refs": [
+        "PROP-1-v1",
+        "KL-v1-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-candidate-1-v1-truthseeker-alle-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-candidate-1-v1-truthseeker-alle-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-candidate-1-v1-legaleye-alle-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-candidate-1-v1-legaleye-alle-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-candidate-1-v1-ethicmind-alle-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-candidate-1-v1-ethicmind-alle-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "barriere:candidate:1:1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 1,
+      "phase": "review",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "AS-1-PR-gesundheitsministerium-1-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 1,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-1-PR-gesundheitsministerium-1-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "AS-1-PR-gesundheitsministerium-2-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 1,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-1-PR-gesundheitsministerium-2-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "D-1-gesundheitsministerium-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 1,
+      "phase": "assessment",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-1-gesundheitsministerium-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "AS-1-PR-sozialversicherung-1-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 1,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-1-PR-sozialversicherung-1-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "AS-1-PR-sozialversicherung-2-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 1,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-1-PR-sozialversicherung-2-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "D-1-sozialversicherung-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 1,
+      "phase": "assessment",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-1-sozialversicherung-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "AS-1-PR-aerztekammer-1-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 1,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-1-PR-aerztekammer-1-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "AS-1-PR-aerztekammer-2-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 1,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-1-PR-aerztekammer-2-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "D-1-aerztekammer-v1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 1,
+      "phase": "assessment",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-1-aerztekammer-v1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "barriere:bewertung:1:1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 1,
+      "phase": "assessment",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-truthseeker-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-truthseeker-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-legaleye-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-legaleye-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-ethicmind-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-ethicmind-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-truthseeker-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-truthseeker-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-legaleye-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-legaleye-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-ethicmind-sozialversicherung-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-ethicmind-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-truthseeker-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-truthseeker-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-legaleye-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-legaleye-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-1-v1-ethicmind-aerztekammer-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 1,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-1-v1-ethicmind-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "barriere:assessment:1:1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 1,
+      "phase": "review",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "runde:1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 1,
+      "phase": "assessment",
+      "type": "round_closed",
+      "visibility": "public",
+      "refs": [
+        "PROP-1-v1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "NEG-2-gesundheitsministerium-1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 2,
+      "phase": "negotiation",
+      "type": "negotiation_item",
+      "visibility": "public",
+      "refs": [
+        "NEG-2-gesundheitsministerium-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "NEG-2-sozialversicherung-1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 2,
+      "phase": "negotiation",
+      "type": "negotiation_item",
+      "visibility": "public",
+      "refs": [
+        "NEG-2-sozialversicherung-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "NEG-2-aerztekammer-1",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 2,
+      "phase": "negotiation",
+      "type": "negotiation_item",
+      "visibility": "public",
+      "refs": [
+        "NEG-2-aerztekammer-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "PROP-1-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "meta",
+      "round": 2,
+      "phase": "candidate",
+      "type": "proposal_created",
+      "visibility": "public",
+      "refs": [
+        "PROP-1-v2",
+        "KL-v2-1"
+      ],
+      "causes": [
+        "PROP-1-v1"
+      ]
+    },
+    {
+      "event_id": "R-candidate-2-v2-truthseeker-alle-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-candidate-2-v2-truthseeker-alle-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-candidate-2-v2-legaleye-alle-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-candidate-2-v2-legaleye-alle-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-candidate-2-v2-ethicmind-alle-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "ethicmind",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-candidate-2-v2-ethicmind-alle-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "barriere:candidate:2:2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 2,
+      "phase": "review",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "AS-2-PR-gesundheitsministerium-1-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 2,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-2-PR-gesundheitsministerium-1-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "AS-2-PR-gesundheitsministerium-2-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 2,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-2-PR-gesundheitsministerium-2-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "D-2-gesundheitsministerium-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "gesundheitsministerium",
+      "round": 2,
+      "phase": "assessment",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-2-gesundheitsministerium-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "AS-2-PR-sozialversicherung-1-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 2,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-2-PR-sozialversicherung-1-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "AS-2-PR-sozialversicherung-2-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 2,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-2-PR-sozialversicherung-2-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "D-2-sozialversicherung-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "sozialversicherung",
+      "round": 2,
+      "phase": "assessment",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-2-sozialversicherung-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "AS-2-PR-aerztekammer-1-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 2,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-2-PR-aerztekammer-1-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "AS-2-PR-aerztekammer-2-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 2,
+      "phase": "assessment",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-2-PR-aerztekammer-2-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "D-2-aerztekammer-v2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "aerztekammer",
+      "round": 2,
+      "phase": "assessment",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-2-aerztekammer-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "barriere:bewertung:2:2",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "controller",
+      "round": 2,
+      "phase": "assessment",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-truthseeker-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "truthseeker",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-truthseeker-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-legaleye-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:29+00:00",
+      "role": "legaleye",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-legaleye-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-ethicmind-gesundheitsministerium-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "ethicmind",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-ethicmind-gesundheitsministerium-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-truthseeker-sozialversicherung-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "truthseeker",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-truthseeker-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-legaleye-sozialversicherung-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "legaleye",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-legaleye-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-ethicmind-sozialversicherung-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "ethicmind",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-ethicmind-sozialversicherung-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-truthseeker-aerztekammer-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "truthseeker",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-truthseeker-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-legaleye-aerztekammer-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "legaleye",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-legaleye-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-assessment-2-v2-ethicmind-aerztekammer-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "ethicmind",
+      "round": 2,
+      "phase": "review",
+      "type": "review_submitted",
+      "visibility": "private",
+      "refs": [
+        "F-assessment-2-v2-ethicmind-aerztekammer-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "barriere:assessment:2:2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "controller",
+      "round": 2,
+      "phase": "review",
+      "type": "barrier_reached",
+      "visibility": "internal",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "runde:2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "controller",
+      "round": 2,
+      "phase": "assessment",
+      "type": "round_closed",
+      "visibility": "public",
+      "refs": [
+        "PROP-1-v2"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "einfrieren",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "controller",
+      "round": 2,
+      "phase": "freeze",
+      "type": "candidate_frozen",
+      "visibility": "public",
+      "refs": [
+        "PROP-1-v2"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "AS-final-PR-gesundheitsministerium-1-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "gesundheitsministerium",
+      "round": 2,
+      "phase": "finalization",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-final-PR-gesundheitsministerium-1-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "AS-final-PR-gesundheitsministerium-2-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "gesundheitsministerium",
+      "round": 2,
+      "phase": "finalization",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-final-PR-gesundheitsministerium-2-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "D-final-gesundheitsministerium-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "gesundheitsministerium",
+      "round": 2,
+      "phase": "finalization",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-final-gesundheitsministerium-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "abschluss:gesundheitsministerium",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "gesundheitsministerium",
+      "round": 2,
+      "phase": "finalization",
+      "type": "final_summary",
+      "visibility": "public",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "AS-final-PR-sozialversicherung-1-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "sozialversicherung",
+      "round": 2,
+      "phase": "finalization",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-final-PR-sozialversicherung-1-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "AS-final-PR-sozialversicherung-2-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "sozialversicherung",
+      "round": 2,
+      "phase": "finalization",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-final-PR-sozialversicherung-2-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "D-final-sozialversicherung-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "sozialversicherung",
+      "round": 2,
+      "phase": "finalization",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-final-sozialversicherung-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "abschluss:sozialversicherung",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "sozialversicherung",
+      "round": 2,
+      "phase": "finalization",
+      "type": "final_summary",
+      "visibility": "public",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "AS-final-PR-aerztekammer-1-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "aerztekammer",
+      "round": 2,
+      "phase": "finalization",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-final-PR-aerztekammer-1-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "AS-final-PR-aerztekammer-2-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "aerztekammer",
+      "round": 2,
+      "phase": "finalization",
+      "type": "priority_assessed",
+      "visibility": "public",
+      "refs": [
+        "AS-final-PR-aerztekammer-2-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "D-final-aerztekammer-v2",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "aerztekammer",
+      "round": 2,
+      "phase": "finalization",
+      "type": "decision_recorded",
+      "visibility": "public",
+      "refs": [
+        "D-final-aerztekammer-v2"
+      ],
+      "causes": [
+        "PROP-1-v2"
+      ]
+    },
+    {
+      "event_id": "abschluss:aerztekammer",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "aerztekammer",
+      "round": 2,
+      "phase": "finalization",
+      "type": "final_summary",
+      "visibility": "public",
+      "refs": [],
+      "causes": []
+    },
+    {
+      "event_id": "R-final-2-v2-truthseeker-alle-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "truthseeker",
+      "round": 2,
+      "phase": "finalization",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-final-2-v2-truthseeker-alle-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-final-2-v2-legaleye-alle-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "legaleye",
+      "round": 2,
+      "phase": "finalization",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-final-2-v2-legaleye-alle-0-1"
+      ],
+      "causes": []
+    },
+    {
+      "event_id": "R-final-2-v2-ethicmind-alle-0",
+      "at": "2026-11-05T22:12:30+00:00",
+      "role": "ethicmind",
+      "round": 2,
+      "phase": "finalization",
+      "type": "review_submitted",
+      "visibility": "public",
+      "refs": [
+        "F-final-2-v2-ethicmind-alle-0-1"
+      ],
+      "causes": []
+    }
+  ],
+  "sources": [
+    {
+      "passage_id": "P-2af16a1e81f4",
+      "doc_id": "d-l2",
+      "doc_type": "LegalText",
+      "title": "TestG § 2",
+      "publisher": null,
+      "publication_date": null,
+      "valid_from": "2020-01-01",
+      "valid_until": null,
+      "source_url": null,
+      "content_hash": "hash-l2",
+      "source_path": null,
+      "locator": "TestG § 2",
+      "machine_locator": "sozdok/rvo/nutzdaten/abschnitt[1]/absatz[1]",
+      "date_unknown": false
+    },
+    {
+      "passage_id": "P-51c527e0ced9",
+      "doc_id": "d-l1",
+      "doc_type": "LegalText",
+      "title": "TestG § 1",
+      "publisher": null,
+      "publication_date": null,
+      "valid_from": "2020-01-01",
+      "valid_until": null,
+      "source_url": null,
+      "content_hash": "hash-l1",
+      "source_path": null,
+      "locator": "TestG § 1, Geltungsbereich",
+      "machine_locator": "sozdok/rvo/nutzdaten/abschnitt[1]/ueberschrift[1]",
+      "date_unknown": false
+    },
+    {
+      "passage_id": "P-72487afcbf32",
+      "doc_id": "d-e1",
+      "doc_type": "EthicalText",
+      "title": "Fixture Patientencharta",
+      "publisher": null,
+      "publication_date": null,
+      "valid_from": null,
+      "valid_until": null,
+      "source_url": null,
+      "content_hash": "hash-e1",
+      "source_path": null,
+      "locator": "Absatz 1",
+      "machine_locator": "text:absatz:1",
+      "date_unknown": true
+    },
+    {
+      "passage_id": "P-7b5f41639cd7",
+      "doc_id": "d-a1",
+      "doc_type": "Article",
+      "title": "Fixture Artikel Wartezeiten",
+      "publisher": "Testzeitung",
+      "publication_date": "2025-03-01",
+      "valid_from": null,
+      "valid_until": null,
+      "source_url": null,
+      "content_hash": "hash-a1",
+      "source_path": null,
+      "locator": "Absatz 1",
+      "machine_locator": "text:absatz:1",
+      "date_unknown": false
+    },
+    {
+      "passage_id": "P-81dc535ebcf9",
+      "doc_id": "d-gm",
+      "doc_type": "ActorData",
+      "title": "Fixture Strategie",
+      "publisher": null,
+      "publication_date": null,
+      "valid_from": null,
+      "valid_until": null,
+      "source_url": null,
+      "content_hash": "hash-gm",
+      "source_path": null,
+      "locator": "Absatz 1",
+      "machine_locator": "text:absatz:1",
+      "date_unknown": true
+    },
+    {
+      "passage_id": "P-a90e8369291b",
+      "doc_id": "d-sv",
+      "doc_type": "ActorData",
+      "title": "Fixture Jahresbericht",
+      "publisher": null,
+      "publication_date": null,
+      "valid_from": null,
+      "valid_until": null,
+      "source_url": null,
+      "content_hash": "hash-sv",
+      "source_path": null,
+      "locator": "Absatz 1",
+      "machine_locator": "text:absatz:1",
+      "date_unknown": true
+    },
+    {
+      "passage_id": "P-d1cbf90b690b",
+      "doc_id": "d-ak",
+      "doc_type": "ActorData",
+      "title": "Fixture Resolution",
+      "publisher": null,
+      "publication_date": null,
+      "valid_from": null,
+      "valid_until": null,
+      "source_url": null,
+      "content_hash": "hash-ak",
+      "source_path": null,
+      "locator": "Absatz 1",
+      "machine_locator": "text:absatz:1",
+      "date_unknown": true
+    },
+    {
+      "passage_id": "P-f42d7164816f",
+      "doc_id": "d-a2",
+      "doc_type": "Article",
+      "title": "Fixture Artikel Finanzierung",
+      "publisher": "Testblatt",
+      "publication_date": "2025-04-01",
+      "valid_from": null,
+      "valid_until": null,
+      "source_url": null,
+      "content_hash": "hash-a2",
+      "source_path": null,
+      "locator": "Absatz 1",
+      "machine_locator": "text:absatz:1",
+      "date_unknown": false
+    }
+  ],
+  "report": {
+    "Frage": {
+      "frage": "Entwickeln Sie einen gemeinsamen Vorschlag zur Verbesserung der ambulanten Versorgung in Österreich innerhalb des geltenden Rechtsrahmens. Berücksichtigen Sie den Zugang zur Versorgung, personelle Auswirkungen und Finanzierung. Kennzeichnen Sie Annahmen, rechtliche Unsicherheiten und offene Datenfragen ausdrücklich.",
+      "stichtag": "2026-11-05",
+      "geltungsbereich": "Alle Lösungen müssen innerhalb des zum Stichtag geltenden Rechtsrahmens umgesetzt werden können. Änderungen von Gesetzen oder verbindlichen Verordnungen sind als Lösung ausgeschlossen.",
+      "annahmen": [],
+      "einordnung": "Die Frage wurde innerhalb des geltenden Rechts behandelt."
+    },
+    "Agenten": [
+      {
+        "actor_id": "gesundheitsministerium",
+        "name": "Gesundheitsministerium",
+        "standpunkt": "Die Institution stellt ihren Standpunkt zum eingefrorenen Vorschlag abschließend dar.",
+        "prioritaeten": [
+          "PR-gesundheitsministerium-1: Besseren Zugang zur ambulanten Versorgung sichern.",
+          "PR-gesundheitsministerium-2: Personelle Belastung im Versorgungsalltag begrenzen."
+        ],
+        "entscheidung": "accept",
+        "zufriedenheit": {
+          "actor_id": "gesundheitsministerium",
+          "met_count": 2,
+          "priority_count": 2,
+          "percent": 100.0,
+          "threshold_reached": true,
+          "disputed": false
+        }
+      },
+      {
+        "actor_id": "sozialversicherung",
+        "name": "Sozialversicherung",
+        "standpunkt": "Die Institution stellt ihren Standpunkt zum eingefrorenen Vorschlag abschließend dar.",
+        "prioritaeten": [
+          "PR-sozialversicherung-1: Besseren Zugang zur ambulanten Versorgung sichern.",
+          "PR-sozialversicherung-2: Personelle Belastung im Versorgungsalltag begrenzen."
+        ],
+        "entscheidung": "accept",
+        "zufriedenheit": {
+          "actor_id": "sozialversicherung",
+          "met_count": 2,
+          "priority_count": 2,
+          "percent": 100.0,
+          "threshold_reached": true,
+          "disputed": false
+        }
+      },
+      {
+        "actor_id": "aerztekammer",
+        "name": "Ärztekammer",
+        "standpunkt": "Die Institution stellt ihren Standpunkt zum eingefrorenen Vorschlag abschließend dar.",
+        "prioritaeten": [
+          "PR-aerztekammer-1: Besseren Zugang zur ambulanten Versorgung sichern.",
+          "PR-aerztekammer-2: Personelle Belastung im Versorgungsalltag begrenzen."
+        ],
+        "entscheidung": "accept",
+        "zufriedenheit": {
+          "actor_id": "aerztekammer",
+          "met_count": 2,
+          "priority_count": 2,
+          "percent": 100.0,
+          "threshold_reached": true,
+          "disputed": false
+        }
+      }
+    ],
+    "Verlauf": {
+      "zusammenfassung": "Die Akteure näherten sich über mehrere Runden an.",
+      "runden": 2,
+      "vorschlagsversionen": [
+        "PROP-1-v1",
+        "PROP-1-v2"
+      ],
+      "ereignis_refs": [
+        "D-1-aerztekammer-v1",
+        "D-1-gesundheitsministerium-v1",
+        "D-1-sozialversicherung-v1",
+        "D-2-aerztekammer-v2",
+        "D-2-gesundheitsministerium-v2",
+        "D-2-sozialversicherung-v2",
+        "D-final-aerztekammer-v2",
+        "D-final-gesundheitsministerium-v2",
+        "D-final-sozialversicherung-v2"
+      ]
+    },
+    "Konflikte": [
+      {
+        "thema": "Finanzierung",
+        "beschreibung": "Die Mittelverteilung blieb strittig.",
+        "beteiligte": [],
+        "refs": [
+          "ARG-aerztekammer-v1"
+        ]
+      }
+    ],
+    "Kompromisse": [
+      {
+        "art": "compromise",
+        "beschreibung": "Regionale Abstimmung mit bestehenden Mitteln.",
+        "refs": [
+          "ARG-aerztekammer-v1"
+        ]
+      }
+    ],
+    "Konsens": {
+      "einschaetzung": "Die Akteure stimmen dem Vorschlag im simulierten Rahmen zu.",
+      "schwelle_erreicht_von": [
+        "Gesundheitsministerium",
+        "Sozialversicherung",
+        "Ärztekammer"
+      ],
+      "akzeptiert_von": [
+        "Gesundheitsministerium",
+        "Sozialversicherung",
+        "Ärztekammer"
+      ],
+      "bedingt_akzeptiert_von": [],
+      "abgelehnt_von": [],
+      "rechtliche_zulaessigkeit": "admissible_within_reviewed_sources",
+      "auflagen": []
+    },
+    "Offene_Punkte": [
+      {
+        "art": "data",
+        "punkt": "Belastbare Kostendaten fehlen.",
+        "refs": [
+          "ARG-aerztekammer-v1"
+        ]
+      }
+    ],
+    "Auswirkungen": [
+      {
+        "basis": "assumption",
+        "beschreibung": "Bessere Abstimmung könnte Wartezeiten senken.",
+        "refs": [
+          "ARG-aerztekammer-v1"
+        ]
+      }
+    ],
+    "fehlende_abschnitte": []
+  },
+  "debate_evolution": {
+    "narrative": "Die Akteure überarbeiteten ihre Positionen nach den Prüfungen ARG-aerztekammer-v1 ARG-aerztekammer-v1-B1 und nahmen den Vorschlag an.",
+    "refs": [
+      "ARG-aerztekammer-v1",
+      "ARG-aerztekammer-v1-B1"
+    ],
+    "word_count": 15
+  },
+  "clarification_questions": [],
+  "warnings": [
+    {
+      "code": "hinweis",
+      "message": "Quelle P-d1cbf90b690b ist undatiert; ihr Verhältnis zum Stichtag ist unbekannt."
+    },
+    {
+      "code": "hinweis",
+      "message": "Suchmodus fixture: lexikalische Suche findet nur wörtliche Treffer. Fehlende Treffer beweisen nicht, dass keine Belege existieren."
+    },
+    {
+      "code": "hinweis",
+      "message": "Quelle P-72487afcbf32 ist undatiert; ihr Verhältnis zum Stichtag ist unbekannt."
+    },
+    {
+      "code": "hinweis",
+      "message": "Verweis § 9 FehltG konnte zum Stichtag nicht aufgelöst werden; die Anwendbarkeit bleibt unsicher."
+    },
+    {
+      "code": "hinweis",
+      "message": "Quelle P-81dc535ebcf9 ist undatiert; ihr Verhältnis zum Stichtag ist unbekannt."
+    },
+    {
+      "code": "hinweis",
+      "message": "Quelle P-a90e8369291b ist undatiert; ihr Verhältnis zum Stichtag ist unbekannt."
+    },
+    {
+      "code": "hinweis",
+      "message": "LLM_RATE_LIMIT_RPM ist nicht gesetzt: dieses Limit ist unbekannt, nicht unbegrenzt."
+    },
+    {
+      "code": "hinweis",
+      "message": "LLM_RATE_LIMIT_TPM ist nicht gesetzt: dieses Limit ist unbekannt, nicht unbegrenzt."
+    }
+  ],
+  "errors": []
+}
