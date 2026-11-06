@@ -14,15 +14,15 @@
     <section class="intro">
       <img class="hero-logo" src="logo.svg" alt="" width="96" height="96">
       <h1>deb<span class="ai">AI</span>te</h1>
-      <p>Frage stellen und die debAIte Runde für Runde mitlesen. Du moderierst, die Institutionen diskutieren in der Gruppe, und im Thread prüft der Moderatorenrat ihre Beiträge.</p>
-      <h2 id="running-title" class="saved-title" hidden>Laufende debAItes</h2>
+      <p>Frage stellen und die Debatte Runde für Runde mitlesen. Du moderierst, die Institutionen diskutieren in der Gruppe, und im Thread prüft der Moderatorenrat ihre Beiträge.</p>
+      <h2 id="running-title" class="saved-title" hidden>Laufende Debatten</h2>
       <ul id="running"></ul>
-      <h2 id="saved-title" class="saved-title" hidden>Gespeicherte debAItes</h2>
+      <h2 id="saved-title" class="saved-title" hidden>Gespeicherte Debatten</h2>
       <ul id="saved"></ul>
     </section>
     <section id="run-panel" class="composer-card" aria-live="polite">
       <div class="run-head">
-        <h2>debAIte läuft</h2>
+        <h2>Debatte läuft</h2>
         <div class="run-actions">
           <button id="stop-run" type="button" class="pill">Stoppen und auswerten</button>
           <button id="cancel-run" type="button" class="pill">Abbrechen</button>
@@ -62,7 +62,7 @@
         <button id="open-pasted" type="button" class="pill small">Als Ergebnis öffnen ›</button>
       </div>
       <div class="actions">
-        <button id="start" type="button" class="pill primary" disabled>debAIte starten</button>
+        <button id="start" type="button" class="pill primary" disabled>Debatte starten</button>
         <label class="pill file">Ergebnis-Datei öffnen ›
           <input id="file" type="file" accept=".json,application/json">
         </label>
@@ -114,7 +114,7 @@
           <header class="chat-head"><div id="chat-title" class="chat-title"></div></header>
           <div id="log" class="log" tabindex="0" aria-live="polite"></div>
           <form id="composer" class="composer" hidden>
-            <input id="ask-input" type="text" maxlength="1500" autocomplete="off" placeholder="Frage zur debAIte stellen" aria-label="Frage an den Meta-Moderator">
+            <input id="ask-input" type="text" maxlength="1500" autocomplete="off" placeholder="Frage zur Debatte stellen" aria-label="Frage an den Meta-Moderator">
             <button id="ask-send" type="submit" class="pill primary">Senden</button>
           </form>
           <footer class="stepper">

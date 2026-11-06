@@ -68,7 +68,7 @@
       ...texts.map((text, i) => ({ id: `m-${i}`, step: 0, side: "in", sender: "System", role: "program", text, replies: [] }))];
     return { header: { question: null, reference_date: null, status: RESULT[result.status] || result.status, stop: null },
       steps: [{ id: "meldung", label: "Meldung", round: null }],
-      chats: [{ id: "gruppe", name: "debAIte", kind: "group", subtitle: "Keine debAIte gestartet", messages }] };
+      chats: [{ id: "gruppe", name: "debAIte", kind: "group", subtitle: "Keine Debatte gestartet", messages }] };
   }
 
   function buildChats(result) {
@@ -317,7 +317,7 @@
     section("Offene Punkte", list(report.Offene_Punkte), (p) => ({ text: p.punkt }));
     section("Auswirkungen", list(report.Auswirkungen), (i) => ({ text: i.beschreibung }));
     const narrative = (result.debate_evolution || {}).narrative;
-    if (narrative) group.push(message(last, "out", moderator({ tag: "So entwickelte sich die debAIte", text: narrative.replace(/\*\*/g, "") })));
+    if (narrative) group.push(message(last, "out", moderator({ tag: "So entwickelte sich die Debatte", text: narrative.replace(/\*\*/g, "") })));
     if (!live) for (const missing of list(report.fehlende_abschnitte)) group.push(message(last, "system", { text: `Fehlt: ${missing}` }));
     };
     if (finishing) finalPhase();

@@ -271,12 +271,14 @@ def test_actor_config_validation(tmp_path):
 
 def test_shipped_configuration_is_valid():
     actors = load_actors()
-    assert [a.actor_id for a in actors] == ["gesundheitsministerium", "sozialversicherung",
-                                            "aerztekammer"]
+    assert [a.actor_id for a in actors] == ["gesundheitsministerium", "sozialversicherung", "aerztekammer",
+                                            "krankenhaeuser", "patientenvertretung"]
     assert next(a for a in actors if a.actor_id == "aerztekammer").name == "Ärztekammer"
     assert akteure_mapping(actors) == {"Gesundheitsministerium": "gesundheitsministerium",
                                        "Dachverband SV": "sozialversicherung",
-                                       "Ärztekammer": "aerztekammer"}
+                                       "Ärztekammer": "aerztekammer",
+                                       "Krankenhäuser": "krankenhaeuser",
+                                       "Patientenvertretung": "patientenvertretung"}
     options = load_import_options()
     assert options.exclusions[0].pattern == "*_Pressespiegel_gesamt.md"
-    assert options.akteure_list_only == ["Krankenhäuser", "Patientenvertretung", "Bundesländer", "Finanzministerium", "WK & AK", "Gesetzgeber", "Industrie", "Landeswirtschaftskammer"]
+    assert options.akteure_list_only == ["Bundesländer", "Finanzministerium", "WK & AK", "Gesetzgeber", "Industrie", "Landeswirtschaftskammer"]

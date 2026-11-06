@@ -3,7 +3,9 @@
   "actors": [
     "Gesundheitsministerium",
     "Sozialversicherung",
-    "Ärztekammer"
+    "Ärztekammer",
+    "Krankenhäuser",
+    "Patientenvertretung"
   ],
   "question": "Prüfen und verhandeln Sie, ob und wie die Gesundheitsausgaben in Österreich bis 2035 um 10 % gesenkt werden könnten, ohne die Versorgungsqualität wesentlich zu verschlechtern. Die Reduktion ist ein zu prüfendes Szenarioziel und keine vorausgesetzte Einsparungsmöglichkeit. Vereinbaren Sie zunächst anhand verfügbarer Quellen ein gemeinsames Basisjahr, den Umfang der betrachteten Ausgaben, eine reale oder nominale Betrachtung sowie messbare Kriterien für Qualität und Versorgungszugang. Vergleichen Sie Maßnahmen gegen vermeidbare Doppeluntersuchungen, Verbesserungen der Versorgungskoordination und organisatorische Effizienzmaßnahmen. Berücksichtigen Sie Investitionskosten, laufende Kosten, Personalfolgen und mögliche Kostenverlagerungen auf Patientinnen und Patienten oder andere Institutionen. Zählen Sie dieselbe Einsparung nicht mehrfach. Entwickeln Sie ein begründetes Maßnahmenpaket mit Zuständigkeiten und Umsetzungsschritten innerhalb des zum Referenzdatum geltenden Rechtsrahmens; schlagen Sie keine Gesetzesänderungen vor. Belegen Sie Argumente und Berechnungen mit Quellen. Kennzeichnen Sie Annahmen, rechtliche Unsicherheiten und Datenlücken. Falls das Ziel nicht tragfähig erreichbar ist, erläutern Sie die Grenzen und verhandeln Sie eine begründete Alternative.",
   "reference_date": "2026-11-05",

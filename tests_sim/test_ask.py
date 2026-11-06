@@ -94,7 +94,7 @@ def test_blocked_while_a_debate_holds_the_lock(tmp_path):
     a, adapter = asker(tmp_path)
     lock = ProcessLock(tmp_path).acquire()
     try:
-        with pytest.raises(AskError, match="läuft eine debAIte"):
+        with pytest.raises(AskError, match="läuft eine Debatte"):
             a.answer("d", "Frage?", RESULT)
     finally:
         lock.release()

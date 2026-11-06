@@ -142,10 +142,10 @@ class Asker:
         if SECRET_PATTERNS.search(question):
             raise AskError(400, "Die Frage darf keine Zugangsdaten enthalten.")
         if result_json is None:
-            raise AskError(404, "Nachfragen gehen nur bei gespeicherten debAItes.")
+            raise AskError(404, "Nachfragen gehen nur bei gespeicherten Debatten.")
         result = json.loads(result_json)
         if not result.get("task"):
-            raise AskError(409, "Zu dieser Anfrage gibt es keine debAIte.")
+            raise AskError(409, "Zu dieser Anfrage gibt es keine Debatte.")
         try:
             settings = load_settings(self.env, require_azure=self.llm == "azure" and self.adapter is None)
         except ConfigurationError as exc:
@@ -153,7 +153,7 @@ class Asker:
         try:
             lock = ProcessLock(self.directory).acquire()
         except ConfigurationError:
-            raise AskError(409, "Gerade läuft eine debAIte. Nachfragen gehen, sobald sie fertig ist.") from None
+            raise AskError(409, "Gerade läuft eine Debatte. Nachfragen gehen, sobald sie fertig ist.") from None
         try:
             record = debate_record(result, min(settings.input_budget // 2, RECORD_TOKENS))
             turns = self.history(debate_id)[-HISTORY_TURNS * 2:]

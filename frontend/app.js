@@ -6,7 +6,7 @@ const TYPING_MS = 900;
 const OPERATORS = ["<", "<=", "=", ">=", ">"];
 const SAMPLE = {
   schema_version: "1.0",
-  actors: ["Gesundheitsministerium", "Sozialversicherung", "Ärztekammer"],
+  actors: ["Gesundheitsministerium", "Sozialversicherung", "Ärztekammer", "Krankenhäuser", "Patientenvertretung"],
   question: "Entwickeln Sie einen gemeinsamen Vorschlag zur Verbesserung der ambulanten Versorgung in Österreich innerhalb des geltenden Rechtsrahmens. Berücksichtigen Sie den Zugang zur Versorgung, personelle Auswirkungen und Finanzierung. Kennzeichnen Sie Annahmen, rechtliche Unsicherheiten und offene Datenfragen ausdrücklich.",
   reference_date: "2026-11-05", scenario_assumptions: [], hard_constraints: [],
 };
@@ -312,9 +312,9 @@ function seekThread(pos) {
 
 function metaNodes() {
   const nodes = [h("div", { class: "system" }, text("span", live.id
-    ? "Nachfragen gehen, sobald die debAIte fertig ist."
-    : view.stored ? "Der Meta-Moderator antwortet nur aus dem Protokoll dieser debAIte. Die debAIte selbst ändert sich dadurch nicht."
-      : "Nachfragen gehen nur bei gespeicherten debAItes, nicht bei einer geöffneten Datei."))];
+    ? "Nachfragen gehen, sobald die Debatte fertig ist."
+    : view.stored ? "Der Meta-Moderator antwortet nur aus dem Protokoll dieser Debatte. Die Debatte selbst ändert sich dadurch nicht."
+      : "Nachfragen gehen nur bei gespeicherten Debatten, nicht bei einer geöffneten Datei."))];
   nodes.push(...view.turns.map(metaCard));
   if (view.asking) nodes.push(h("div", { class: "typing" }, text("span", "Meta-Moderator schreibt …")));
   return nodes;
@@ -412,6 +412,8 @@ function renderLiveBar() {
   $("live-deadline").textContent = left === null ? "" : `${timing.deliberation_ended_at ? "Abschluss" : "Beratung"} endet spätestens in ${duration(left)}`;
   $("live-stop").hidden = !status.own;
   $("live-cancel").hidden = !status.own;
+  $("live-stop").disabled = Boolean(status.stopping);
+  $("live-stop").textContent = status.stopping ? "Wird ausgewertet" : "Stoppen und auswerten";
 }
 
 function stopWatching() {
@@ -566,7 +568,7 @@ async function openSource(id) {
   if (external) $("source-link").href = source.source_url;
   $("source").showModal();
   if (!view.stored) {
-    $("source-body").replaceChildren(text("p", "Der Text ist nur bei gespeicherten debAItes verfügbar, nicht bei einer geöffneten Datei."));
+    $("source-body").replaceChildren(text("p", "Der Text ist nur bei gespeicherten Debatten verfügbar, nicht bei einer geöffneten Datei."));
     return;
   }
   $("source-body").replaceChildren(text("p", "Text wird geladen …", "item-note"));
@@ -577,7 +579,7 @@ async function openSource(id) {
     if (!response.ok) { $("source-body").replaceChildren(text("p", answer.message)); return; }
     reader.passage = answer;
     $("source-body").replaceChildren(...passageNodes(answer));
-    $("source-note").textContent = "Das markierte Stück ist genau der Text, den das System in dieser debAIte gelesen hat.";
+    $("source-note").textContent = "Das markierte Stück ist genau der Text, den das System in dieser Debatte gelesen hat.";
     $("source-full").hidden = false;
     $("source-body").scrollTop = $("source-body").querySelector("mark").offsetTop - 60;
   } catch {
@@ -602,7 +604,7 @@ async function openWholeDocument() {
     $("source-body").replaceChildren(found
       ? h("div", { class: "source-document" }, answer.text.slice(0, found.start), text("mark", answer.text.slice(found.start, found.end)), answer.text.slice(found.end))
       : h("div", { class: "source-document" }, answer.text));
-    $("source-note").textContent = [answer.unchanged ? "Stand der debAIte." : "Achtung: Das Dokument wurde seit dieser debAIte geändert.",
+    $("source-note").textContent = [answer.unchanged ? "Stand der Debatte." : "Achtung: Das Dokument wurde seit dieser Debatte geändert.",
       found ? "Die zitierte Stelle ist markiert." : "Die zitierte Stelle ließ sich hier nicht wortgleich finden."].join(" ");
     const mark = $("source-body").querySelector("mark");
     $("source-body").scrollTop = mark ? mark.offsetTop - 60 : 0;
@@ -841,12 +843,18 @@ const run = { opened: null };
 async function stopRun() {
   if (!confirm("Beratung jetzt beenden und auswerten? Der letzte vollständige Vorschlag wird eingefroren, das dauert noch einige Minuten.")) return;
   const response = await fetch("api/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
-  if (response.ok) $("stop-run").disabled = true;
-  else notice((await response.json()).message);
+  if (response.ok) {
+    $("stop-run").disabled = true;
+    if (live.status) { live.status.stopping = true; renderLiveBar(); }
+  } else {
+    const message = (await response.json()).message;
+    notice(message);
+    if (live.id) $("live-next").textContent = message;
+  }
 }
 
 async function cancelRun() {
-  if (!confirm("debAIte wirklich abbrechen? Es gibt dann kein Endergebnis.")) return;
+  if (!confirm("Debatte wirklich abbrechen? Es gibt dann kein Endergebnis.")) return;
   const response = await fetch("api/cancel", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
   if (!response.ok) notice((await response.json()).message);
 }
@@ -863,9 +871,10 @@ async function pollRun() {
     setTimeout(pollRun, 3000);
     return;
   }
-  showRun(false, status.cancelled ? "Die debAIte wurde abgebrochen." : "");
+  showRun(false, status.cancelled ? "Die Debatte wurde abgebrochen."
+    : status.failed ? "Die Debatte endete ohne Ergebnis. Die Fehlermeldung steht in state/run.log." : "");
   await refreshResults();
-  if (status.cancelled && live.id) { stopWatching(); document.body.dataset.view = "input"; }
+  if ((status.cancelled || status.failed) && live.id) { stopWatching(); document.body.dataset.view = "input"; }
   if (status.result && !live.id && view.result?.debate_id !== status.result.debate_id) openResult(status.result, true);
 }
 
@@ -881,7 +890,7 @@ async function startRun() {
     const missing = [!$("f-question").value.trim() && "die Frage", !JSON.parse(body).actors.length && "mindestens eine Institution"].filter(Boolean);
     if (missing.length) { notice(`Bitte ergänze ${missing.join(" und ")}.`); return; }
   }
-  if (!confirm("Eine debAIte verbraucht Azure-Kontingent und dauert bis zu 30 Minuten. Starten?")) return;
+  if (!confirm("Eine Debatte verbraucht Azure-Kontingent und dauert bis zu 30 Minuten. Starten?")) return;
   const response = await fetch("api/run", { method: "POST", headers: { "Content-Type": "application/json" }, body });
   const answer = await response.json();
   if (answer.result) { openResult(answer.result, false); return; }

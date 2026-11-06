@@ -148,14 +148,20 @@ def test_lists_and_opens_finished_results(server):
 def test_form_gets_the_configured_institutions(server):
     port, _ = server
     names = json.loads(call(port, "GET", "/api/actors")[1])
-    assert names == ["Gesundheitsministerium", "Sozialversicherung", "Ärztekammer"]
+    assert names == ["Gesundheitsministerium", "Sozialversicherung", "Ärztekammer", "Krankenhäuser", "Patientenvertretung"]
 
 
-def test_interface_says_debaite_instead_of_debatte():
-    for name in ("index.html", "app.js", "chats.js"):
+def test_debaite_is_only_the_product_name():
+    """The word Debatte stays a normal noun; debAIte names the product and nothing else."""
+    allowed = {"index.html": ["<title>debAIte</title>"], "app.js": [], "chats.js": ['name: "debAIte"', 'name: "debAIte"']}
+    for name, brand in allowed.items():
         source = (FRONTEND / name).read_text(encoding="utf-8")
-        shown = re.findall(r'"[^"\n]*Debatte[^"\n]*"|>[^<\n]*Debatte[^<\n]*<', source)
-        assert shown == [], (name, shown[:4])
+        assert re.findall(r".{0,7}debAIte.{0,8}", source) != [] or not brand
+        assert source.count("debAIte") == len(brand), name
+        for mark in brand:
+            assert mark in source
+    html = (FRONTEND / "index.html").read_text(encoding="utf-8")
+    assert 'deb<span class="ai">AI</span>te' in html          # the wordmark in the side menu and on the start page
 
 
 def test_foreign_host_is_rejected(server):
@@ -257,7 +263,7 @@ def test_stop_too_early_and_without_a_debate(server):
     port, runner = server
     headers = {"Content-Type": "application/json"}
     status, data, _ = call(port, "POST", "/api/stop", body="{}", headers=headers)
-    assert status == 409 and "keine debAIte" in json.loads(data)["message"]
+    assert status == 409 and "keine Debatte" in json.loads(data)["message"]
 
     class Busy:
         def poll(self):
@@ -272,7 +278,7 @@ def test_stop_too_early_and_without_a_debate(server):
 def test_cancel_without_a_running_debate(server):
     port, _ = server
     status, data, _ = call(port, "POST", "/api/cancel", body="{}", headers={"Content-Type": "application/json"})
-    assert status == 409 and "keine debAIte" in json.loads(data)["message"]
+    assert status == 409 and "keine Debatte" in json.loads(data)["message"]
 
 
 def test_cancel_needs_json_and_a_local_host(server):

@@ -193,3 +193,49 @@ def test_no_countdown_before_the_first_round_closed(server):
     _, root, _ = server
     progress = Store(root).progress_of(root, DEBATE)
     assert progress["round_started_at"] is None and progress["average_round_seconds"] is None
+
+
+class EndedProcess:
+    """A child that is gone."""
+
+    pid = 1
+
+    def poll(self):
+        return 1
+
+    def wait(self, timeout=None):
+        return 1
+
+
+def test_a_run_that_ends_without_a_result_is_reported_and_cleaned_up(tmp_path):
+    stored(tmp_path, DEBATE, 1000.0)
+    write_live(tmp_path, DEBATE, {"live": True})
+    Path(tmp_path, f"stop-{DEBATE}").write_text("stop", encoding="utf-8")
+    runner = Runner(tmp_path, [])
+    runner.process, runner.started = EndedProcess(), 1000.0
+    runner.output = tmp_path / "fehlt.json"
+    status = runner.status(Store(tmp_path))
+    assert status == {"running": False, "result": None, "cancelled": False, "failed": True}
+    assert not list(tmp_path.glob("live-*")) and not list(tmp_path.glob("stop-*"))
+
+
+def test_cancelling_removes_the_working_files(tmp_path, monkeypatch):
+    stored(tmp_path, DEBATE, 1000.0)
+    write_live(tmp_path, DEBATE, {"live": True})
+    Path(tmp_path, f"stop-{DEBATE}").write_text("stop", encoding="utf-8")
+
+    class Running(EndedProcess):
+        def poll(self):
+            return None
+
+    monkeypatch.setattr("healthsim.webapp.kill_tree", lambda process: None)
+    runner = Runner(tmp_path, [])
+    runner.process, runner.started = Running(), 1000.0
+    assert runner.cancel() is True
+    assert not list(tmp_path.glob("live-*")) and not list(tmp_path.glob("stop-*"))
+
+
+def test_stop_is_shown_while_the_evaluation_runs(server):
+    port, root, _ = server
+    write_live(root, DEBATE, {"debate_id": DEBATE, "live": True})
+    assert get(port, f"/api/live/{DEBATE}")[1]["stopping"] is False

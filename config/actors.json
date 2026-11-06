@@ -4,5 +4,9 @@
   {"id": "sozialversicherung", "name": "Sozialversicherung", "folder": "Sozialversicherung",
    "akteure_labels": ["Dachverband SV"]},
   {"id": "aerztekammer", "name": "Ärztekammer", "folder": "Aerztekammer",
-   "akteure_labels": ["Ärztekammer"]}
+   "akteure_labels": ["Ärztekammer"]},
+  {"id": "krankenhaeuser", "name": "Krankenhäuser", "folder": "Krankenhaeuser",
+   "akteure_labels": ["Krankenhäuser"]},
+  {"id": "patientenvertretung", "name": "Patientenvertretung", "folder": "Patientenvertretung",
+   "akteure_labels": ["Patientenvertretung"]}
 ]

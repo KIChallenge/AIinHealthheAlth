@@ -106,6 +106,12 @@ The product name is debAIte; the Python package stays `healthsim`. A local page 
   works without Neo4j and is not affected by later imports. `Ganzes Dokument laden` reads the current
   document from Neo4j, marks the passage and warns if the document changed since the debate. Only
   passages of that debate can be opened. For a result opened from a file only the details are shown.
+- **Live:** a debate started on the page opens by itself and fills up while it runs. The process
+  writes a partial result after every finished step, built by the same code as the final result, and
+  the page loads it every 3 s. The bar shows the phase, the estimated time to the next round (from the
+  length of the rounds so far) and the deadline. An open thread stays open, and the view follows the
+  newest round only if you are on it. Runs started from a shell with `STATE_DIR=state/cases/<name>`
+  appear under `Laufende Debatten` and in the saved list.
 - **Meta-moderator chat:** ask questions about a saved debate. See below.
 - **Above the chat:** the original question, the current step, the reference date, the proposal
   version and the met priorities per institution.

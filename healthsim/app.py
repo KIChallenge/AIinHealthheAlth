@@ -160,7 +160,8 @@ def build_runtime(settings, llm="azure", sources="neo4j", fixture=None):
         adapter = AzureResponsesAdapter(settings)
     elif llm == "fake":
         from .llm_fake import FakeAdapter
-        adapter = FakeAdapter()
+        delay = float(os.environ.get("HEALTHSIM_FAKE_DELAY") or 0)       # lets a browser test watch a fake run
+        adapter = FakeAdapter(clock=RealClock(), delay=delay)
     else:
         raise ConfigurationError(f"Unbekannter LLM-Adapter: {llm}.")
     if sources == "neo4j":

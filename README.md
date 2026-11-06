@@ -264,7 +264,8 @@ decides what each value does:
 | `Dachverband SV` | link to Sozialversicherung | `config/actors.json` → `akteure_labels` |
 | `Ärztekammer` | link to Ärztekammer | `config/actors.json` → `akteure_labels` |
 | `Gesundheitsministerium` | link to Gesundheitsministerium | `config/actors.json` → `akteure_labels` |
-| `Krankenhäuser`, `Patientenvertretung` | stored on the article, no link | `config/import.json` → `akteure_list_only` |
+| `Krankenhäuser`, `Patientenvertretung` | themselves (`MATCHES_KEYWORD`) | `config/actors.json` |
+| `Bundesländer`, `Finanzministerium`, `WK & AK`, `Gesetzgeber`, `Industrie`, `Landeswirtschaftskammer` | stored on the article, no link | `config/import.json` → `akteure_list_only` |
 
 The full list stays on the article as `d.akteure`. Links are reconciled on every import, so
 changed tags add or remove links, and a configuration change takes effect without touching the

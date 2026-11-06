@@ -219,9 +219,11 @@ class Runner:
                 return False
             self.output = Path(tempfile.mkdtemp(prefix="healthsim-")) / "result.json"
             self.started, self.finished, self.stopping = time.time(), None, False
-            self.process = subprocess.Popen(
-                [sys.executable, "-m", "healthsim", "run", "--input", "-", "--output", str(self.output), *self.cli_args],
-                stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=ROOT)
+            Path(self.directory).mkdir(parents=True, exist_ok=True)
+            with open(Path(self.directory) / "run.log", "ab") as log:
+                self.process = subprocess.Popen(
+                    [sys.executable, "-m", "healthsim", "run", "--input", "-", "--output", str(self.output), *self.cli_args],
+                    stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=log, cwd=ROOT)
             self.process.stdin.write(raw.encode("utf-8"))
             self.process.stdin.close()
             return True
@@ -238,7 +240,9 @@ class Runner:
             if self.finished is None and self.output.is_file():
                 self.finished = json.loads(self.output.read_text(encoding="utf-8"))
             result, self.finished, self.process = self.finished, None, None
-            return {"running": False, "result": result, "cancelled": False}
+            if result is None:
+                self._forget(store)
+            return {"running": False, "result": result, "cancelled": False, "failed": result is None}
 
     def request_stop(self, store):
         """Ends the deliberation; the child freezes the last candidate and finalises as usual."""
@@ -251,6 +255,12 @@ class Runner:
             Path(self.directory, f"stop-{progress['debate_id']}").write_text("stop", encoding="utf-8")
             self.stopping = True
             return "stopping"
+
+    def _forget(self, store):
+        """A process that ended without a result leaves its working files behind."""
+        progress = store.progress(self.started)
+        for name in (f"live-{progress['debate_id']}.json", f"stop-{progress['debate_id']}") if progress else ():
+            Path(self.directory, name).unlink(missing_ok=True)
 
     def owns(self, store, debate_id):
         """True if this server started the debate and can stop it."""
@@ -266,6 +276,7 @@ class Runner:
             if self.process is None or self.process.poll() is not None:
                 return False
             kill_tree(self.process)
+            self._forget(Store(self.directory))
             self.process, self.finished = None, None
             self.cancelled = True
             return True
@@ -341,11 +352,12 @@ def make_handler(store, runner, allowed_hosts, asker=None, documents=read_docume
                 return
             path = store.live_path(debate_id)
             if path is None:
-                self._json(404, {"message": "Zu dieser debAIte gibt es noch keinen Zwischenstand."})
+                self._json(404, {"message": "Zu dieser Debatte gibt es noch keinen Zwischenstand."})
                 return
             stamp = str(path.stat().st_mtime_ns)
             seen = dict(parse_qsl(self.path.partition("?")[2])).get("seen")
-            status = {"running": True, "stamp": stamp, "own": runner.owns(store, debate_id),
+            own = runner.owns(store, debate_id)
+            status = {"running": True, "stamp": stamp, "own": own, "stopping": own and runner.stopping,
                       "progress": store.progress_of(store.home(debate_id), debate_id)}
             head = json.dumps(status, ensure_ascii=False)[:-1]
             try:
@@ -358,7 +370,7 @@ def make_handler(store, runner, allowed_hosts, asker=None, documents=read_docume
             debate_id, passage_id, whole = match.groups()
             passage = store.passage(debate_id, passage_id)
             if passage is None:
-                self._json(404, {"message": "Diese Quelle gehört nicht zu dieser debAIte."})
+                self._json(404, {"message": "Diese Quelle gehört nicht zu dieser Debatte."})
             elif not whole:
                 self._json(200, passage)
             else:
@@ -408,14 +420,14 @@ def make_handler(store, runner, allowed_hosts, asker=None, documents=read_docume
                 if outcome == "stopping":
                     self._json(200, {"stopping": True})
                 else:
-                    message = "Die debAIte startet noch. Bitte gleich noch einmal." if outcome == "starting" else "Es läuft keine debAIte."
+                    message = "Die Debatte startet noch. Bitte gleich noch einmal." if outcome == "starting" else "Es läuft keine Debatte."
                     self._json(409, {"message": message})
                 return
             if self.path == "/api/cancel":
                 if runner.cancel():
                     self._json(200, {"cancelled": True})
                 else:
-                    self._json(409, {"message": "Es läuft keine debAIte."})
+                    self._json(409, {"message": "Es läuft keine Debatte."})
                 return
             _, errors = parse_request(raw)
             if errors:     # no child process and no cost for a request that cannot run
@@ -424,7 +436,7 @@ def make_handler(store, runner, allowed_hosts, asker=None, documents=read_docume
             if runner.start(raw):
                 self._json(202, {"started": True})
             else:
-                self._json(409, {"message": "Es läuft bereits eine debAIte."})
+                self._json(409, {"message": "Es läuft bereits eine Debatte."})
 
     return Handler
 
