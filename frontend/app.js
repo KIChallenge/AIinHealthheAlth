@@ -355,7 +355,7 @@ function render(jump) {
   const atEnd = view.step === view.data.steps.length - 1;
   $("prev").disabled = view.step === 0;
   $("next").disabled = atEnd;
-  $("next").textContent = atEnd ? "Ende erreicht" : `${view.data.steps[view.step + 1].label} ›`;
+  $("next").textContent = atEnd ? (live.id ? "Neueste Runde" : "Ende erreicht") : `${view.data.steps[view.step + 1].label} ›`;
   $("step-label").textContent = view.data.steps[view.step].label;
   $("json-toggle").textContent = view.json ? "Chat" : "JSON";
   $("json-toggle").setAttribute("aria-pressed", String(view.json));
