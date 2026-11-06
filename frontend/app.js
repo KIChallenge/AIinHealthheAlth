@@ -1,9 +1,9 @@
 /* Input screen and debate chat. All text from results goes in through textContent, so generated
    content can never inject markup. */
-const { buildChats, visible, labels: L } = window.DebateChats;
-const AUTOPLAY_SECONDS = 12;
+const { buildChats, visible, memberChat, findPassage, council: COUNCIL, labels: L } = window.DebateChats;
+const READ_MS = 2000;       // how long a message stands before the next one starts typing
+const TYPING_MS = 900;
 const OPERATORS = ["<", "<=", "=", ">=", ">"];
-const SUGGESTIONS = ["Warum gab es keine Einigung?", "Was blieb rechtlich offen?", "Wo lag der größte Konflikt?"];
 const SAMPLE = {
   schema_version: "1.0",
   actors: ["Gesundheitsministerium", "Sozialversicherung", "Ärztekammer"],
@@ -35,13 +35,8 @@ function initials(name) {
   return (words.length > 1 ? words[0][0] + words[1][0] : name.slice(0, 2)).toUpperCase();
 }
 
-function avatar(chat) {
-  if (chat.kind === "group") {
-    return h("span", { class: "avatar group", "aria-hidden": "true" }, h("span"), h("span"), h("span"));
-  }
-  if (chat.kind === "meta") return h("img", { class: "avatar meta", src: "logo.svg", alt: "" });
-  return h("span", { class: "avatar pair", "aria-hidden": "true" },
-    text("span", initials(chat.pair[0])), text("span", initials(chat.pair[1])));
+function avatar(message) {
+  return text("span", message.initials || initials(message.sender), `avatar ${message.role === "reviewer" ? message.senderId : "actor"}`);
 }
 
 function clock(value) {
@@ -54,6 +49,49 @@ function statusMark(status) {
   return h("span", { class: `mark ${status}`, role: "img", "aria-label": L.STATUS[status] || status, title: L.STATUS[status] || status });
 }
 
+const SOURCE_TYPES = { Article: "Artikel", LegalText: "Rechtstext", EthicalText: "Ethik-Text", ActorData: "Institutionsdokument" };
+const MAX_INLINE_SOURCES = 3;
+
+function germanDate(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value || "");
+  return match ? `${match[3]}.${match[2]}.${match[1]}` : null;
+}
+
+function sourceLabel(source) {
+  if (source.doc_type === "Article") return [source.publisher || source.title, germanDate(source.publication_date)].filter(Boolean).join(", ");
+  return source.doc_type === "LegalText" ? source.locator : source.title;
+}
+
+function documentIcon() {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("width", "12");
+  svg.setAttribute("height", "12");
+  svg.setAttribute("aria-hidden", "true");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", "M3 1h7l3 3v11H3zm2 5v1.500h6V6zm0 3v1.500h6V9zm0 3v1.500h4V12z");
+  path.setAttribute("fill-rule", "evenodd");
+  svg.append(path);
+  return svg;
+}
+
+function sourceChip(id) {
+  const source = (view.data.sources || {})[id];
+  if (!source) {
+    return h("button", { type: "button", class: "source-chip", disabled: true, title: `${id} ist nicht gespeichert.` },
+      documentIcon(), text("span", "Beleg nicht gefunden"));
+  }
+  return h("button", { type: "button", class: "source-chip", title: source.title, onclick: () => openSource(id) },
+    documentIcon(), text("span", SOURCE_TYPES[source.doc_type] || "Quelle", "source-type"), text("span", sourceLabel(source), "source-label"));
+}
+
+function sourceList(ids) {
+  if (!ids || !ids.length) return null;
+  const chips = h("div", { class: "sources" }, ids.map(sourceChip));
+  if (ids.length <= MAX_INLINE_SOURCES) return chips;
+  return h("details", { class: "source-group" }, text("summary", `${ids.length} Quellen anzeigen`), chips);
+}
+
 function bubbleItem(item) {
   return h("li", { class: "bubble-item" },
     item.number ? text("span", item.number, "item-number") : null,
@@ -61,61 +99,76 @@ function bubbleItem(item) {
     h("div", null,
       item.title ? text("p", item.title, "item-title") : null,
       item.text ? text("p", item.text) : null,
-      item.note ? text("p", item.note, "item-note") : null));
+      item.note ? text("p", item.note, "item-note") : null,
+      sourceList(item.sources)));
 }
 
-function replyLabel(count) {
-  return count === 1 ? "1 Antwort ›" : `${count} Antworten ›`;
-}
-
-function messageNode(message, inThread) {
-  if (message.side === "system") {
-    return h("div", { class: "system" }, text("span", message.text));
-  }
-  const time = clock(message.time);
-  const replies = message.replies || [];
-  return h("article", { class: `bubble ${message.side}` },
-    message.side !== "out" ? text("p", message.sender, "sender") : null,
+function cardBody(message) {
+  return [
     message.tag ? text("p", message.tag, "tag") : null,
     message.quote ? text("blockquote", message.quote) : null,
     message.text ? message.text.split(/\n+/).map((para) => text("p", para)) : null,
     message.items && message.items.length ? h("ul", { class: "bubble-items" }, message.items.map(bubbleItem)) : null,
     message.note ? text("p", message.note, "item-note") : null,
-    time ? text("time", time) : null,
-    !inThread && replies.length ? h("button", {
-      type: "button", class: "text-link thread-link", onclick: () => { view.thread = message.id; renderThread(); },
-    }, replyLabel(replies.length)) : null);
+    sourceList(message.sources),
+  ];
+}
+
+function systemLine(message) {
+  return h("div", { class: message.conclusion ? "system conclusion" : "system" }, text("span", message.text));
+}
+
+function cardHead(sender, time) {
+  const shown = clock(time);
+  return sender || shown ? h("header", { class: "card-head" }, sender ? text("p", sender, "sender") : null, shown ? text("time", shown) : null) : null;
+}
+
+function threadButton(message) {
+  const count = (message.replies || []).length;
+  if (!count) {
+    return h("button", { type: "button", class: "thread-button", disabled: true,
+      title: "Der Moderatorenrat hat diese Nachricht nicht geprüft." }, "Keine Prüfung");
+  }
+  return h("button", { type: "button", class: "thread-button", onclick: () => openThread(message.id) },
+    "Thread", text("span", count, "thread-count"));
+}
+
+/* A message in the group feed. Institutions get a thread button even without a review, so the
+   absence of a review is visible instead of looking like a missing control. */
+function groupCard(message) {
+  if (message.side === "system") return systemLine(message);
+  const own = message.side === "out";
+  return h("div", { class: `row ${message.side}` },
+    own ? null : avatar(message),
+    h("article", { class: `card ${message.side}`, "data-message": message.id },
+      cardHead(own ? null : message.sender, message.time),
+      cardBody(message),
+      message.role === "actor" || (message.replies || []).length ? threadButton(message) : null));
+}
+
+/* A message in the council sidebar: everyone by name, moderators with their initials as well. */
+function threadCard(message, authorId) {
+  if (message.side === "system") return systemLine(message);
+  const side = message.senderId === authorId ? "out" : "in";
+  return h("div", { class: `row ${side}` },
+    side === "in" ? avatar(message) : null,
+    h("article", { class: `card ${side}` },
+      cardHead(message.sender, message.time),
+      cardBody(message)));
+}
+
+function metaCard(turn) {
+  const side = turn.role === "du" ? "out" : "in";
+  return h("div", { class: `row ${side}` }, h("article", { class: `card ${side}` },
+    cardBody({ text: turn.text, note: turn.refs && turn.refs.length ? `Belege: ${turn.refs.join(", ")}` : null }),
+    clock(turn.at) ? text("time", clock(turn.at)) : null));
 }
 
 /* ---- chat view ------------------------------------------------------------ */
-const view = { result: null, data: null, step: 0, chat: "gruppe", thread: null, timer: null, json: false,
+const view = { result: null, data: null, step: 0, chat: "gruppe", thread: null, json: false,
   stored: false, turns: [], asking: false };
 
 const currentChat = () => view.data.chats.find((c) => c.id === view.chat) || view.data.chats[0];
-
-function renderList() {
-  const nodes = [];
-  let section = null;
-  for (const chat of view.data.chats) {
-    if (chat.section && chat.section !== section) {
-      section = chat.section;
-      nodes.push(h("li", { class: "section-label" }, section));
-    }
-    const shown = chat.kind === "meta" ? [] : visible(chat, view.step);
-    const lastMessage = [...shown].reverse().find((m) => m.side !== "system");
-    const fresh = shown.filter((m) => m.step === view.step && m.side !== "system").length;
-    const preview = chat.kind === "meta" ? chat.subtitle : chat.pair ? `mit ${chat.pair[1]}`
-      : lastMessage ? (lastMessage.text || lastMessage.tag || "") : "Noch keine Nachricht";
-    nodes.push(h("li", null, h("button", {
-      type: "button", class: `chat-entry${chat.id === view.chat ? " active" : ""}`,
-      "aria-current": chat.id === view.chat ? "true" : null,
-      onclick: () => { view.chat = chat.id; view.thread = null; view.json = false; document.body.dataset.pane = "chat"; render(true); },
-    }, avatar(chat), h("span", { class: "chat-entry-body" },
-      text("span", chat.pair ? chat.pair[0] : chat.name, "chat-name"), text("span", preview, "chat-preview")),
-    fresh ? h("span", { class: "badge", title: `${fresh} neue Nachrichten in diesem Schritt` }, fresh) : null)));
-  }
-  $("chat-list").replaceChildren(...nodes);
-}
 
 function renderHeader(chat) {
   const step = view.data.steps[view.step];
@@ -127,56 +180,165 @@ function renderHeader(chat) {
   $("facts").replaceChildren(...facts.map((fact) => h("li", null, fact)));
   const scores = view.data.satisfactionAt ? view.data.satisfactionAt(view.step) : [];
   $("scores").replaceChildren(...scores.filter((s) => s.total).map((s) => h("li", null, `${s.name}: ${s.met} von ${s.total} erfüllt`)));
-  $("chat-title").replaceChildren(avatar(chat), h("div", null, text("h2", chat.name), text("p", chat.subtitle)));
+  $("chat-title").replaceChildren(text("h2", chat.name), text("p", chat.subtitle));
 }
 
-function renderThread() {
-  const parent = view.thread ? currentChat().messages.find((m) => m.id === view.thread && m.step <= view.step) : null;
+/* ---- council sidebar: the debate behind one message, played back message by message ---- */
+const player = { pos: 1, playing: false, typing: false, timer: null, member: null };
+
+function threadParent() {
+  if (!view.thread) return null;
+  return currentChat().messages.find((m) => m.id === view.thread && m.step <= view.step) || null;
+}
+
+function stopPlayer() {
+  clearTimeout(player.timer);
+  Object.assign(player, { playing: false, typing: false, timer: null });
+}
+
+const speakerOf = (message) => (message.side === "system" ? "Ergebnis" : message.sender);
+const memberOf = (id) => COUNCIL.find((member) => member.id === id);
+
+function typingLine(message) {
+  return h("div", { class: "typing" }, text("span", message.side === "system" ? "Ergebnis folgt …" : `${speakerOf(message)} schreibt …`));
+}
+
+function drawPlayer(messages) {
+  const atEnd = player.pos >= messages.length;
+  const state = player.playing ? "pause" : atEnd ? "replay" : "play";
+  $("t-play").textContent = { pause: "Pause", replay: "Nochmal abspielen", play: "Abspielen" }[state];
+  $("t-play").setAttribute("aria-pressed", String(player.playing));
+  $("t-prev").disabled = player.pos <= 1;
+  $("t-next").disabled = atEnd;
+  $("track-count").textContent = `${player.pos} von ${messages.length}`;
+  $("track").replaceChildren(...messages.map((message, index) => h("button", {
+    type: "button", class: `marker${index < player.pos ? " done" : ""}${index === player.pos - 1 ? " current" : ""}`,
+    title: speakerOf(message), "aria-label": `Nachricht ${index + 1}: ${speakerOf(message)}`,
+    "aria-current": index === player.pos - 1 ? "step" : null, onclick: () => seekThread(index + 1),
+  })));
+}
+
+function drawThread(arrived) {
+  const parent = threadParent();
   if (!parent) view.thread = null;
   document.querySelector(".window").classList.toggle("with-thread", Boolean(parent));
   $("thread").hidden = !parent;
-  if (parent) {
-    $("thread-title").textContent = `Thread: ${parent.tag || parent.sender}`;
-    $("thread-log").replaceChildren(messageNode(parent, true),
-      h("div", { class: "thread-count" }, text("span", replyLabel(parent.replies.length).replace(" ›", ""))),
-      ...parent.replies.map((reply) => messageNode(reply, true)));
-    $("thread-log").scrollTop = 0;
+  for (const card of $("log").querySelectorAll(".card.active")) card.classList.remove("active");
+  if (!parent) { stopPlayer(); return; }
+  const card = $("log").querySelector(`[data-message="${parent.id}"]`);
+  if (card) card.classList.add("active");
+
+  const messages = memberChat(parent, player.member);
+  const nodes = messages.slice(0, player.pos).map((message) => threadCard(message, parent.senderId));
+  const upcoming = player.typing ? messages[player.pos] : null;
+  const current = upcoming || messages[player.pos - 1];
+  const newest = nodes[nodes.length - 1];
+  if (arrived) newest.classList.add("arrive");
+  if (upcoming) nodes.push(typingLine(upcoming));
+  const log = $("thread-log");
+  const kept = log.scrollTop;
+  log.replaceChildren(...nodes);
+  const chatWith = player.member ? ` · Chat mit ${memberOf(player.member).name}` : "";
+  $("thread-title").textContent = `${parent.tag || "Nachricht"} · ${parent.sender}${chatWith}`;
+  for (const button of $("council-members").querySelectorAll(".member")) {
+    const id = button.dataset.member;       // empty: the whole thread
+    button.classList.toggle("selected", id === (player.member || ""));
+    button.setAttribute("aria-pressed", String(id === (player.member || "")));
+    button.classList.toggle("speaking", Boolean(id) && id === current.senderId);
+    button.disabled = Boolean(id) && !parent.replies.some((m) => m.senderId === id);
   }
+  drawPlayer(messages);
+  if (upcoming) log.scrollTop = log.scrollHeight;
+  else if (arrived) log.scrollTop = newest.offsetTop - 8;      // .log is the offset parent
+  else log.scrollTop = kept;
+}
+
+function openThread(id) {
+  stopPlayer();
+  view.thread = id;
+  showMember(null);
+}
+
+/* Shows the history first; Play goes through it again. */
+function showMember(member) {
+  stopPlayer();
+  player.member = member;
+  const parent = threadParent();
+  player.pos = parent ? memberChat(parent, member).length : 1;
+  drawThread(false);
+  $("thread-log").scrollTop = 0;      // only after it is visible: a hidden element ignores this
+}
+
+function closeThread() {
+  stopPlayer();
+  view.thread = null;
+  drawThread(false);
+}
+
+function scheduleNext() {
+  player.timer = setTimeout(() => {
+    player.typing = true;
+    drawThread(false);
+    player.timer = setTimeout(() => {
+      player.typing = false;
+      player.pos += 1;
+      if (player.pos >= memberChat(threadParent(), player.member).length) player.playing = false;
+      drawThread(true);
+      if (player.playing) scheduleNext();
+    }, TYPING_MS);
+  }, READ_MS);
+}
+
+function togglePlay() {
+  if (player.playing) {
+    stopPlayer();
+    drawThread(false);
+    return;
+  }
+  if (player.pos >= memberChat(threadParent(), player.member).length) player.pos = 1;
+  player.playing = true;
+  drawThread(true);
+  scheduleNext();
+}
+
+function seekThread(pos) {
+  const parent = threadParent();
+  stopPlayer();
+  const moved = Math.max(1, Math.min(pos, memberChat(parent, player.member).length));
+  const forward = moved > player.pos;
+  player.pos = moved;
+  drawThread(forward || moved === 1);
 }
 
 function metaNodes() {
   const nodes = [h("div", { class: "system" }, text("span", view.stored
     ? "Der Meta-Moderator antwortet nur aus dem Protokoll dieser debAIte. Die debAIte selbst ändert sich dadurch nicht."
     : "Nachfragen gehen nur bei gespeicherten debAItes, nicht bei einer geöffneten Datei."))];
-  for (const turn of view.turns) {
-    nodes.push(messageNode({ side: turn.role === "du" ? "out" : "in", sender: "Meta-Moderator", text: turn.text,
-      note: turn.refs && turn.refs.length ? `Belege: ${turn.refs.join(", ")}` : null,
-      time: turn.at }, true));
-  }
-  if (view.asking) nodes.push(h("div", { class: "system" }, text("span", "Meta-Moderator schreibt …")));
-  if (!view.turns.length && view.stored) {
-    nodes.push(h("div", { class: "suggestions" }, SUGGESTIONS.map((question) => h("button", {
-      type: "button", class: "pill", onclick: () => { $("ask-input").value = question; $("ask-input").focus(); },
-    }, question))));
-  }
+  nodes.push(...view.turns.map(metaCard));
+  if (view.asking) nodes.push(h("div", { class: "typing" }, text("span", "Meta-Moderator schreibt …")));
   return nodes;
 }
 
 function render(jump) {
   const chat = currentChat();
   const isMeta = chat.kind === "meta";
-  const shown = isMeta ? [] : visible(chat, view.step);
-  renderList();
+  document.body.dataset.screen = isMeta ? "meta" : "group";
+  for (const [id, active] of [["chat-gruppe", !isMeta], ["chat-meta", isMeta]]) {
+    $(id).classList.toggle("active", active);
+    $(id).setAttribute("aria-current", String(active));
+  }
+  $("chat-meta").hidden = !view.data.chats.some((c) => c.kind === "meta");
   renderHeader(chat);
   const log = $("log");
   $("composer").hidden = !isMeta;
   $("ask-input").disabled = !view.stored || view.asking;
   $("ask-send").disabled = !view.stored || view.asking;
-  if (view.json) {
-    log.replaceChildren(h("pre", { class: "json" }, JSON.stringify(isMeta ? view.turns : shown.filter((m) => m.step === view.step), null, 2)));
-  } else if (isMeta) {
+  const shown = isMeta ? [] : visible(chat, view.step);
+  if (isMeta) {
     log.replaceChildren(...metaNodes());
     log.scrollTop = log.scrollHeight;
+  } else if (view.json) {
+    log.replaceChildren(h("pre", { class: "json" }, JSON.stringify(shown.filter((m) => m.step === view.step), null, 2)));
   } else {
     const nodes = [];
     let drawn = -1;
@@ -185,9 +347,8 @@ function render(jump) {
         drawn = message.step;
         nodes.push(h("div", { class: "divider", "data-step": drawn }, text("span", view.data.steps[drawn].label)));
       }
-      nodes.push(messageNode(message, false));
+      nodes.push(groupCard(message));
     }
-    if (!nodes.length) nodes.push(h("div", { class: "system" }, text("span", "In diesem Chat gibt es bis hierhin keine Nachricht.")));
     log.replaceChildren(...nodes);
   }
   const atEnd = view.step === view.data.steps.length - 1;
@@ -197,7 +358,7 @@ function render(jump) {
   $("step-label").textContent = view.data.steps[view.step].label;
   $("json-toggle").textContent = view.json ? "Chat" : "JSON";
   $("json-toggle").setAttribute("aria-pressed", String(view.json));
-  renderThread();
+  drawThread(false);
   if (jump && !isMeta) {
     const start = log.querySelector(`[data-step="${view.step}"]`);
     log.scrollTop = start ? start.offsetTop - 8 : 0;      // .log is the offset parent
@@ -205,30 +366,23 @@ function render(jump) {
   try { history.replaceState(null, "", `${location.search}#${view.step + 1}`); } catch { /* file:// in some browsers */ }
 }
 
-function go(step) {
-  view.step = Math.max(0, Math.min(step, view.data.steps.length - 1));
-  view.thread = null;
+function selectChat(id) {
+  stopPlayer();
+  Object.assign(view, { chat: id, thread: null, json: false });
   render(true);
 }
 
-function setPlaying(on) {
-  clearInterval(view.timer);
-  view.timer = null;
-  if (on) {
-    view.timer = setInterval(() => {
-      if (view.step >= view.data.steps.length - 1) setPlaying(false);
-      else go(view.step + 1);
-    }, AUTOPLAY_SECONDS * 1000);
-  }
-  $("play").textContent = on ? "Pause" : "Abspielen";
-  $("play").setAttribute("aria-pressed", String(on));
+function go(step) {
+  stopPlayer();
+  view.step = Math.max(0, Math.min(step, view.data.steps.length - 1));
+  view.thread = null;
+  render(true);
 }
 
 function openResult(result, stored) {
   const chat = new URLSearchParams(location.search).get("chat") || "gruppe";
   Object.assign(view, { result, data: buildChats(result), chat, thread: null, json: false, stored: Boolean(stored), turns: [] });
   document.body.dataset.view = "chat";
-  document.body.dataset.pane = "chat";
   const wanted = Number(location.hash.slice(1));
   go(Number.isInteger(wanted) && wanted >= 1 ? wanted - 1 : 0);
   if (stored) loadTurns();
@@ -265,8 +419,84 @@ async function ask(event) {
   $("ask-input").focus();
 }
 
+/* ---- source viewer: the passage exactly as the debate read it ---------------- */
+const reader = { id: null, passage: null };
+
+function passageNodes(passage) {
+  return [passage.context_before ? text("p", `… ${passage.context_before}`, "source-context") : null,
+    text("mark", passage.text), passage.context_after ? text("p", `${passage.context_after} …`, "source-context") : null].filter(Boolean);
+}
+
+function sourceMeta(source) {
+  const valid = [germanDate(source.valid_from) && `gültig ab ${germanDate(source.valid_from)}`,
+    germanDate(source.valid_until) && `bis ${germanDate(source.valid_until)}`].filter(Boolean).join(" ");
+  return [source.publisher, germanDate(source.publication_date), valid, source.locator, source.date_unknown ? "undatiert" : null].filter(Boolean).join(" · ");
+}
+
+async function openSource(id) {
+  const source = view.data.sources[id];
+  Object.assign(reader, { id, passage: null });
+  $("source-kind").textContent = SOURCE_TYPES[source.doc_type] || "Quelle";
+  $("source-title").textContent = source.title;
+  $("source-meta").textContent = sourceMeta(source);
+  $("source-note").textContent = "";
+  $("source-full").hidden = true;
+  $("source-full").disabled = false;
+  const external = /^https?:\/\//i.test(source.source_url || "");
+  $("source-link").hidden = !external;
+  if (external) $("source-link").href = source.source_url;
+  $("source").showModal();
+  if (!view.stored) {
+    $("source-body").replaceChildren(text("p", "Der Text ist nur bei gespeicherten debAItes verfügbar, nicht bei einer geöffneten Datei."));
+    return;
+  }
+  $("source-body").replaceChildren(text("p", "Text wird geladen …", "item-note"));
+  try {
+    const response = await fetch(`api/source/${encodeURIComponent(view.result.debate_id)}/${encodeURIComponent(id)}`);
+    const answer = await response.json();
+    if (reader.id !== id) return;       // another source was opened meanwhile
+    if (!response.ok) { $("source-body").replaceChildren(text("p", answer.message)); return; }
+    reader.passage = answer;
+    $("source-body").replaceChildren(...passageNodes(answer));
+    $("source-note").textContent = "Das markierte Stück ist genau der Text, den das System in dieser debAIte gelesen hat.";
+    $("source-full").hidden = false;
+    $("source-body").scrollTop = $("source-body").querySelector("mark").offsetTop - 60;
+  } catch {
+    if (reader.id === id) $("source-body").replaceChildren(text("p", "Der lokale Server ist nicht erreichbar."));
+  }
+}
+
+async function openWholeDocument() {
+  const id = reader.id;
+  $("source-full").disabled = true;
+  $("source-note").textContent = "Dokument wird geladen …";
+  try {
+    const response = await fetch(`api/source/${encodeURIComponent(view.result.debate_id)}/${encodeURIComponent(id)}/document`);
+    const answer = await response.json();
+    if (reader.id !== id) return;
+    if (!response.ok) {
+      $("source-note").textContent = answer.message;
+      $("source-full").disabled = false;
+      return;
+    }
+    const found = findPassage(answer.text, reader.passage.text);
+    $("source-body").replaceChildren(found
+      ? h("div", { class: "source-document" }, answer.text.slice(0, found.start), text("mark", answer.text.slice(found.start, found.end)), answer.text.slice(found.end))
+      : h("div", { class: "source-document" }, answer.text));
+    $("source-note").textContent = [answer.unchanged ? "Stand der debAIte." : "Achtung: Das Dokument wurde seit dieser debAIte geändert.",
+      found ? "Die zitierte Stelle ist markiert." : "Die zitierte Stelle ließ sich hier nicht wortgleich finden."].join(" ");
+    const mark = $("source-body").querySelector("mark");
+    $("source-body").scrollTop = mark ? mark.offsetTop - 60 : 0;
+  } catch {
+    if (reader.id === id) {
+      $("source-note").textContent = "Der lokale Server ist nicht erreichbar.";
+      $("source-full").disabled = false;
+    }
+  }
+}
+
 function closeChat() {
-  setPlaying(false);
+  stopPlayer();
   document.body.dataset.view = "input";
   try { history.replaceState(null, "", location.pathname); } catch { /* ignore */ }
 }
@@ -532,19 +762,19 @@ async function startRun() {
 }
 
 /* ---- wiring ---------------------------------------------------------------- */
-function step(action) {
-  setPlaying(false);
-  action();
-}
-
-$("prev").addEventListener("click", () => step(() => go(view.step - 1)));
-$("next").addEventListener("click", () => step(() => go(view.step + 1)));
-$("play").addEventListener("click", () => setPlaying(!view.timer));
+$("prev").addEventListener("click", () => go(view.step - 1));
+$("next").addEventListener("click", () => go(view.step + 1));
 $("json-toggle").addEventListener("click", () => { view.json = !view.json; render(true); });
 $("download").addEventListener("click", downloadResult);
-$("close").addEventListener("click", closeChat);
-$("back").addEventListener("click", () => { document.body.dataset.pane = "list"; });
-$("thread-close").addEventListener("click", () => { view.thread = null; renderThread(); });
+$("home").addEventListener("click", closeChat);
+$("chat-gruppe").addEventListener("click", () => selectChat("gruppe"));
+$("chat-meta").addEventListener("click", () => selectChat("meta"));
+$("thread-close").addEventListener("click", closeThread);
+$("source-close").addEventListener("click", () => $("source").close());
+$("source-full").addEventListener("click", openWholeDocument);
+$("t-prev").addEventListener("click", () => seekThread(player.pos - 1));
+$("t-next").addEventListener("click", () => seekThread(player.pos + 1));
+$("t-play").addEventListener("click", togglePlay);
 $("composer").addEventListener("submit", ask);
 $("panel-form").addEventListener("submit", (event) => event.preventDefault());
 $("start").addEventListener("click", startRun);
@@ -564,12 +794,17 @@ $("add-constraint").addEventListener("click", () => $("f-constraints").append(co
 
 document.addEventListener("keydown", (event) => {
   if (document.body.dataset.view !== "chat" || event.ctrlKey || event.metaKey || event.altKey) return;
+  if ($("source").open) return;       // the dialog closes itself on Esc
   if (["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)) return;
+  if (event.key === " " && event.target.tagName === "BUTTON") return;       // Space presses the focused button
+  const inThread = Boolean(view.thread);
+  const isGroup = currentChat().kind === "group";
   const actions = {
-    ArrowRight: () => step(() => go(view.step + 1)), ArrowLeft: () => step(() => go(view.step - 1)),
-    Home: () => step(() => go(0)), End: () => step(() => go(view.data.steps.length - 1)),
-    " ": () => setPlaying(!view.timer), j: () => $("json-toggle").click(),
-    Escape: () => { if (view.thread) { view.thread = null; renderThread(); } else closeChat(); },
+    ArrowRight: () => (inThread ? seekThread(player.pos + 1) : isGroup && go(view.step + 1)),
+    ArrowLeft: () => (inThread ? seekThread(player.pos - 1) : isGroup && go(view.step - 1)),
+    Home: () => isGroup && !inThread && go(0), End: () => isGroup && !inThread && go(view.data.steps.length - 1),
+    " ": () => inThread && togglePlay(), j: () => isGroup && $("json-toggle").click(),
+    Escape: () => (inThread ? closeThread() : closeChat()),
   };
   if (actions[event.key]) { event.preventDefault(); actions[event.key](); }
 });
@@ -581,6 +816,14 @@ for (const type of ["dragover", "drop"]) {
   });
 }
 
+function memberButton(id, badge, name, role) {
+  return h("li", null, h("button", { type: "button", class: "member", "data-member": id, onclick: () => showMember(id || null) },
+    text("span", badge, `avatar ${id || "all"}`),
+    h("span", { class: "member-text" }, text("span", name, "member-name"), text("span", role, "member-role"))));
+}
+
+$("council-members").replaceChildren(memberButton("", "Alle", "Alle", "ganzer Verlauf"),
+  ...COUNCIL.map((member) => memberButton(member.id, member.initials, member.name, `prüft ${member.role}`)));
 setRequest(SAMPLE);
 refreshResults().then(async () => {
   if (!server.available) return;

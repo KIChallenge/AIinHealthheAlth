@@ -76,36 +76,59 @@ The product name is debAIte; the Python package stays `healthsim`. A local page 
   cancelled debate has no final result.
 - **Scenarios:** a dropdown fills the input with one of the five requests in `Beispielanfragen/`.
   New JSON files in that folder appear there automatically.
-- **You are the moderator:** the meta-moderator's proposals and reports appear as your own outgoing
-  messages. The institutions and reviewers are the other participants.
-- **Group chat "Debatte":** only what was published in the debate. Preparation stays private until
-  publication, as in the real workflow.
-- **Threads:** as in Slack, follow-ups sit under their message: reviews and challenges under a
-  proposal, the rating of each priority under a decision, priorities and arguments under a
-  standpoint.
-- **Private chats:** one for each reviewer and actor pair (nine with three actors), holding the
-  confidential reviews and challenges between the two. You read along.
+- **Side menu:** always visible, with an icon and a name for each chat, `Gruppe` and
+  `Meta-Moderator`. The open chat is highlighted. `Zur Eingabe` goes back to the input.
+- **You are the moderator:** the meta-moderator's proposals and reports appear as your own messages
+  on the right. The institutions are on the left.
+- **Group chat:** only what was published in the debate. Preparation stays private until publication,
+  as in the real workflow.
+- **`Thread`** opens the council sidebar from the right. It shows the debate between the author of a
+  message and the council: TruthSeeker (`TS`, facts), LegalEye (`LE`, law) and EthicMind (`EM`,
+  ethics). Everyone is labelled by name, moderators with their initials as well.
+- **Moderator chats:** the buttons in the sidebar switch between `Alle` and the chat with one
+  moderator. A chat holds the author's messages, that moderator's reviews, the challenges to those
+  findings and a result counted for that moderator alone. Playback works the same in each.
+
+  | Message | Thread |
+  |---|---|
+  | Standpoint | Priorities, both contributions, all confidential reviews and challenges |
+  | Decision | Rating of each priority, confidential reviews and challenges of that rating |
+  | Proposal | Clause reviews and the institutions' challenges |
+  | Negotiation | None: the council does not review these, so the button reads `Keine Prüfung` |
+
+  Every thread ends in a result line counted from the records.
+- **Playback** at the bottom of the sidebar: `Abspielen` replays the debate message by message, with
+  a 2 s pause and a typing line before each one. You can pause, step with the arrows, click a marker
+  on the progress bar or start again. Timing is `READ_MS` and `TYPING_MS` in `frontend/app.js`.
+- **Sources:** everything cited has a chip with its type and name: arguments, priorities, negotiation
+  items, clauses and findings. A chip opens the viewer inside the page. It shows the passage exactly
+  as the debate read it, from the local snapshot in `events.sqlite`, with the text around it, so it
+  works without Neo4j and is not affected by later imports. `Ganzes Dokument laden` reads the current
+  document from Neo4j, marks the passage and warns if the document changed since the debate. Only
+  passages of that debate can be opened. For a result opened from a file only the details are shown.
 - **Meta-moderator chat:** ask questions about a saved debate. See below.
 - **Above the chat:** the original question, the current step, the reference date, the proposal
   version and the met priorities per institution.
-- **`Weiter`** appends the next round to the chat and jumps to it. `Zurück` goes back a round. The
-  number beside a chat counts its new messages in the current step.
-- **JSON:** `JSON` shows the data behind the current chat and round, and `Download` saves the full
-  result.
+- **`Weiter`** appends the next round to the chat and jumps to it. `Zurück` goes back a round.
+- **JSON:** `JSON` shows the data behind the current round, and `Download` saves the full result.
+
+The colours come from the stylesheets of svs.at. Its light green is too pale for white text, so
+buttons use the site's darker green; `tests_sim/test_frontend.py` checks the contrast of each pair.
 
 | Key | Action |
 |---|---|
-| Right / Left arrow | Next / previous round |
+| Right / Left arrow | Next / previous round; in a thread, next / previous message |
 | Home / End | Preparation / final step |
-| Space | Play / pause (12 s per round) |
+| Space | Play / pause the open thread |
 | J | Chat / JSON |
-| Esc | Back to input |
+| Esc | Close the thread, otherwise back to input |
 
 The page also works without the server: open `frontend/index.html` and load a result file. A link
 like `http://127.0.0.1:8765/?debatte=<debate_id>#4` opens a saved debate at the fourth step.
 
 Every message is built from stored records; no chat text is invented. Moderator messages exist only
-for what the meta-moderator actually wrote, so private chats have no green messages.
+for what the meta-moderator actually wrote. The only derived lines are the counts at the end of a
+thread and the note `Keine Befunde.` for a complete review without findings.
 
 ### Questions to the meta-moderator
 

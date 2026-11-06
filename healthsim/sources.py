@@ -321,6 +321,13 @@ class Neo4jSources:
             ref=ref_date)
         return rows[0] if rows else None
 
+    async def document(self, doc_id):
+        """Readable text of one document as it is in the graph now, or None."""
+        m = self.m
+        rows = await self._read(f"MATCH (d:Document {{{m['doc_id']}: $id}}) "
+                                f"RETURN d.{m['text']} AS text, d.{m['content_hash']} AS content_hash LIMIT 1", id=doc_id)
+        return rows[0] if rows else None
+
     async def current_hash(self, doc_id):
         rows = await self._read(f"MATCH (d:Document {{{self.m['doc_id']}: $id}}) "
                                 f"RETURN d.{self.m['content_hash']} AS h LIMIT 1", id=doc_id)

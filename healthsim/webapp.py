@@ -6,7 +6,9 @@ accepts application/json and a local Host header, so another website in the brow
 start a debate or read results.
 """
 
+import asyncio
 import json
+import re
 import sqlite3
 import subprocess
 import sys
@@ -19,8 +21,10 @@ from pathlib import Path
 from .api_models import Message
 from .app import invalid_result, new_debate_id
 from .ask import Asker, AskError
+from .errors import ConfigurationError, SourceError
 from .intake import parse_request
-from .settings import ROOT, read_env_file
+from .settings import ROOT, load_settings, read_env_file
+from .sources import Neo4jSources
 
 FRONTEND = ROOT / "frontend"
 SCENARIOS = ROOT / "Beispielanfragen"
@@ -34,6 +38,7 @@ STATIC = {"/": ("index.html", "text/html"), "/index.html": ("index.html", "text/
           "/app.js": ("app.js", "text/javascript"), "/chats.js": ("chats.js", "text/javascript"),
           "/styles.css": ("styles.css", "text/css")}
 MAX_BODY = 1_000_000
+SOURCE_PATH = re.compile(r"^/api/source/([0-9a-f]{32})/(P-[0-9a-f]{12})(/document)?$")
 
 
 def state_dir():
@@ -61,6 +66,20 @@ def scenarios():
             continue
         out.append({"id": path.stem, "label": SCENARIO_LABELS.get(path.stem, path.stem.replace("_", " ")), "request": request})
     return out
+
+
+def read_document(doc_id):
+    """One document from the graph, read-only. The connection lasts only for this request."""
+    settings = load_settings(require_azure=False)
+
+    async def fetch():
+        adapter = Neo4jSources(settings)
+        try:
+            return await adapter.document(doc_id)
+        finally:
+            await adapter.close()
+
+    return asyncio.run(fetch())
 
 
 class Store:
@@ -92,6 +111,11 @@ class Store:
     def result(self, debate_id):
         rows = self._rows("SELECT result FROM debates WHERE debate_id=?", debate_id)
         return rows[0][0] if rows and rows[0][0] else None
+
+    def passage(self, debate_id, passage_id):
+        """The exact passage this debate read, or None: nothing outside the debate can be opened."""
+        rows = self._rows("SELECT payload FROM passages WHERE debate_id=? AND passage_id=?", debate_id, passage_id)
+        return json.loads(rows[0][0]) if rows else None
 
     def newest_events(self, since):
         rows = self._rows("SELECT COUNT(*) FROM events WHERE at >= ?", since)
@@ -191,7 +215,7 @@ class Runner:
             return True
 
 
-def make_handler(store, runner, allowed_hosts, asker=None):
+def make_handler(store, runner, allowed_hosts, asker=None, documents=read_document):
     class Handler(BaseHTTPRequestHandler):
         server_version = "healthsim"
 
@@ -243,8 +267,28 @@ def make_handler(store, runner, allowed_hosts, asker=None):
                 self._json(200, actor_names())
             elif path.startswith("/api/ask/") and asker:
                 self._json(200, asker.history(path.rsplit("/", 1)[1]))
+            elif SOURCE_PATH.match(path):
+                self._source(SOURCE_PATH.match(path))
             else:
                 self._json(404, {"message": "Nicht gefunden."})
+
+        def _source(self, match):
+            debate_id, passage_id, whole = match.groups()
+            passage = store.passage(debate_id, passage_id)
+            if passage is None:
+                self._json(404, {"message": "Diese Quelle gehört nicht zu dieser debAIte."})
+            elif not whole:
+                self._json(200, passage)
+            else:
+                try:
+                    document = documents(passage["doc_id"])
+                except (ConfigurationError, SourceError):
+                    self._json(503, {"message": "Die Datenbank ist gerade nicht erreichbar. Die zitierte Stelle bleibt lesbar."})
+                    return
+                if document is None:
+                    self._json(404, {"message": "Das Dokument ist nicht mehr in der Datenbank."})
+                else:
+                    self._json(200, {"text": document["text"], "unchanged": document["content_hash"] == passage["content_hash"]})
 
         def _ask(self, raw):
             if asker is None:
