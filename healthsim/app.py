@@ -3,13 +3,17 @@
 import hashlib
 import json
 import logging
+import os
 import sys
+import time
+import typing
 import uuid
 from pathlib import Path
 
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 
 from .api_models import DebateRequest, DebateResult, Message, empty_result
+from .assemble import build_result
 from .clock import Deadlines, RealClock
 from .errors import ConfigurationError, SimError, SourceError
 from .events import EventStore
@@ -18,15 +22,61 @@ from .llm import LlmService, Scheduler, build_lock
 from .llm_models import ConnectionProbe
 from .settings import ROOT, load_settings
 from .sources import FixtureSources, Neo4jSources, SourceService
-from .workflow import Deps, build_workflow, mermaid_diagram
+from .workflow import DebateState, Deps, build_workflow, merge, mermaid_diagram
 
 log = logging.getLogger("healthsim")
 EXIT_CODES = {"completed": 0, "incomplete": 1, "needs_clarification": 2, "invalid_input": 3, "failed": 4}
 RECURSION_LIMIT = 5000    # technical guard only; stopping is decided by the workflow
 
 
+LIVE_INTERVAL_SECONDS = 3.0
+MERGED_FIELDS = {name for name, hint in typing.get_type_hints(DebateState, include_extras=True).items()
+                 if merge in getattr(hint, "__metadata__", ())}
+
+
 def new_debate_id():
     return uuid.uuid4().hex
+
+
+class LiveView:
+    """Partial results for watching a running debate, built by the same code as the final result.
+
+    Whatever goes wrong here must not touch the debate, so failures are only counted.
+    """
+
+    def __init__(self, deps, debate_id):
+        self.deps = deps
+        self.path = Path(deps.settings.state_dir, f"live-{debate_id}.json")
+        self.state = {}
+        self.written_at = 0.0
+        self.failures = 0
+
+    def replace(self, state):
+        self.state = dict(state)
+        self.write()
+
+    def apply(self, updates):
+        """One finished node, merged the way the graph merges it."""
+        for update in updates.values():
+            for key, value in (update if isinstance(update, dict) else {}).items():
+                self.state[key] = merge(self.state.get(key), value) if key in MERGED_FIELDS else value
+        self.write()
+
+    def write(self):
+        if not self.state.get("task") or time.monotonic() - self.written_at < LIVE_INTERVAL_SECONDS:
+            return
+        self.written_at = time.monotonic()
+        try:
+            result = build_result(self.state, self.deps)
+            partial = self.path.with_suffix(".tmp")
+            partial.write_text(json.dumps({**result, "live": True}, ensure_ascii=False), encoding="utf-8")
+            os.replace(partial, self.path)
+        except Exception:       # a reader may hold the file; the next update writes it again
+            self.failures += 1
+            log.debug("Live-Stand nicht geschrieben", exc_info=True)
+
+    def close(self):
+        self.path.unlink(missing_ok=True)
 
 
 class Runtime:
@@ -42,7 +92,8 @@ class Runtime:
         self.sources = SourceService(source_adapter, self.events, settings)
         self.sources.adapter = source_adapter
         self.lock = build_lock(settings).acquire() if use_lock else None
-        self.graph = build_workflow(Deps(settings, self.llm, self.sources, self.events, self.clock, self.deadlines))
+        self.deps = Deps(settings, self.llm, self.sources, self.events, self.clock, self.deadlines)
+        self.graph = build_workflow(self.deps)
 
     async def close(self):
         await self.adapter.close()
@@ -58,15 +109,22 @@ class Runtime:
         config = {"configurable": {"thread_id": debate_id}, "recursion_limit": RECURSION_LIMIT}
         async with AsyncSqliteSaver.from_conn_string(self._checkpoint_path()) as saver:
             compiled = self.graph.compile(checkpointer=saver)
-            state = await compiled.ainvoke(graph_input, config)
-        return state["result"]
+            live, state = LiveView(self.deps, debate_id), None
+            async for mode, chunk in compiled.astream(graph_input, config, stream_mode=["updates", "values"]):
+                if mode == "values":
+                    state = chunk
+                    live.replace(chunk)
+                else:
+                    live.apply(chunk)
+        return state["result"], live
 
     async def run(self, request, debate_id=None):
         debate_id = debate_id or new_debate_id()
         request_json = request.model_dump_json()
         self.events.save_debate(debate_id, request_json, self.clock.time())
-        result = await self._run_graph(debate_id, {"debate_id": debate_id, "request": json.loads(request_json)})
+        result, live = await self._run_graph(debate_id, {"debate_id": debate_id, "request": json.loads(request_json)})
         self.events.save_result(debate_id, json.dumps(result, ensure_ascii=False))
+        live.close()
         self._clear_stop(debate_id)
         return result
 
@@ -79,8 +137,9 @@ class Runtime:
             raise ConfigurationError(f"Unbekannte Debatte: {debate_id}.")
         if stored["result"]:
             return json.loads(stored["result"])
-        result = await self._run_graph(debate_id, None)
+        result, live = await self._run_graph(debate_id, None)
         self.events.save_result(debate_id, json.dumps(result, ensure_ascii=False))
+        live.close()
         self._clear_stop(debate_id)
         return result
 

@@ -17,6 +17,7 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qsl
 
 from .api_models import Message
 from .app import invalid_result, new_debate_id
@@ -38,7 +39,9 @@ STATIC = {"/": ("index.html", "text/html"), "/index.html": ("index.html", "text/
           "/app.js": ("app.js", "text/javascript"), "/chats.js": ("chats.js", "text/javascript"),
           "/styles.css": ("styles.css", "text/css")}
 MAX_BODY = 1_000_000
+LIVE_STALE_SECONDS = 2400         # longer than the slowest model call: older files are from a crashed run
 SOURCE_PATH = re.compile(r"^/api/source/([0-9a-f]{32})/(P-[0-9a-f]{12})(/document)?$")
+LIVE_PATH = re.compile(r"^/api/live/([0-9a-f]{32})$")
 
 
 def state_dir():
@@ -83,15 +86,21 @@ def read_document(doc_id):
 
 
 class Store:
-    """Read-only view of stored debates."""
+    """Read-only view of stored debates: state/ and the parallel runs under state/cases/."""
 
     def __init__(self, directory):
-        self.path = Path(directory) / "events.sqlite"
+        self.directory = Path(directory)
+        self.path = self.directory / "events.sqlite"
 
-    def _rows(self, query, *params):
-        if not self.path.is_file():
+    def directories(self):
+        cases = self.directory / "cases"
+        return [self.directory, *(sorted(p for p in cases.iterdir() if p.is_dir()) if cases.is_dir() else [])]
+
+    def _rows_in(self, directory, query, *params):
+        path = Path(directory) / "events.sqlite"
+        if not path.is_file():
             return []
-        db = sqlite3.connect(f"file:{self.path.as_posix()}?mode=ro", uri=True, timeout=2)
+        db = sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True, timeout=2)
         try:
             return db.execute(query, params).fetchall()
         except sqlite3.OperationalError:
@@ -99,48 +108,87 @@ class Store:
         finally:
             db.close()
 
+    def _rows(self, query, *params):
+        return self._rows_in(self.directory, query, *params)
+
+    def home(self, debate_id):
+        """The state directory that holds this debate, or None."""
+        for directory in self.directories():
+            if self._rows_in(directory, "SELECT 1 FROM debates WHERE debate_id=?", debate_id):
+                return directory
+        return None
+
+    def case_name(self, directory):
+        return None if Path(directory) == self.directory else Path(directory).name
+
     def results(self):
         out = []
-        for debate_id, created, result in self._rows(
-                "SELECT debate_id, created_at, result FROM debates WHERE result IS NOT NULL "
-                "ORDER BY created_at DESC LIMIT 50"):
-            status = json.loads(result).get("status")
-            out.append({"debate_id": debate_id, "created_at": created, "status": status})
-        return out
+        for directory in self.directories():
+            for debate_id, created, result in self._rows_in(directory,
+                    "SELECT debate_id, created_at, result FROM debates WHERE result IS NOT NULL "
+                    "ORDER BY created_at DESC LIMIT 50"):
+                out.append({"debate_id": debate_id, "created_at": created, "status": json.loads(result).get("status"),
+                            "case": self.case_name(directory)})
+        return sorted(out, key=lambda item: item["created_at"], reverse=True)[:50]
 
     def result(self, debate_id):
-        rows = self._rows("SELECT result FROM debates WHERE debate_id=?", debate_id)
+        directory = self.home(debate_id)
+        rows = self._rows_in(directory, "SELECT result FROM debates WHERE debate_id=?", debate_id) if directory else []
         return rows[0][0] if rows and rows[0][0] else None
 
     def passage(self, debate_id, passage_id):
         """The exact passage this debate read, or None: nothing outside the debate can be opened."""
-        rows = self._rows("SELECT payload FROM passages WHERE debate_id=? AND passage_id=?", debate_id, passage_id)
+        directory = self.home(debate_id)
+        rows = self._rows_in(directory, "SELECT payload FROM passages WHERE debate_id=? AND passage_id=?",
+                             debate_id, passage_id) if directory else []
         return json.loads(rows[0][0]) if rows else None
 
     def newest_events(self, since):
         rows = self._rows("SELECT COUNT(*) FROM events WHERE at >= ?", since)
         return rows[0][0] if rows else 0
 
+    def live_path(self, debate_id):
+        directory = self.home(debate_id)
+        path = Path(directory) / f"live-{debate_id}.json" if directory else None
+        return path if path and path.is_file() and self.result(debate_id) is None else None
+
+    def running(self):
+        """Debates that are writing a live view, wherever they were started."""
+        out = []
+        for directory in self.directories():
+            for path in directory.glob("live-*.json"):
+                debate_id = path.stem[len("live-"):]
+                if time.time() - path.stat().st_mtime < LIVE_STALE_SECONDS and self.live_path(debate_id):
+                    progress = self.progress_of(directory, debate_id)
+                    out.append({"debate_id": debate_id, "case": self.case_name(directory),
+                                "round": progress["round"], "phase": progress["phase"]})
+        return sorted(out, key=lambda item: item["case"] or "")
+
     def progress(self, since):
         """Interim state of the debate started at `since`, from its events. Read-only."""
         rows = self._rows("SELECT debate_id FROM debates WHERE created_at >= ? ORDER BY created_at DESC LIMIT 1", since - 2)
-        if not rows:
-            return None
-        debate_id = rows[0][0]
-        last = self._rows("SELECT phase, round FROM events WHERE debate_id=? ORDER BY seq DESC LIMIT 1", debate_id)
-        counts = dict(self._rows("SELECT type, COUNT(*) FROM events WHERE debate_id=? GROUP BY type", debate_id))
+        return self.progress_of(self.directory, rows[0][0]) if rows else None
+
+    def progress_of(self, directory, debate_id):
+        rows = lambda query, *params: self._rows_in(directory, query, *params)
+        last = rows("SELECT phase, round FROM events WHERE debate_id=? ORDER BY seq DESC LIMIT 1", debate_id)
+        counts = dict(rows("SELECT type, COUNT(*) FROM events WHERE debate_id=? GROUP BY type", debate_id))
         rounds = [{"round": number, **{k: payload[k] for k in ("complete", "streak", "satisfaction") if k in payload}}
-                  for number, payload in ((n, json.loads(p)) for n, p in self._rows(
+                  for number, payload in ((n, json.loads(p)) for n, p in rows(
                       "SELECT round, payload FROM events WHERE debate_id=? AND type='round_closed' ORDER BY seq", debate_id))]
-        proposals = self._rows("SELECT payload FROM events WHERE debate_id=? AND type='proposal_created' ORDER BY seq DESC LIMIT 1", debate_id)
+        proposals = rows("SELECT payload FROM events WHERE debate_id=? AND type='proposal_created' ORDER BY seq DESC LIMIT 1", debate_id)
         proposal = None
         if proposals:
             data = json.loads(proposals[0][0])
             proposal = {"version": data["version"], "round": data["round"], "meta_update": data["meta_update"],
                         "clauses": [c["text"] for c in data["clauses"]]}
+        marks = [at for (at,) in rows("SELECT at FROM events WHERE debate_id=? AND type IN ('package_published', 'round_closed') ORDER BY seq", debate_id)]
+        spans = [b - a for a, b in zip(marks, marks[1:])]
         return {"debate_id": debate_id, "phase": last[0][0] if last else None, "round": last[0][1] if last else 0,
                 "events": sum(counts.values()), "rejected": counts.get("validation_failure", 0),
-                "decisions": counts.get("decision_recorded", 0), "rounds": rounds[-6:], "proposal": proposal}
+                "decisions": counts.get("decision_recorded", 0), "rounds": rounds[-6:], "proposal": proposal,
+                "round_started_at": marks[-1] if marks else None,
+                "average_round_seconds": sum(spans) / len(spans) if spans else None}
 
 
 def kill_tree(process):
@@ -204,6 +252,14 @@ class Runner:
             self.stopping = True
             return "stopping"
 
+    def owns(self, store, debate_id):
+        """True if this server started the debate and can stop it."""
+        with self.lock:
+            if self.process is None or self.process.poll() is not None:
+                return False
+            progress = store.progress(self.started)
+            return bool(progress) and progress["debate_id"] == debate_id
+
     def cancel(self):
         """Stops the running debate, including child processes. Returns False if none is running."""
         with self.lock:
@@ -266,11 +322,37 @@ def make_handler(store, runner, allowed_hosts, asker=None, documents=read_docume
             elif path == "/api/actors":
                 self._json(200, actor_names())
             elif path.startswith("/api/ask/") and asker:
-                self._json(200, asker.history(path.rsplit("/", 1)[1]))
+                debate_id = path.rsplit("/", 1)[1]
+                self._json(200, asker.at(store.home(debate_id)).history(debate_id))
             elif SOURCE_PATH.match(path):
                 self._source(SOURCE_PATH.match(path))
+            elif path == "/api/running":
+                self._json(200, store.running())
+            elif LIVE_PATH.match(path):
+                self._live(LIVE_PATH.match(path).group(1))
             else:
                 self._json(404, {"message": "Nicht gefunden."})
+
+        def _live(self, debate_id):
+            """The newest partial result. The file is only sent when it changed since `seen`."""
+            final = store.result(debate_id)
+            if final:
+                self._send(200, f'{{"running": false, "result": {final}}}')
+                return
+            path = store.live_path(debate_id)
+            if path is None:
+                self._json(404, {"message": "Zu dieser debAIte gibt es noch keinen Zwischenstand."})
+                return
+            stamp = str(path.stat().st_mtime_ns)
+            seen = dict(parse_qsl(self.path.partition("?")[2])).get("seen")
+            status = {"running": True, "stamp": stamp, "own": runner.owns(store, debate_id),
+                      "progress": store.progress_of(store.home(debate_id), debate_id)}
+            head = json.dumps(status, ensure_ascii=False)[:-1]
+            try:
+                body = "null" if seen == stamp else path.read_text(encoding="utf-8")
+            except OSError:         # being replaced this very moment
+                body = "null"
+            self._send(200, f'{head}, "result": {body}}}')
 
         def _source(self, match):
             debate_id, passage_id, whole = match.groups()
@@ -297,7 +379,7 @@ def make_handler(store, runner, allowed_hosts, asker=None, documents=read_docume
             try:
                 body = json.loads(raw)
                 debate_id = str(body["debate_id"])
-                self._json(200, asker.answer(debate_id, body.get("question"), store.result(debate_id)))
+                self._json(200, asker.at(store.home(debate_id)).answer(debate_id, body.get("question"), store.result(debate_id)))
             except (ValueError, KeyError, TypeError):
                 self._json(400, {"message": "Die Nachfrage ist ungültig."})
             except AskError as exc:

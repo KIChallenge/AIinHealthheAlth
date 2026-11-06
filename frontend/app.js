@@ -311,9 +311,10 @@ function seekThread(pos) {
 }
 
 function metaNodes() {
-  const nodes = [h("div", { class: "system" }, text("span", view.stored
-    ? "Der Meta-Moderator antwortet nur aus dem Protokoll dieser debAIte. Die debAIte selbst ändert sich dadurch nicht."
-    : "Nachfragen gehen nur bei gespeicherten debAItes, nicht bei einer geöffneten Datei."))];
+  const nodes = [h("div", { class: "system" }, text("span", live.id
+    ? "Nachfragen gehen, sobald die debAIte fertig ist."
+    : view.stored ? "Der Meta-Moderator antwortet nur aus dem Protokoll dieser debAIte. Die debAIte selbst ändert sich dadurch nicht."
+      : "Nachfragen gehen nur bei gespeicherten debAItes, nicht bei einer geöffneten Datei."))];
   nodes.push(...view.turns.map(metaCard));
   if (view.asking) nodes.push(h("div", { class: "typing" }, text("span", "Meta-Moderator schreibt …")));
   return nodes;
@@ -331,8 +332,8 @@ function render(jump) {
   renderHeader(chat);
   const log = $("log");
   $("composer").hidden = !isMeta;
-  $("ask-input").disabled = !view.stored || view.asking;
-  $("ask-send").disabled = !view.stored || view.asking;
+  $("ask-input").disabled = !view.stored || view.asking || Boolean(live.id);
+  $("ask-send").disabled = !view.stored || view.asking || Boolean(live.id);
   const shown = isMeta ? [] : visible(chat, view.step);
   if (isMeta) {
     log.replaceChildren(...metaNodes());
@@ -377,6 +378,124 @@ function go(step) {
   view.step = Math.max(0, Math.min(step, view.data.steps.length - 1));
   view.thread = null;
   render(true);
+}
+
+/* ---- live: a running debate, refreshed from the partial results its process writes ---- */
+const LIVE_POLL_MS = 3000;
+const live = { id: null, timer: null, ticker: null, stamp: null, status: null };
+
+const threadKey = (message) => `${message.step}|${message.senderId}|${message.tag}`;
+
+function twoDigits(value) {
+  return String(value).padStart(2, "0");
+}
+
+function duration(seconds) {
+  const whole = Math.max(0, Math.round(seconds));
+  const minutes = Math.floor(whole / 60);
+  return minutes >= 60 ? `${Math.floor(minutes / 60)}:${twoDigits(minutes % 60)}:${twoDigits(whole % 60)}` : `${minutes}:${twoDigits(whole % 60)}`;
+}
+
+/* Runs every second, so the countdown moves between two refreshes. */
+function renderLiveBar() {
+  const status = live.status;
+  if (!status) return;
+  const now = Date.now() / 1000;
+  const p = status.progress || {};
+  $("live-phase").textContent = [p.round ? `Runde ${p.round}` : "Vorbereitung", `Phase: ${PHASES[p.phase] || "Start"}`].join(" · ");
+  const next = p.round_started_at && p.average_round_seconds ? p.round_started_at + p.average_round_seconds : null;
+  $("live-next").textContent = !next ? "Noch keine Schätzung, die erste Runde läuft"
+    : next > now ? `Nächste Runde in ca. ${duration(next - now)}` : "Diese Runde dauert länger als der Schnitt";
+  const timing = view.result && view.result.timing ? view.result.timing : {};
+  const ending = timing.deliberation_ended_at ? timing.finalization_deadline_at : timing.deliberation_deadline_at;
+  const left = ending ? Date.parse(ending) / 1000 - now : null;
+  $("live-deadline").textContent = left === null ? "" : `${timing.deliberation_ended_at ? "Abschluss" : "Beratung"} endet spätestens in ${duration(left)}`;
+  $("live-stop").hidden = !status.own;
+  $("live-cancel").hidden = !status.own;
+}
+
+function stopWatching() {
+  clearTimeout(live.timer);
+  clearInterval(live.ticker);
+  Object.assign(live, { id: null, timer: null, ticker: null, stamp: null, status: null });
+  $("live-bar").hidden = true;
+}
+
+/* New data keeps your place: an open thread stays open, and the view follows the newest round
+   only if you were already on it. */
+function applyLive(partial) {
+  const log = $("log");
+  const atBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 80;
+  const atLatest = !view.data || view.step === view.data.steps.length - 1;
+  const parent = view.data ? threadParent() : null;
+  const key = parent ? threadKey(parent) : null;
+  const wasAtEnd = parent ? player.pos >= memberChat(parent, player.member).length : false;
+  view.result = partial;
+  view.data = buildChats(partial);
+  if (atLatest) view.step = view.data.steps.length - 1;
+  view.step = Math.min(view.step, view.data.steps.length - 1);
+  const again = key ? currentChat().messages.find((m) => threadKey(m) === key) : null;
+  view.thread = again ? again.id : null;
+  if (again && wasAtEnd && !player.playing) player.pos = memberChat(again, player.member).length;
+  const kept = log.scrollTop;
+  render(false);
+  log.scrollTop = atBottom ? log.scrollHeight : kept;
+}
+
+async function refreshLive(id) {
+  let answer;
+  try {
+    const seen = live.stamp ? `?seen=${live.stamp}` : "";
+    const response = await fetch(`api/live/${encodeURIComponent(id)}${seen}`);
+    if (live.id !== id) return;
+    if (!response.ok) { live.timer = setTimeout(() => refreshLive(id), LIVE_POLL_MS); return; }
+    answer = await response.json();
+  } catch {
+    if (live.id === id) live.timer = setTimeout(() => refreshLive(id), LIVE_POLL_MS);
+    return;
+  }
+  if (live.id !== id) return;
+  if (!answer.running) {
+    stopWatching();
+    openResult(answer.result, true);
+    refreshResults();
+    return;
+  }
+  Object.assign(live, { status: answer, stamp: answer.stamp });
+  if (answer.result) applyLive(answer.result);
+  renderLiveBar();
+  live.timer = setTimeout(() => refreshLive(id), LIVE_POLL_MS);
+}
+
+async function openLive(id) {
+  stopWatching();
+  const response = await fetch(`api/live/${encodeURIComponent(id)}`);
+  if (!response.ok) return false;
+  const answer = await response.json();
+  if (!answer.running) { openResult(answer.result, true); return true; }
+  Object.assign(live, { id, stamp: answer.stamp, status: answer });
+  try { history.replaceState(null, "", `?debatte=${id}`); } catch { /* ignore */ }
+  location.hash = "";
+  openResult(answer.result, true);
+  view.step = view.data.steps.length - 1;
+  render(true);
+  $("live-bar").hidden = false;
+  renderLiveBar();
+  live.ticker = setInterval(renderLiveBar, 1000);
+  live.timer = setTimeout(() => refreshLive(id), LIVE_POLL_MS);
+  return true;
+}
+
+async function refreshRunning() {
+  try {
+    const response = await fetch("api/running");
+    if (!response.ok) return;
+    const items = await response.json();
+    $("running-title").hidden = !items.length;
+    $("running").replaceChildren(...items.map((item) => h("li", null, h("button", {
+      type: "button", class: "text-link", onclick: () => openLive(item.debate_id),
+    }, `${item.case ? `${item.case}, ` : ""}${item.round ? `Runde ${item.round}` : "Vorbereitung"}: live ansehen ›`))));
+  } catch { /* the list only helps; the page works without it */ }
 }
 
 function openResult(result, stored) {
@@ -497,6 +616,8 @@ async function openWholeDocument() {
 
 function closeChat() {
   stopPlayer();
+  stopWatching();
+  refreshRunning();
   document.body.dataset.view = "input";
   try { history.replaceState(null, "", location.pathname); } catch { /* ignore */ }
 }
@@ -667,7 +788,7 @@ async function refreshResults() {
     $("saved-title").hidden = !items.length;
     $("saved").replaceChildren(...items.map((item) => h("li", null, h("button", {
       type: "button", class: "text-link", onclick: () => openStored(item.debate_id),
-    }, `${new Date(item.created_at * 1000).toLocaleString("de-AT")}, ${L.RESULT[item.status] || item.status} ›`))));
+    }, `${item.case ? `${item.case}, ` : ""}${new Date(item.created_at * 1000).toLocaleString("de-AT")}, ${L.RESULT[item.status] || item.status} ›`))));
   } catch {
     server.available = false;
     $("start").disabled = true;
@@ -677,8 +798,8 @@ async function refreshResults() {
 
 async function openStored(id) {
   const response = await fetch(`api/results/${encodeURIComponent(id)}`);
-  if (!response.ok) { notice("Dieses Ergebnis ist nicht verfügbar."); return; }
-  openResult(await response.json(), true);
+  if (response.ok) openResult(await response.json(), true);
+  else if (!await openLive(id)) notice("Dieses Ergebnis ist nicht verfügbar.");
 }
 
 const PHASES = { deliberation: "Start", preparation: "Vorbereitung", review: "Prüfung", challenge: "Widersprüche", revision: "Überarbeitung",
@@ -715,6 +836,8 @@ function renderProgress(status) {
     h("ol", null, p.proposal.clauses.map((clause) => text("li", clause)))] : []));
 }
 
+const run = { opened: null };
+
 async function stopRun() {
   if (!confirm("Beratung jetzt beenden und auswerten? Der letzte vollständige Vorschlag wird eingefroren, das dauert noch einige Minuten.")) return;
   const response = await fetch("api/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
@@ -733,12 +856,17 @@ async function pollRun() {
   if (status.running) {
     showRun(true, "");
     renderProgress(status);
+    const id = status.progress && status.progress.debate_id;
+    if (id && id !== run.opened) {      // once only: after "Zur Eingabe" you stay on the input screen
+      if (await openLive(id)) run.opened = id;
+    }
     setTimeout(pollRun, 3000);
     return;
   }
   showRun(false, status.cancelled ? "Die debAIte wurde abgebrochen." : "");
   await refreshResults();
-  if (status.result) openResult(status.result, true);
+  if (status.cancelled && live.id) { stopWatching(); document.body.dataset.view = "input"; }
+  if (status.result && !live.id && view.result?.debate_id !== status.result.debate_id) openResult(status.result, true);
 }
 
 async function startRun() {
@@ -780,6 +908,8 @@ $("panel-form").addEventListener("submit", (event) => event.preventDefault());
 $("start").addEventListener("click", startRun);
 $("cancel-run").addEventListener("click", cancelRun);
 $("stop-run").addEventListener("click", stopRun);
+$("live-stop").addEventListener("click", stopRun);
+$("live-cancel").addEventListener("click", cancelRun);
 $("file").addEventListener("change", (event) => loadFile(event.target.files[0]));
 $("open-pasted").addEventListener("click", () => loadText($("request").value));
 $("scenario").addEventListener("change", (event) => {
@@ -832,4 +962,6 @@ refreshResults().then(async () => {
   if (requested) await openStored(requested);
   const status = await (await fetch("api/run")).json();
   if (status.running) pollRun();
+  refreshRunning();
+  setInterval(() => { if (document.body.dataset.view === "input") refreshRunning(); }, 5000);
 });

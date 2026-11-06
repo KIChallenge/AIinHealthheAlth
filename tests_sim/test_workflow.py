@@ -754,3 +754,18 @@ def test_process_lock_enforces_single_process(settings):
         ProcessLock(settings.state_dir).acquire()
     first.release()
     ProcessLock(settings.state_dir).acquire().release()
+
+
+def test_reports_may_cite_challenges(harness):
+    """Live debate 7 lost its evolution report for citing a challenge, the most telling kind of event."""
+    from healthsim.assemble import collect_reference_problems
+    from healthsim.api_models import DebateResult
+    from healthsim.workflow import known_references
+
+    state = {"task": {"assumptions": []}, "challenges": {"CH-1": {"challenge_id": "CH-1"}}}
+    assert "CH-1" in known_references(state)
+    h = harness()
+    result = DebateResult.model_validate(h.run())
+    if result.challenges:
+        result.debate_evolution.refs = [result.challenges[0].challenge_id]
+        assert collect_reference_problems(result) == []

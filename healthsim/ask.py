@@ -89,6 +89,10 @@ class Asker:
         self.llm, self.adapter, self.env = llm, adapter, env
         self.clock = clock or RealClock()
 
+    def at(self, directory):
+        """The same asker for a debate stored elsewhere, such as a parallel run."""
+        return Asker(directory or self.directory, self.llm, self.adapter, self.env, self.clock)
+
     def history(self, debate_id):
         events = EventStore(self.directory / "events.sqlite")
         try:

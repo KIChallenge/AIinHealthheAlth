@@ -15,6 +15,8 @@
       <img class="hero-logo" src="logo.svg" alt="" width="96" height="96">
       <h1>deb<span class="ai">AI</span>te</h1>
       <p>Frage stellen und die debAIte Runde für Runde mitlesen. Du moderierst, die Institutionen diskutieren in der Gruppe, und im Thread prüft der Moderatorenrat ihre Beiträge.</p>
+      <h2 id="running-title" class="saved-title" hidden>Laufende debAItes</h2>
+      <ul id="running"></ul>
       <h2 id="saved-title" class="saved-title" hidden>Gespeicherte debAItes</h2>
       <ul id="saved"></ul>
     </section>
@@ -87,6 +89,15 @@
     </nav>
 
     <div class="screen">
+      <section id="live-bar" class="live-bar" aria-label="Live-Stand" hidden>
+        <span class="live-dot">Live</span>
+        <span id="live-phase"></span>
+        <span id="live-next"></span>
+        <span id="live-deadline"></span>
+        <span class="spacer"></span>
+        <button id="live-stop" type="button" class="pill small" hidden>Stoppen und auswerten</button>
+        <button id="live-cancel" type="button" class="pill small" hidden>Abbrechen</button>
+      </section>
       <header class="debate-bar">
         <div class="debate-text">
           <p class="debate-label">Ursprüngliche Frage</p>

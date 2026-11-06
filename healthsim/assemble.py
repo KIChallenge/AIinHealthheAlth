@@ -175,7 +175,7 @@ def collect_reference_problems(result):
     decisions = {d.decision_id for d in result.decisions}
     ids |= assessments | decisions
     findings = {f.finding_id for r in result.reviews for f in r.findings}
-    ids |= findings
+    ids |= findings | {c.challenge_id for c in result.challenges}
     problems = []
 
     def need(ref, where):

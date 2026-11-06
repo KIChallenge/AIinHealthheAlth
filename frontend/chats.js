@@ -78,9 +78,11 @@
     const times = {};
     for (const event of list(result.timeline)) times[event.event_id] = event.at;
     const rounds = roundNumbers(result);
+    const live = Boolean(result.live);
+    const finishing = !live || Boolean((result.timing || {}).deliberation_ended_at);
     const steps = [{ id: "vorbereitung", label: "Vorbereitung", round: null },
       ...rounds.map((round) => ({ id: `runde-${round}`, label: `Runde ${round}`, round })),
-      { id: "abschluss", label: "Abschluss", round: null }];
+      ...(finishing ? [{ id: "abschluss", label: "Abschluss", round: null }] : [])];
     const stepOf = (round) => Math.max(rounds.indexOf(round) + 1, 0);
     const last = steps.length - 1;
     const actors = list(result.actors);
@@ -154,7 +156,9 @@
         const theirs = answered.filter((c) => findingById[c.finding_id] && findingById[c.finding_id].reviewer === member.id);
         if (own.length || theirs.length) perMember[member.id] = conclusionText(own, theirs);
       }
-      return message(step, "system", { conclusion: true, perMember, text: conclusionText(reviewed, answered) });
+      const named = (text) => (live ? text.replace("Ergebnis:", "Zwischenstand:") : text);
+      for (const id of Object.keys(perMember)) perMember[id] = named(perMember[id]);
+      return message(step, "system", { conclusion: true, perMember, text: named(conclusionText(reviewed, answered)) });
     }
 
     const assessmentItems = (assessed) => assessed.map((a) => ({
@@ -225,7 +229,8 @@
         }
       }
       const proposals = list(result.proposal_history).filter((p) => p.round === round).sort((a, b) => a.version - b.version);
-      if (!proposals.length) group.push(message(step, "system", { text: "Keine neue Fassung in dieser Runde." }));
+      const open = live && round === rounds[rounds.length - 1];      // its proposal may still come
+      if (!proposals.length && !open) group.push(message(step, "system", { text: "Keine neue Fassung in dieser Runde." }));
       for (const proposal of proposals) {
         const post = message(step, "out", moderator({ tag: `Vorschlag, Fassung ${proposal.version}`, time: proposal.created_at,
           items: list(proposal.clauses).map((c, i) => ({ number: i + 1, text: c.text, note: `Rechtlich: ${LEGAL[c.legal_status] || c.legal_status}`, sources: cited(c.premises) })),
@@ -276,12 +281,13 @@
     /* A debate that ended before publication still shows what each institution prepared. */
     if (!rounds.length) {
       for (const actor of actors) {
-        const post = standpointPost(actor, last, "Vorbereitung, nicht veröffentlicht");
+        const post = standpointPost(actor, finishing ? last : 0, finishing ? "Vorbereitung, nicht veröffentlicht" : "Vorbereitung, läuft");
         if (post) group.push(post);
       }
     }
 
     /* Final phase */
+    const finalPhase = () => {
     const report = result.report || {};
     const consensus = report.Konsens || {};
     const frozen = result.final_proposal;
@@ -296,7 +302,7 @@
       ? message(last, "out", moderator({ tag: `Eingefrorener Vorschlag, Fassung ${frozen.version}`,
         items: list(frozen.clauses).map((c, i) => ({ number: i + 1, text: c.text, note: `Rechtlich: ${LEGAL[c.legal_status] || c.legal_status}`, sources: cited(c.premises) })),
         note: ADMISSIBILITY[frozen.legal_admissibility] || null }))
-      : message(last, "system", { text: "Kein vollständiger Vorschlag. Es wird keine Einigung ausgewiesen." });
+      : message(last, "system", { text: live ? "Der Vorschlag wird eingefroren …" : "Kein vollständiger Vorschlag. Es wird keine Einigung ausgewiesen." });
     group.push(finalPost);
     for (const review of finalReviews) {
       (frozen ? finalPost.replies : group).push(reviewMessage(last, review, STAGE.final));
@@ -312,7 +318,9 @@
     section("Auswirkungen", list(report.Auswirkungen), (i) => ({ text: i.beschreibung }));
     const narrative = (result.debate_evolution || {}).narrative;
     if (narrative) group.push(message(last, "out", moderator({ tag: "So entwickelte sich die debAIte", text: narrative.replace(/\*\*/g, "") })));
-    for (const missing of list(report.fehlende_abschnitte)) group.push(message(last, "system", { text: `Fehlt: ${missing}` }));
+    if (!live) for (const missing of list(report.fehlende_abschnitte)) group.push(message(last, "system", { text: `Fehlt: ${missing}` }));
+    };
+    if (finishing) finalPhase();
 
     const chats = [{ id: "gruppe", name: "debAIte", kind: "group",
       subtitle: `Du, ${actors.map((a) => a.name).join(", ")}`, messages: group },

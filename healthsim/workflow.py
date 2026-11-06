@@ -220,6 +220,7 @@ def known_references(state):
         refs |= {c["claim_id"] for c in arg["claims"]}
     refs |= set(state.get("negotiation") or {}) | set(state.get("decisions") or {})
     refs |= set(state.get("assessments") or {}) | set(state.get("proposals") or {})
+    refs |= {c["challenge_id"] for c in (state.get("challenges") or {}).values()}
     for proposal in (state.get("proposals") or {}).values():
         refs |= {c["clause_id"] for c in proposal["clauses"]}
     for review in (state.get("reviews") or {}).values():
