@@ -121,11 +121,11 @@ def test_word_count_uses_whitespace_units():
 
 
 def test_word_limit_counts_model_text_and_citations_but_not_program_labels():
-    long_claim = claim(behauptung=" ".join(["Wort"] * 95), quellen=["P-1"])
+    long_claim = claim(behauptung=" ".join(["Wort"] * 295), quellen=["P-1"])
     rendered = rules.render_argument(Argument(claims=[long_claim]))
     assert "Behauptung:" not in rendered and "P-1" in rendered
-    assert rules.word_problem(rendered, "ordinary", "A")          # 95 + 2 + 3 + 1 citation = 101
-    shorter = Argument(claims=[claim(behauptung=" ".join(["Wort"] * 94))])
+    assert rules.word_problem(rendered, "ordinary", "A")          # 295 + 2 + 3 + 1 citation = 301
+    shorter = Argument(claims=[claim(behauptung=" ".join(["Wort"] * 294))])
     assert not rules.word_problem(rules.render_argument(shorter), "ordinary", "A")
 
 
@@ -142,7 +142,7 @@ def test_review_schemas_only_offer_the_roles_own_assessments():
     assert "no_conflict_identified" not in schema and "qualified_support" in schema
 
 
-@pytest.mark.parametrize("name, value", [("ordinary", 100), ("profile", 300), ("priorities", 600), ("assessment", 100),
+@pytest.mark.parametrize("name, value", [("ordinary", 300), ("profile", 300), ("priorities", 600), ("assessment", 300),
                                          ("final_summary", 600), ("conclusion", 2000), ("evolution", 800)])
 def test_budgets_match_the_specification(name, value):
     assert rules.WORD_LIMITS[name] == value

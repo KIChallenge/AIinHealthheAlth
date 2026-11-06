@@ -2,6 +2,8 @@
    content can never inject markup. */
 const { buildChats, visible, labels: L } = window.DebateChats;
 const AUTOPLAY_SECONDS = 12;
+const OPERATORS = ["<", "<=", "=", ">=", ">"];
+const SUGGESTIONS = ["Warum gab es keine Einigung?", "Was blieb rechtlich offen?", "Wo lag der größte Konflikt?"];
 const SAMPLE = {
   schema_version: "1.0",
   actors: ["Gesundheitsministerium", "Sozialversicherung", "Ärztekammer"],
@@ -37,7 +39,9 @@ function avatar(chat) {
   if (chat.kind === "group") {
     return h("span", { class: "avatar group", "aria-hidden": "true" }, h("span"), h("span"), h("span"));
   }
-  return h("span", { class: `avatar ${chat.kind}`, "aria-hidden": "true" }, initials(chat.name));
+  if (chat.kind === "meta") return h("img", { class: "avatar meta", src: "logo.svg", alt: "" });
+  return h("span", { class: "avatar pair", "aria-hidden": "true" },
+    text("span", initials(chat.pair[0])), text("span", initials(chat.pair[1])));
 }
 
 function clock(value) {
@@ -60,42 +64,57 @@ function bubbleItem(item) {
       item.note ? text("p", item.note, "item-note") : null));
 }
 
-function messageNode(message, chat) {
+function replyLabel(count) {
+  return count === 1 ? "1 Antwort ›" : `${count} Antworten ›`;
+}
+
+function messageNode(message, inThread) {
   if (message.side === "system") {
     return h("div", { class: "system" }, text("span", message.text));
   }
   const time = clock(message.time);
-  const showSender = message.side === "in" && (chat.kind === "group" || message.senderId !== chat.id);
+  const replies = message.replies || [];
   return h("article", { class: `bubble ${message.side}` },
-    showSender ? text("p", message.sender, "sender") : null,
+    message.side !== "out" ? text("p", message.sender, "sender") : null,
     message.tag ? text("p", message.tag, "tag") : null,
     message.quote ? text("blockquote", message.quote) : null,
     message.text ? message.text.split(/\n+/).map((para) => text("p", para)) : null,
     message.items && message.items.length ? h("ul", { class: "bubble-items" }, message.items.map(bubbleItem)) : null,
     message.note ? text("p", message.note, "item-note") : null,
-    time ? text("time", time) : null);
+    time ? text("time", time) : null,
+    !inThread && replies.length ? h("button", {
+      type: "button", class: "text-link thread-link", onclick: () => { view.thread = message.id; renderThread(); },
+    }, replyLabel(replies.length)) : null);
 }
 
 /* ---- chat view ------------------------------------------------------------ */
-const view = { result: null, data: null, step: 0, chat: "gruppe", timer: null, json: false };
+const view = { result: null, data: null, step: 0, chat: "gruppe", thread: null, timer: null, json: false,
+  stored: false, turns: [], asking: false };
 
 const currentChat = () => view.data.chats.find((c) => c.id === view.chat) || view.data.chats[0];
 
 function renderList() {
-  const items = view.data.chats.map((chat) => {
-    const shown = visible(chat, view.step);
+  const nodes = [];
+  let section = null;
+  for (const chat of view.data.chats) {
+    if (chat.section && chat.section !== section) {
+      section = chat.section;
+      nodes.push(h("li", { class: "section-label" }, section));
+    }
+    const shown = chat.kind === "meta" ? [] : visible(chat, view.step);
     const lastMessage = [...shown].reverse().find((m) => m.side !== "system");
     const fresh = shown.filter((m) => m.step === view.step && m.side !== "system").length;
-    const preview = lastMessage ? (lastMessage.text || lastMessage.tag || "") : "Noch keine Nachricht";
-    return h("li", null, h("button", {
+    const preview = chat.kind === "meta" ? chat.subtitle : chat.pair ? `mit ${chat.pair[1]}`
+      : lastMessage ? (lastMessage.text || lastMessage.tag || "") : "Noch keine Nachricht";
+    nodes.push(h("li", null, h("button", {
       type: "button", class: `chat-entry${chat.id === view.chat ? " active" : ""}`,
       "aria-current": chat.id === view.chat ? "true" : null,
-      onclick: () => { view.chat = chat.id; view.json = false; document.body.dataset.pane = "chat"; render(true); },
+      onclick: () => { view.chat = chat.id; view.thread = null; view.json = false; document.body.dataset.pane = "chat"; render(true); },
     }, avatar(chat), h("span", { class: "chat-entry-body" },
-      text("span", chat.name, "chat-name"), text("span", preview, "chat-preview")),
-    fresh ? h("span", { class: "badge", title: `${fresh} neue Nachrichten in diesem Schritt` }, fresh) : null));
-  });
-  $("chat-list").replaceChildren(...items);
+      text("span", chat.pair ? chat.pair[0] : chat.name, "chat-name"), text("span", preview, "chat-preview")),
+    fresh ? h("span", { class: "badge", title: `${fresh} neue Nachrichten in diesem Schritt` }, fresh) : null)));
+  }
+  $("chat-list").replaceChildren(...nodes);
 }
 
 function renderHeader(chat) {
@@ -111,14 +130,53 @@ function renderHeader(chat) {
   $("chat-title").replaceChildren(avatar(chat), h("div", null, text("h2", chat.name), text("p", chat.subtitle)));
 }
 
+function renderThread() {
+  const parent = view.thread ? currentChat().messages.find((m) => m.id === view.thread && m.step <= view.step) : null;
+  if (!parent) view.thread = null;
+  document.querySelector(".window").classList.toggle("with-thread", Boolean(parent));
+  $("thread").hidden = !parent;
+  if (parent) {
+    $("thread-title").textContent = `Thread: ${parent.tag || parent.sender}`;
+    $("thread-log").replaceChildren(messageNode(parent, true),
+      h("div", { class: "thread-count" }, text("span", replyLabel(parent.replies.length).replace(" ›", ""))),
+      ...parent.replies.map((reply) => messageNode(reply, true)));
+    $("thread-log").scrollTop = 0;
+  }
+}
+
+function metaNodes() {
+  const nodes = [h("div", { class: "system" }, text("span", view.stored
+    ? "Der Meta-Moderator antwortet nur aus dem Protokoll dieser debAIte. Die debAIte selbst ändert sich dadurch nicht."
+    : "Nachfragen gehen nur bei gespeicherten debAItes, nicht bei einer geöffneten Datei."))];
+  for (const turn of view.turns) {
+    nodes.push(messageNode({ side: turn.role === "du" ? "out" : "in", sender: "Meta-Moderator", text: turn.text,
+      note: turn.refs && turn.refs.length ? `Belege: ${turn.refs.join(", ")}` : null,
+      time: turn.at }, true));
+  }
+  if (view.asking) nodes.push(h("div", { class: "system" }, text("span", "Meta-Moderator schreibt …")));
+  if (!view.turns.length && view.stored) {
+    nodes.push(h("div", { class: "suggestions" }, SUGGESTIONS.map((question) => h("button", {
+      type: "button", class: "pill", onclick: () => { $("ask-input").value = question; $("ask-input").focus(); },
+    }, question))));
+  }
+  return nodes;
+}
+
 function render(jump) {
   const chat = currentChat();
-  const shown = visible(chat, view.step);
+  const isMeta = chat.kind === "meta";
+  const shown = isMeta ? [] : visible(chat, view.step);
   renderList();
   renderHeader(chat);
   const log = $("log");
+  $("composer").hidden = !isMeta;
+  $("ask-input").disabled = !view.stored || view.asking;
+  $("ask-send").disabled = !view.stored || view.asking;
   if (view.json) {
-    log.replaceChildren(h("pre", { class: "json" }, JSON.stringify(shown.filter((m) => m.step === view.step), null, 2)));
+    log.replaceChildren(h("pre", { class: "json" }, JSON.stringify(isMeta ? view.turns : shown.filter((m) => m.step === view.step), null, 2)));
+  } else if (isMeta) {
+    log.replaceChildren(...metaNodes());
+    log.scrollTop = log.scrollHeight;
   } else {
     const nodes = [];
     let drawn = -1;
@@ -127,7 +185,7 @@ function render(jump) {
         drawn = message.step;
         nodes.push(h("div", { class: "divider", "data-step": drawn }, text("span", view.data.steps[drawn].label)));
       }
-      nodes.push(messageNode(message, chat));
+      nodes.push(messageNode(message, false));
     }
     if (!nodes.length) nodes.push(h("div", { class: "system" }, text("span", "In diesem Chat gibt es bis hierhin keine Nachricht.")));
     log.replaceChildren(...nodes);
@@ -139,15 +197,17 @@ function render(jump) {
   $("step-label").textContent = view.data.steps[view.step].label;
   $("json-toggle").textContent = view.json ? "Chat" : "JSON";
   $("json-toggle").setAttribute("aria-pressed", String(view.json));
-  if (jump) {
+  renderThread();
+  if (jump && !isMeta) {
     const start = log.querySelector(`[data-step="${view.step}"]`);
     log.scrollTop = start ? start.offsetTop - 8 : 0;      // .log is the offset parent
   }
-  try { history.replaceState(null, "", `#${view.step + 1}`); } catch { /* file:// in some browsers */ }
+  try { history.replaceState(null, "", `${location.search}#${view.step + 1}`); } catch { /* file:// in some browsers */ }
 }
 
 function go(step) {
   view.step = Math.max(0, Math.min(step, view.data.steps.length - 1));
+  view.thread = null;
   render(true);
 }
 
@@ -164,13 +224,45 @@ function setPlaying(on) {
   $("play").setAttribute("aria-pressed", String(on));
 }
 
-function openResult(result) {
+function openResult(result, stored) {
   const chat = new URLSearchParams(location.search).get("chat") || "gruppe";
-  Object.assign(view, { result, data: buildChats(result), chat, json: false });
+  Object.assign(view, { result, data: buildChats(result), chat, thread: null, json: false, stored: Boolean(stored), turns: [] });
   document.body.dataset.view = "chat";
   document.body.dataset.pane = "chat";
   const wanted = Number(location.hash.slice(1));
   go(Number.isInteger(wanted) && wanted >= 1 ? wanted - 1 : 0);
+  if (stored) loadTurns();
+}
+
+async function loadTurns() {
+  try {
+    const response = await fetch(`api/ask/${encodeURIComponent(view.result.debate_id)}`);
+    if (response.ok) {
+      view.turns = await response.json();
+      if (currentChat().kind === "meta") render(false);
+    }
+  } catch { /* the chat works without earlier questions */ }
+}
+
+async function ask(event) {
+  event.preventDefault();
+  const question = $("ask-input").value.trim();
+  if (!question || view.asking) return;
+  $("ask-input").value = "";
+  view.turns.push({ role: "du", text: question, at: Date.now() / 1000 });
+  view.asking = true;
+  render(false);
+  try {
+    const response = await fetch("api/ask", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ debate_id: view.result.debate_id, question }) });
+    const answer = await response.json();
+    view.turns.push({ role: "meta", text: response.ok ? answer.antwort : answer.message, refs: answer.refs || [], at: Date.now() / 1000 });
+  } catch {
+    view.turns.push({ role: "meta", text: "Der lokale Server ist nicht erreichbar.", at: Date.now() / 1000 });
+  }
+  view.asking = false;
+  render(false);
+  $("ask-input").focus();
 }
 
 function closeChat() {
@@ -181,7 +273,7 @@ function closeChat() {
 
 function downloadResult() {
   const blob = new Blob([JSON.stringify(view.result, null, 2)], { type: "application/json" });
-  const link = h("a", { href: URL.createObjectURL(blob), download: `debatte-${view.result.debate_id}.json` });
+  const link = h("a", { href: URL.createObjectURL(blob), download: `debaite-${view.result.debate_id}.json` });
   link.click();
   URL.revokeObjectURL(link.href);
 }
@@ -205,10 +297,108 @@ function loadText(raw) {
   }
   if (looksLikeResult(data)) {
     notice("");
-    openResult(data);
+    openResult(data, false);
   } else {
-    $("request").value = JSON.stringify(data, null, 2);
-    notice("Das ist eine Anfrage. Sie steht jetzt im Eingabefeld.");
+    setRequest(data);
+    notice("Das ist eine Anfrage. Sie steht jetzt in der Eingabe.");
+  }
+}
+
+/* ---- request form: the same request as the JSON tab, kept in sync ------------- */
+const form = { tab: "form", extra: {}, actors: [...SAMPLE.actors] };
+
+function labelled(label, control) {
+  return h("label", { class: "field" }, text("span", label, "field-label small"), control);
+}
+
+function removeButton(row) {
+  return h("button", { type: "button", class: "pill small", "aria-label": "Eintrag entfernen", onclick: () => row.remove() }, "Entfernen");
+}
+
+function assumptionRow(item = {}) {
+  const row = h("li", { class: "form-row", "data-id": item.id || null });
+  row.append(h("input", { type: "text", class: "f-description", "aria-label": "Annahme", placeholder: "Annahme beschreiben", value: item.description || "" }), removeButton(row));
+  return row;
+}
+
+function constraintRow(item = {}) {
+  const row = h("li", { class: "form-block", "data-id": item.id || null });
+  const select = h("select", { class: "f-operator", "aria-label": "Vergleich" },
+    h("option", { value: "" }, "Vergleich"), OPERATORS.map((op) => h("option", { value: op }, op)));
+  select.value = item.operator || "";
+  const hasNumber = [item.metric, item.value, item.unit, item.baseline, item.period].some((v) => v !== null && v !== undefined && v !== "");
+  row.append(
+    h("div", { class: "form-row" }, h("input", { type: "text", class: "f-description", "aria-label": "Beschränkung", placeholder: "Beschränkung beschreiben", value: item.description || "" }), removeButton(row)),
+    h("details", { open: hasNumber || null }, text("summary", "Als Messwert angeben"),
+      h("div", { class: "form-grid" },
+        labelled("Kennzahl", h("input", { type: "text", class: "f-metric", value: item.metric || "" })), labelled("Vergleich", select),
+        labelled("Wert", h("input", { type: "number", step: "any", class: "f-value", value: item.value ?? "" })),
+        labelled("Einheit", h("input", { type: "text", class: "f-unit", value: item.unit || "" })),
+        labelled("Bezugsgröße", h("input", { type: "text", class: "f-baseline", value: item.baseline || "" })),
+        labelled("Zeitraum", h("input", { type: "text", class: "f-period", value: item.period || "" })))));
+  return row;
+}
+
+function renderActors(selected) {
+  const names = [...new Set([...form.actors, ...selected])];
+  $("f-actors").replaceChildren(...names.map((name) => h("label", { class: "check" },
+    h("input", { type: "checkbox", value: name, checked: selected.includes(name) || null }), h("span", null, name))));
+}
+
+function fillForm(data) {
+  const { actors, question, reference_date: date, scenario_assumptions: assumptions, hard_constraints: constraints, ...extra } = data;
+  form.extra = extra;
+  renderActors(Array.isArray(actors) ? actors : []);
+  $("f-question").value = question || "";
+  $("f-date").value = date || "";
+  $("f-assumptions").replaceChildren(...(Array.isArray(assumptions) ? assumptions : []).map((a) => assumptionRow(a)));
+  $("f-constraints").replaceChildren(...(Array.isArray(constraints) ? constraints : []).map((c) => constraintRow(c)));
+}
+
+function readForm() {
+  const value = (row, cls) => row.querySelector(cls).value.trim();
+  const withId = (row, fields) => ({ ...(row.dataset.id ? { id: row.dataset.id } : {}), ...fields });
+  const request = { schema_version: "1.0", ...form.extra,
+    actors: [...$("f-actors").querySelectorAll("input:checked")].map((box) => box.value), question: $("f-question").value };
+  if ($("f-date").value) request.reference_date = $("f-date").value;
+  request.scenario_assumptions = [...$("f-assumptions").children].filter((row) => value(row, ".f-description"))
+    .map((row) => withId(row, { description: value(row, ".f-description") }));
+  request.hard_constraints = [...$("f-constraints").children].filter((row) => value(row, ".f-description")).map((row) => {
+    const item = withId(row, { description: value(row, ".f-description") });
+    for (const [key, cls] of [["metric", ".f-metric"], ["operator", ".f-operator"], ["unit", ".f-unit"], ["baseline", ".f-baseline"], ["period", ".f-period"]]) {
+      if (value(row, cls)) item[key] = value(row, cls);
+    }
+    if (value(row, ".f-value") !== "") item.value = Number(value(row, ".f-value"));
+    return item;
+  });
+  return request;
+}
+
+/* The active tab is the source; the other one is refreshed when you switch. */
+function setRequest(data) {
+  fillForm(data);
+  $("request").value = JSON.stringify(data, null, 2);
+}
+
+function currentRequest() {
+  return form.tab === "form" ? readForm() : JSON.parse($("request").value);
+}
+
+function setTab(tab) {
+  if (tab === form.tab) return;
+  try {
+    const data = currentRequest();
+    if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("erwartet wird ein Objekt");
+    setRequest(data);
+  } catch (error) {
+    notice(`Kein gültiges JSON: ${error.message}`);
+    return;
+  }
+  notice("");
+  form.tab = tab;
+  for (const name of ["form", "json"]) {
+    $(`tab-${name}`).setAttribute("aria-selected", String(name === tab));
+    $(`panel-${name}`).hidden = name !== tab;
   }
 }
 
@@ -216,7 +406,26 @@ async function loadFile(file) {
   if (file) loadText(await file.text());
 }
 
-const server = { available: false };
+const server = { available: false, scenarios: [] };
+
+async function loadActors() {
+  const response = await fetch("api/actors");
+  if (!response.ok) return;
+  const names = await response.json();
+  if (names.length) {
+    form.actors = names;
+    view.actorNames = names;
+    renderActors(readForm().actors);
+  }
+}
+
+async function loadScenarios() {
+  const response = await fetch("api/scenarios");
+  if (!response.ok) return;
+  server.scenarios = await response.json();
+  $("scenario-field").hidden = !server.scenarios.length;
+  $("scenario").append(...server.scenarios.map((s) => h("option", { value: s.id }, s.label)));
+}
 
 async function refreshResults() {
   try {
@@ -239,39 +448,85 @@ async function refreshResults() {
 async function openStored(id) {
   const response = await fetch(`api/results/${encodeURIComponent(id)}`);
   if (!response.ok) { notice("Dieses Ergebnis ist nicht verfügbar."); return; }
-  openResult(await response.json());
+  openResult(await response.json(), true);
 }
 
+const PHASES = { deliberation: "Start", preparation: "Vorbereitung", review: "Prüfung", challenge: "Widersprüche", revision: "Überarbeitung",
+  publication: "Veröffentlichung", negotiation: "Verhandlung", candidate: "Vorschlag", assessment: "Bewertung", freeze: "Einfrieren",
+  finalization: "Abschluss" };
+
 function showRun(running, message) {
+  document.body.dataset.run = running ? "on" : "off";
   $("start").disabled = running || !server.available;
-  $("start").textContent = running ? "Debatte läuft" : "Debatte starten";
   notice(message);
+}
+
+function renderProgress(status) {
+  const p = status.progress || {};
+  const minutes = Math.floor(status.elapsed_seconds / 60);
+  const seconds = String(Math.round(status.elapsed_seconds) % 60).padStart(2, "0");
+  const facts = [`Laufzeit ${minutes}:${seconds}`, `Phase: ${PHASES[p.phase] || "Start"}`];
+  if (p.round) facts.push(`Runde ${p.round}`);
+  if (p.proposal) facts.push(`Fassung ${p.proposal.version}`);
+  if (p.rejected) facts.push(`${p.rejected} Wiederholungen`);
+  if (status.stopping) facts.push("Wird ausgewertet");
+  $("stop-run").disabled = Boolean(status.stopping);
+  $("stop-run").textContent = status.stopping ? "Wird ausgewertet" : "Stoppen und auswerten";
+  $("run-facts").replaceChildren(...facts.map((fact) => h("li", null, fact)));
+  const rounds = p.rounds || [];
+  const actors = rounds.length ? rounds[rounds.length - 1].satisfaction.map((s) => s.actor_id) : [];
+  const names = Object.fromEntries((view.actorNames || []).map((n) => [n.toLowerCase().replace("ä", "ae"), n]));
+  $("run-rounds").replaceChildren(...(rounds.length ? [h("table", { class: "run-table" },
+    h("thead", null, h("tr", null, text("th", "Runde"), actors.map((a) => text("th", names[a] || a)), text("th", "Fertig"))),
+    h("tbody", null, rounds.map((r) => h("tr", null, text("td", r.round),
+      r.satisfaction.map((s) => text("td", `${s.met_count} von ${s.priority_count}`)), text("td", r.complete ? "ja" : "nein")))))]
+    : [text("p", "Noch keine Runde abgeschlossen.", "item-note")]));
+  $("run-proposal").replaceChildren(...(p.proposal ? [text("p", `Aktueller Vorschlag, Fassung ${p.proposal.version}`, "run-title"),
+    h("ol", null, p.proposal.clauses.map((clause) => text("li", clause)))] : []));
+}
+
+async function stopRun() {
+  if (!confirm("Beratung jetzt beenden und auswerten? Der letzte vollständige Vorschlag wird eingefroren, das dauert noch einige Minuten.")) return;
+  const response = await fetch("api/stop", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+  if (response.ok) $("stop-run").disabled = true;
+  else notice((await response.json()).message);
+}
+
+async function cancelRun() {
+  if (!confirm("debAIte wirklich abbrechen? Es gibt dann kein Endergebnis.")) return;
+  const response = await fetch("api/cancel", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+  if (!response.ok) notice((await response.json()).message);
 }
 
 async function pollRun() {
   const status = await (await fetch("api/run")).json();
   if (status.running) {
-    showRun(true, `Läuft seit ${Math.round(status.elapsed_seconds)} s, ${status.events} Ereignisse. Sie dauert bis zu 13 Minuten.`);
+    showRun(true, "");
+    renderProgress(status);
     setTimeout(pollRun, 3000);
     return;
   }
-  showRun(false, "");
+  showRun(false, status.cancelled ? "Die debAIte wurde abgebrochen." : "");
   await refreshResults();
-  if (status.result) openResult(status.result);
+  if (status.result) openResult(status.result, true);
 }
 
 async function startRun() {
   let body;
   try {
-    body = JSON.stringify(JSON.parse($("request").value));
+    body = JSON.stringify(currentRequest());
   } catch (error) {
     notice(`Kein gültiges JSON: ${error.message}`);
     return;
   }
-  if (!confirm("Die Debatte verbraucht Azure-Kontingent und dauert bis zu 13 Minuten. Starten?")) return;
+  if (form.tab === "form") {
+    const missing = [!$("f-question").value.trim() && "die Frage", !JSON.parse(body).actors.length && "mindestens eine Institution"].filter(Boolean);
+    if (missing.length) { notice(`Bitte ergänze ${missing.join(" und ")}.`); return; }
+  }
+  if (!confirm("Eine debAIte verbraucht Azure-Kontingent und dauert bis zu 30 Minuten. Starten?")) return;
   const response = await fetch("api/run", { method: "POST", headers: { "Content-Type": "application/json" }, body });
   const answer = await response.json();
-  if (answer.result) { openResult(answer.result); return; }
+  if (answer.result) { openResult(answer.result, false); return; }
   if (!response.ok) { notice(answer.message || "Der Start ist fehlgeschlagen."); return; }
   pollRun();
 }
@@ -289,17 +544,32 @@ $("json-toggle").addEventListener("click", () => { view.json = !view.json; rende
 $("download").addEventListener("click", downloadResult);
 $("close").addEventListener("click", closeChat);
 $("back").addEventListener("click", () => { document.body.dataset.pane = "list"; });
+$("thread-close").addEventListener("click", () => { view.thread = null; renderThread(); });
+$("composer").addEventListener("submit", ask);
+$("panel-form").addEventListener("submit", (event) => event.preventDefault());
 $("start").addEventListener("click", startRun);
+$("cancel-run").addEventListener("click", cancelRun);
+$("stop-run").addEventListener("click", stopRun);
 $("file").addEventListener("change", (event) => loadFile(event.target.files[0]));
 $("open-pasted").addEventListener("click", () => loadText($("request").value));
-$("sample").addEventListener("click", () => { $("request").value = JSON.stringify(SAMPLE, null, 2); notice(""); });
+$("scenario").addEventListener("change", (event) => {
+  const scenario = server.scenarios.find((s) => s.id === event.target.value);
+  setRequest(scenario ? scenario.request : SAMPLE);
+  notice("");
+});
+$("tab-form").addEventListener("click", () => setTab("form"));
+$("tab-json").addEventListener("click", () => setTab("json"));
+$("add-assumption").addEventListener("click", () => $("f-assumptions").append(assumptionRow()));
+$("add-constraint").addEventListener("click", () => $("f-constraints").append(constraintRow()));
 
 document.addEventListener("keydown", (event) => {
   if (document.body.dataset.view !== "chat" || event.ctrlKey || event.metaKey || event.altKey) return;
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)) return;
   const actions = {
     ArrowRight: () => step(() => go(view.step + 1)), ArrowLeft: () => step(() => go(view.step - 1)),
     Home: () => step(() => go(0)), End: () => step(() => go(view.data.steps.length - 1)),
-    " ": () => setPlaying(!view.timer), j: () => $("json-toggle").click(), Escape: closeChat,
+    " ": () => setPlaying(!view.timer), j: () => $("json-toggle").click(),
+    Escape: () => { if (view.thread) { view.thread = null; renderThread(); } else closeChat(); },
   };
   if (actions[event.key]) { event.preventDefault(); actions[event.key](); }
 });
@@ -311,9 +581,10 @@ for (const type of ["dragover", "drop"]) {
   });
 }
 
-$("request").value = JSON.stringify(SAMPLE, null, 2);
+setRequest(SAMPLE);
 refreshResults().then(async () => {
   if (!server.available) return;
+  await Promise.all([loadScenarios(), loadActors()]);
   const requested = new URLSearchParams(location.search).get("debatte");
   if (requested) await openStored(requested);
   const status = await (await fetch("api/run")).json();

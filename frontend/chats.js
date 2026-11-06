@@ -1,13 +1,11 @@
-/* Turns a debate result into chats and round steps. Pure data, no DOM, so it can be tested in
-   Node. Every message comes from a stored record. The group shows only what was published in
-   the debate; private work stays in the individual chats. */
+/* Turns a debate result into chats, threads and round steps. Pure data, no DOM, so it can be
+   tested in Node. Every message comes from a stored record. The group shows only what was
+   published in the debate; confidential reviews stay in the private reviewer-actor chats. */
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.DebateChats = factory();
 })(typeof self !== "undefined" ? self : this, function () {
   const REVIEWERS = { truthseeker: "TruthSeeker", legaleye: "LegalEye", ethicmind: "EthicMind" };
-  const REVIEWER_ROLE = { truthseeker: "Prüft Belege und Begründung", legaleye: "Prüft das geltende Recht",
-    ethicmind: "Prüft ethische Fragen" };
   const STATUS = { met: "erfüllt", partly_met: "teilweise", unmet: "nicht erfüllt", unclear: "unklar" };
   const DECISION = { accept: "Annahme", conditional: "Bedingte Annahme", reject: "Ablehnung", withdraw: "Rückzug" };
   const NEGOTIATION = { offer: "Angebot", counteroffer: "Gegenangebot", concession: "Zugeständnis",
@@ -15,7 +13,7 @@
   const RESULT = { completed: "Abgeschlossen", incomplete: "Unvollständig", needs_clarification: "Rückfrage",
     invalid_input: "Ungültige Eingabe", failed: "Fehlgeschlagen" };
   const STOP = { satisfaction_threshold: "Schwelle in zwei Runden erreicht",
-    deliberation_deadline: "Frist abgelaufen", execution_error: "Ausführungsfehler" };
+    deliberation_deadline: "Frist abgelaufen", operator_stop: "Von dir gestoppt", execution_error: "Ausführungsfehler" };
   const ADMISSIBILITY = { admissible_within_reviewed_sources: "Kein Konflikt in den geprüften Quellen",
     conditional: "Vertretbar unter Bedingungen", unresolved: "Rechtlich ungeklärt", inadmissible: "Unzulässig",
     not_reviewed: "Nicht geprüft" };
@@ -34,7 +32,6 @@
 
   const list = (value) => (Array.isArray(value) ? value : []);
   const isFinal = (record) => /^(AS|D)-final/.test(record.assessment_id || record.decision_id || "");
-  const proposalKey = (p) => `${p.proposal_id}-v${p.version}`;
 
   function roundNumbers(result) {
     const rounds = new Set();
@@ -61,10 +58,10 @@
   function messageResult(result) {
     const texts = [...list(result.clarification_questions).map((q) => q.frage), ...list(result.errors).map((e) => e.message)];
     const messages = [{ id: "status", step: 0, side: "system", text: RESULT[result.status] || "Ergebnis" },
-      ...texts.map((text, i) => ({ id: `m-${i}`, step: 0, side: "in", sender: "System", role: "program", text }))];
+      ...texts.map((text, i) => ({ id: `m-${i}`, step: 0, side: "in", sender: "System", role: "program", text, replies: [] }))];
     return { header: { question: null, reference_date: null, status: RESULT[result.status] || result.status, stop: null },
       steps: [{ id: "meldung", label: "Meldung", round: null }],
-      chats: [{ id: "gruppe", name: "Debatte", kind: "group", subtitle: "Keine Debatte gestartet", messages }] };
+      chats: [{ id: "gruppe", name: "debAIte", kind: "group", subtitle: "Keine debAIte gestartet", messages }] };
   }
 
   function buildChats(result) {
@@ -88,163 +85,200 @@
     const findingById = {};
     for (const review of reviews) for (const f of list(review.findings)) findingById[f.finding_id] = f;
 
-    const group = [];
-    const single = Object.fromEntries([...actors.map((a) => [a.actor_id, []]), ...Object.keys(REVIEWERS).map((r) => [r, []])]);
     let counter = 0;
-    const push = (target, step, side, fields) => target.push({ id: `n${(counter += 1)}`, step, side, ...fields });
+    const message = (step, side, fields) => ({ id: `n${(counter += 1)}`, step, side, replies: [], ...fields });
     const fromActor = (actorId, extra) => ({ sender: nameOf[actorId] || actorId, senderId: actorId, role: "actor", ...extra });
     const fromReviewer = (reviewer, extra) => ({ sender: REVIEWERS[reviewer] || reviewer, senderId: reviewer, role: "reviewer", ...extra });
     const moderator = (extra) => ({ sender: MODERATOR, senderId: "moderation", role: "moderator", ...extra });
     const findingItems = (review) => list(review.findings).map((f) => ({
       title: ASSESSMENT[f.assessment] || f.assessment, text: f.reason, note: f.correction ? `Korrektur: ${f.correction}` : null }));
 
-    function pushReview(target, step, review, tag) {
+    const group = [];
+    const pairs = {};
+    const pairKey = (reviewer, actorId) => `${reviewer}:${actorId}`;
+    for (const actor of actors) for (const reviewer of Object.keys(REVIEWERS)) pairs[pairKey(reviewer, actor.actor_id)] = [];
+
+    function reviewMessage(step, review, tag, side) {
       const note = review.status !== "complete" ? "Prüfung nicht abgeschlossen."
         : review.coverage !== "complete" ? review.coverage_note : null;
-      if (!list(review.findings).length && !note) return;
-      push(target, step, "in", fromReviewer(review.reviewer, { tag, items: findingItems(review), note, time: times[review.review_id] }));
+      if (!list(review.findings).length && !note) return null;
+      return message(step, side, fromReviewer(review.reviewer, { tag, items: findingItems(review), note, time: times[review.review_id] }));
     }
 
-    function pushChallenges(target, step, records) {
+    /* A challenge and its answer, in the thread or chat they belong to. */
+    function challengeMessages(step, records, actorSide, reviewerSide) {
+      const out = [];
       for (const c of records) {
         const finding = findingById[c.finding_id];
-        push(target, step, "in", fromActor(c.actor_id, { tag: "Widerspruch", text: c.reason,
-          quote: finding ? finding.reason : null, time: times[c.challenge_id] }));
+        out.push(message(step, actorSide, fromActor(c.actor_id, { tag: "Widerspruch", text: c.reason,
+          quote: finding ? finding.reason : null, time: times[c.challenge_id] })));
         if (c.reply_decision && finding) {
-          push(target, step, "in", fromReviewer(finding.reviewer, { tag: REPLY[c.reply_decision] || c.reply_decision,
-            text: c.reply_reason, time: times[`antwort:${c.challenge_id}`] }));
+          out.push(message(step, reviewerSide, fromReviewer(finding.reviewer, { tag: REPLY[c.reply_decision] || c.reply_decision,
+            text: c.reply_reason, time: times[`antwort:${c.challenge_id}`] })));
         }
       }
+      return out;
     }
 
-    function assessmentItems(assessed) {
-      return assessed.map((a) => ({ status: a.status, title: objective[a.priority_id] || a.priority_id, text: a.reason }));
-    }
+    const assessmentItems = (assessed) => assessed.map((a) => ({
+      status: a.status, title: objective[a.priority_id] || a.priority_id, text: a.reason }));
 
-    /* Preparation: private work goes to the individual chats, reviewer reports to their own. */
-    push(group, 0, "out", moderator({ tag: "Frage", text: result.task.question }));
-    push(group, 0, "system", { text: `Regelwerk ${result.task.rulebook_version}. Stichtag ${result.task.reference_date || "unbekannt"}.` });
-    push(group, 0, "system", { text: result.task.legal_scope });
-    push(group, 0, "system", { text: "Alle bereiten sich getrennt vor. Ihre Beiträge stehen in den Einzelchats." });
+    /* Preparation is private: the group sees only that it is happening. */
+    group.push(message(0, "out", moderator({ tag: "Frage", text: result.task.question })));
+    group.push(message(0, "system", { text: `Regelwerk ${result.task.rulebook_version}. Stichtag ${result.task.reference_date || "unbekannt"}.` }));
+    group.push(message(0, "system", { text: result.task.legal_scope }));
+    group.push(message(0, "system", { text: "Alle bereiten sich getrennt vor. Die vertraulichen Prüfungen stehen in den Privatchats." }));
 
     for (const actor of actors) {
       const aid = actor.actor_id;
-      const target = single[aid];
-      const profile = actor.profile;
-      if (profile) {
-        push(target, 0, "in", fromActor(aid, { tag: "Profil", text: profile.standpunkt,
-          note: profile.standpunkt_label === "inferred" ? "Erschlossen, keine offizielle Erklärung." : null,
-          items: list(profile.entries).map((e) => ({ text: e.aussage })) }));
-      }
-      if (list(actor.priorities).length) {
-        push(target, 0, "in", fromActor(aid, { tag: "Prioritäten",
-          items: actor.priorities.map((p) => ({ text: p.objective, note: `Bedingung: ${p.acceptance_condition}` })) }));
-      }
       const versions = list(result.arguments).filter((a) => a.actor_id === aid).sort((a, b) => a.version - b.version);
-      const prepared = reviews.filter((r) => r.actor_id === aid && (r.stage === "initial" || r.stage === "second"));
-      for (const argument of versions) {
-        const stage = argument.version === 1 ? "initial" : "second";
-        push(target, 0, "in", fromActor(aid, { tag: argument.version === 1 ? "Erster Beitrag" : "Überarbeiteter Beitrag",
-          items: list(argument.claims).map((c) => ({ text: c.behauptung, note: c.begruendung })),
-          note: argument.change_explanation, time: times[argument.argument_id] }));
-        for (const review of prepared.filter((r) => r.stage === stage)) pushReview(target, 0, review, `${STAGE[stage]}, vertraulich`);
-        pushChallenges(target, 0, challenges.filter((c) => c.actor_id === aid && c.stage === stage));
+      for (const reviewer of Object.keys(REVIEWERS)) {
+        const target = pairs[pairKey(reviewer, aid)];
+        if (actor.profile) {
+          target.push(message(0, "in", fromActor(aid, { tag: "Profil zur Prüfung", text: actor.profile.standpunkt,
+            note: actor.profile.standpunkt_label === "inferred" ? "Erschlossen, keine offizielle Erklärung." : null,
+            items: list(actor.priorities).map((p) => ({ text: p.objective, note: `Bedingung: ${p.acceptance_condition}` })) })));
+        }
+        for (const [version, stage] of [[1, "initial"], [2, "second"]]) {
+          const argument = versions.find((a) => a.version === version);     // a failed revision has none
+          if (argument) {
+            target.push(message(0, "in", fromActor(aid, { tag: version === 1 ? "Erster Beitrag" : "Überarbeiteter Beitrag",
+              items: list(argument.claims).map((c) => ({ text: c.behauptung, note: c.begruendung })),
+              note: argument.change_explanation, time: times[argument.argument_id] })));
+          }
+          for (const review of reviews.filter((r) => r.actor_id === aid && r.reviewer === reviewer && r.stage === stage)) {
+            const reply = reviewMessage(0, review, `${STAGE[stage]}, vertraulich`, "peer");
+            if (reply) target.push(reply);
+          }
+          const own = challenges.filter((c) => c.actor_id === aid && c.stage === stage
+            && findingById[c.finding_id] && findingById[c.finding_id].reviewer === reviewer);
+          target.push(...challengeMessages(0, own, "in", "peer"));
+        }
       }
     }
 
     /* Rounds */
     rounds.forEach((round) => {
       const step = stepOf(round);
-      if (round === rounds[0]) push(group, step, "system", { text: "Gemeinsames Paket veröffentlicht. Alle sehen jetzt denselben Stand." });
+      if (round === rounds[0]) {
+        group.push(message(step, "system", { text: "Gemeinsames Paket veröffentlicht. Alle sehen jetzt denselben Stand." }));
+        for (const actor of actors) {
+          if (!actor.profile) continue;
+          const post = message(step, "in", fromActor(actor.actor_id, { tag: "Standpunkt", text: actor.profile.standpunkt }));
+          if (list(actor.priorities).length) {
+            post.replies.push(message(step, "in", fromActor(actor.actor_id, { tag: "Prioritäten",
+              items: actor.priorities.map((p) => ({ text: p.objective, note: `Bedingung: ${p.acceptance_condition}` })) })));
+          }
+          const newest = list(result.arguments).filter((a) => a.actor_id === actor.actor_id).sort((a, b) => b.version - a.version)[0];
+          if (newest) {
+            post.replies.push(message(step, "in", fromActor(actor.actor_id, { tag: "Argument",
+              items: list(newest.claims).map((c) => ({ text: c.behauptung, note: c.begruendung })) })));
+          }
+          group.push(post);
+        }
+      }
       for (const actor of actors) {
-        for (const item of list(result.negotiation).filter((n) => n.round === round && n.actor_id === actor.actor_id)) {
-          push(group, step, "in", fromActor(actor.actor_id, { tag: NEGOTIATION[item.kind] || item.kind, text: item.text, time: times[item.item_id] }));
+        const items = list(result.negotiation).filter((n) => n.round === round && n.actor_id === actor.actor_id);
+        if (items.length) {
+          group.push(message(step, "in", fromActor(actor.actor_id, { tag: "Verhandlung", time: times[items[0].item_id],
+            items: items.map((n) => ({ title: NEGOTIATION[n.kind] || n.kind, text: n.text })) })));
         }
       }
       const proposals = list(result.proposal_history).filter((p) => p.round === round).sort((a, b) => a.version - b.version);
-      if (!proposals.length) push(group, step, "system", { text: "Keine neue Fassung in dieser Runde." });
+      if (!proposals.length) group.push(message(step, "system", { text: "Keine neue Fassung in dieser Runde." }));
       for (const proposal of proposals) {
-        push(group, step, "out", moderator({ tag: `Vorschlag, Fassung ${proposal.version}`, time: proposal.created_at,
+        const post = message(step, "out", moderator({ tag: `Vorschlag, Fassung ${proposal.version}`, time: proposal.created_at,
           items: list(proposal.clauses).map((c, i) => ({ number: i + 1, text: c.text, note: `Rechtlich: ${LEGAL[c.legal_status] || c.legal_status}` })),
           note: ADMISSIBILITY[proposal.legal_admissibility] || null }));
-        if (proposal.meta_update) push(group, step, "out", moderator({ text: proposal.meta_update }));
         for (const review of reviews.filter((r) => r.stage === "candidate" && r.round === round && r.review_id.includes(`-v${proposal.version}-`))) {
-          pushReview(group, step, review, `${STAGE.candidate}, Fassung ${proposal.version}`);
-          pushReview(single[review.reviewer], step, review, `${STAGE.candidate}, Fassung ${proposal.version}`);
+          const reply = reviewMessage(step, review, STAGE.candidate, "in");
+          if (reply) post.replies.push(reply);
+          const answered = challenges.filter((c) => c.stage === "candidate" && c.round === round
+            && list(review.findings).some((f) => f.finding_id === c.finding_id));
+          post.replies.push(...challengeMessages(step, answered, "in", "in"));
         }
+        group.push(post);
+        if (proposal.meta_update) group.push(message(step, "out", moderator({ text: proposal.meta_update })));
       }
-      pushChallenges(group, step, challenges.filter((c) => c.stage === "candidate" && c.round === round));
 
       const satisfaction = roundSatisfaction(result, round);
       for (const s of satisfaction) {
         const decisions = list(result.decisions).filter((d) => d.round === round && d.actor_id === s.actor_id && !isFinal(d));
-        const target = single[s.actor_id];
-        if (s.assessed.length) {
-          push(target, step, "in", fromActor(s.actor_id, { tag: `Bewertung: ${s.met} von ${s.total} erfüllt`, items: assessmentItems(s.assessed) }));
-        } else {
-          push(target, step, "system", { text: "Keine gültige Bewertung in dieser Runde." });
-        }
         for (const decision of decisions) {
-          const fields = { tag: `${DECISION[decision.kind] || decision.kind}: ${s.met} von ${s.total} erfüllt`, text: decision.reason,
-            items: list(decision.conditions).map((c) => ({ text: c })), time: decision.at };
-          push(group, step, "in", fromActor(s.actor_id, fields));
-          push(target, step, "in", fromActor(s.actor_id, fields));
+          const post = message(step, "in", fromActor(s.actor_id, { tag: `${DECISION[decision.kind] || decision.kind}: ${s.met} von ${s.total} erfüllt`,
+            text: decision.reason, items: list(decision.conditions).map((c) => ({ text: c })), time: decision.at }));
+          if (s.assessed.length) {
+            post.replies.push(message(step, "in", fromActor(s.actor_id, { tag: "Bewertung je Priorität", items: assessmentItems(s.assessed) })));
+          }
+          group.push(post);
         }
-        for (const review of reviews.filter((r) => r.stage === "assessment" && r.round === round && r.actor_id === s.actor_id)) {
-          pushReview(target, step, review, STAGE.assessment);
-          pushReview(single[review.reviewer], step, review, `${STAGE.assessment}: ${s.name}`);
+        for (const reviewer of Object.keys(REVIEWERS)) {
+          const target = pairs[pairKey(reviewer, s.actor_id)];
+          const stageReviews = reviews.filter((r) => r.stage === "assessment" && r.round === round && r.actor_id === s.actor_id && r.reviewer === reviewer);
+          if (!stageReviews.length) continue;
+          if (s.assessed.length) {
+            target.push(message(step, "in", fromActor(s.actor_id, { tag: `Bewertung: ${s.met} von ${s.total} erfüllt`, items: assessmentItems(s.assessed) })));
+          } else {
+            target.push(message(step, "system", { text: "Keine gültige Bewertung in dieser Runde." }));
+          }
+          for (const review of stageReviews) {
+            const reply = reviewMessage(step, review, STAGE.assessment, "peer");
+            if (reply) target.push(reply);
+          }
+          const own = challenges.filter((c) => c.stage === "assessment" && c.round === round && c.actor_id === s.actor_id
+            && findingById[c.finding_id] && findingById[c.finding_id].reviewer === reviewer);
+          target.push(...challengeMessages(step, own, "in", "peer"));
         }
-        pushChallenges(target, step, challenges.filter((c) => c.stage === "assessment" && c.round === round && c.actor_id === s.actor_id));
       }
       if (satisfaction.some((s) => s.assessed.length)) {
-        push(group, step, "system", { text: satisfaction.map((s) => `${s.name}: ${s.met} von ${s.total}`).join(" · ") });
+        group.push(message(step, "system", { text: satisfaction.map((s) => `${s.name}: ${s.met} von ${s.total}`).join(" · ") }));
       }
     });
-
-    /* Preparation reviews also belong to each reviewer's own chat. */
-    for (const review of reviews.filter((r) => r.stage === "initial" || r.stage === "second")) {
-      pushReview(single[review.reviewer], 0, review, `${STAGE[review.stage]}: ${nameOf[review.actor_id] || ""}`);
-    }
 
     /* Final phase */
     const report = result.report || {};
     const consensus = report.Konsens || {};
     const frozen = result.final_proposal;
-    push(group, last, "system", { text: `Beratung beendet: ${STOP[result.stop_reason] || "ohne Stoppgrund"}.` });
-    push(group, last, "system", { text: frozen
-      ? `Fassung ${frozen.version} ist eingefroren. ${ADMISSIBILITY[frozen.legal_admissibility] || ""}.`
-      : "Kein vollständiger Vorschlag. Es wird keine Einigung ausgewiesen." });
+    group.push(message(last, "system", { text: `Beratung beendet: ${STOP[result.stop_reason] || "ohne Stoppgrund"}.` }));
     for (const actor of actors) {
       if (actor.final_standpoint) {
-        const fields = { tag: "Abschließende Stellungnahme", text: actor.final_standpoint, time: times[`abschluss:${actor.actor_id}`] };
-        push(group, last, "in", fromActor(actor.actor_id, fields));
-        push(single[actor.actor_id], last, "in", fromActor(actor.actor_id, fields));
-      } else {
-        push(single[actor.actor_id], last, "system", { text: "Keine abschließende Stellungnahme." });
+        group.push(message(last, "in", fromActor(actor.actor_id, { tag: "Abschließende Stellungnahme", text: actor.final_standpoint, time: times[`abschluss:${actor.actor_id}`] })));
       }
     }
-    for (const review of reviews.filter((r) => r.stage === "final")) {
-      pushReview(group, last, review, STAGE.final);
-      pushReview(single[review.reviewer], last, review, STAGE.final);
+    const finalReviews = reviews.filter((r) => r.stage === "final");
+    const finalPost = frozen
+      ? message(last, "out", moderator({ tag: `Eingefrorener Vorschlag, Fassung ${frozen.version}`,
+        items: list(frozen.clauses).map((c, i) => ({ number: i + 1, text: c.text, note: `Rechtlich: ${LEGAL[c.legal_status] || c.legal_status}` })),
+        note: ADMISSIBILITY[frozen.legal_admissibility] || null }))
+      : message(last, "system", { text: "Kein vollständiger Vorschlag. Es wird keine Einigung ausgewiesen." });
+    group.push(finalPost);
+    for (const review of finalReviews) {
+      const reply = reviewMessage(last, review, STAGE.final, "in");
+      if (reply) (frozen ? finalPost.replies : group).push(reply);
     }
-    if (consensus.einschaetzung) push(group, last, "out", moderator({ tag: "Konsens", text: consensus.einschaetzung }));
+    if (consensus.einschaetzung) group.push(message(last, "out", moderator({ tag: "Konsens", text: consensus.einschaetzung })));
     const section = (tag, records, line) => {
-      if (records.length) push(group, last, "out", moderator({ tag, items: records.map(line) }));
+      if (records.length) group.push(message(last, "out", moderator({ tag, items: records.map(line) })));
     };
     section("Konflikte", list(report.Konflikte), (c) => ({ title: c.thema, text: c.beschreibung }));
     section("Kompromisse", list(report.Kompromisse), (c) => ({ text: c.beschreibung }));
     section("Offene Punkte", list(report.Offene_Punkte), (p) => ({ text: p.punkt }));
     section("Auswirkungen", list(report.Auswirkungen), (i) => ({ text: i.beschreibung }));
     const narrative = (result.debate_evolution || {}).narrative;
-    if (narrative) push(group, last, "out", moderator({ tag: "So entwickelte sich die Debatte", text: narrative.replace(/\*\*/g, "") }));
-    for (const missing of list(report.fehlende_abschnitte)) push(group, last, "system", { text: `Fehlt: ${missing}` });
+    if (narrative) group.push(message(last, "out", moderator({ tag: "So entwickelte sich die debAIte", text: narrative.replace(/\*\*/g, "") })));
+    for (const missing of list(report.fehlende_abschnitte)) group.push(message(last, "system", { text: `Fehlt: ${missing}` }));
 
-    const inOrder = (messages) => [...messages].sort((a, b) => a.step - b.step);     // stable: keeps order within a step
-    const chats = [
-      { id: "gruppe", name: "Debatte", kind: "group", subtitle: `Du, ${actors.map((a) => a.name).join(", ")}, Prüfer`, messages: inOrder(group) },
-      ...actors.map((a) => ({ id: a.actor_id, name: a.name, kind: "actor", subtitle: "Simulierte Perspektive", messages: inOrder(single[a.actor_id]) })),
-      ...Object.keys(REVIEWERS).map((r) => ({ id: r, name: REVIEWERS[r], kind: "reviewer", subtitle: REVIEWER_ROLE[r], messages: inOrder(single[r]) })),
-    ];
+    const chats = [{ id: "gruppe", name: "debAIte", kind: "group", section: "Gruppe",
+      subtitle: `Du, ${actors.map((a) => a.name).join(", ")}, Prüfer`, messages: group }];
+    for (const actor of actors) {
+      for (const reviewer of Object.keys(REVIEWERS)) {
+        chats.push({ id: pairKey(reviewer, actor.actor_id), name: `${REVIEWERS[reviewer]} und ${actor.name}`, kind: "private",
+          section: "Privat", pair: [REVIEWERS[reviewer], actor.name], subtitle: "Vertraulich. Du liest mit.",
+          messages: pairs[pairKey(reviewer, actor.actor_id)] });
+      }
+    }
+    chats.push({ id: "meta", name: "Meta-Moderator", kind: "meta", section: "Fragen zur debAIte",
+      subtitle: "Beantwortet deine Fragen aus dem Protokoll", messages: [] });
     return {
       header: { question: result.task.question, reference_date: result.task.reference_date,
         status: RESULT[result.status] || result.status, stop: STOP[result.stop_reason] || null },
@@ -252,11 +286,11 @@
       satisfactionAt(stepIndex) {
         const step = steps[stepIndex];
         if (step && step.round) return roundSatisfaction(result, step.round);
-        return stepIndex === last ? list(actors).map((a) => ({ name: a.name, ...(a.satisfaction ? {
-          met: a.satisfaction.met_count, total: a.satisfaction.priority_count } : { met: null, total: null }) })) : [];
+        return stepIndex === last ? actors.map((a) => ({ name: a.name, ...(a.satisfaction
+          ? { met: a.satisfaction.met_count, total: a.satisfaction.priority_count } : { met: null, total: null }) })) : [];
       },
       proposalAt(stepIndex) {
-        const shown = list(result.proposal_history).filter((p) => stepOf(p.round) <= stepIndex);
+        const shown = list(result.proposal_history).filter((p) => stepOf(p.round) <= stepIndex).sort((a, b) => a.version - b.version);
         return shown.length ? shown[shown.length - 1] : null;
       },
     };
@@ -265,5 +299,5 @@
   /* Messages of a chat up to and including a step: "Weiter" appends the next round. */
   const visible = (chat, stepIndex) => chat.messages.filter((m) => m.step <= stepIndex);
 
-  return { buildChats, visible, proposalKey, labels: { STATUS, RESULT, ADMISSIBILITY } };
+  return { buildChats, visible, labels: { STATUS, RESULT, ADMISSIBILITY } };
 });

@@ -123,6 +123,8 @@ DEFAULTS = {
     "NegotiationOutput": negotiation, "CandidateOutput": candidate, "AssessOutput": assess,
     "FinalOutput": final, "ReportOutput": report, "EvolutionOutput": evolution,
     "ConnectionProbe": lambda p: {"antwort": "Verbindung simuliert."},
+    "MetaAnswer": lambda p: {"antwort": "Laut Protokoll blieb die Finanzierung strittig.", "refs": re.findall(r"KL-[\w-]+", p)[:1],
+                             "keine_grundlage": False},
 }
 
 

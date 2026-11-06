@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Debatten-Chat</title>
+  <title>debAIte</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="styles.css">
@@ -11,21 +12,58 @@
 <body data-view="input" data-pane="chat">
   <main id="input-view">
     <section class="intro">
-      <h1>Debatten-Chat</h1>
-      <p>Anfrage als JSON hinein, Debatte Runde für Runde mitlesen. Du moderierst, die Institutionen und Prüfer sind mit dir in der Gruppe.</p>
-      <h2 id="saved-title" class="saved-title" hidden>Gespeicherte Debatten</h2>
+      <img class="hero-logo" src="logo.svg" alt="" width="96" height="96">
+      <h1>deb<span class="ai">AI</span>te</h1>
+      <p>Frage stellen und die debAIte Runde für Runde mitlesen. Du moderierst, die Institutionen und Prüfer sind mit dir in der Gruppe.</p>
+      <h2 id="saved-title" class="saved-title" hidden>Gespeicherte debAItes</h2>
       <ul id="saved"></ul>
     </section>
-    <section class="composer-card">
-      <label for="request" class="field-label">JSON-Eingabe</label>
-      <textarea id="request" spellcheck="false" rows="15"></textarea>
+    <section id="run-panel" class="composer-card" aria-live="polite">
+      <div class="run-head">
+        <h2>debAIte läuft</h2>
+        <div class="run-actions">
+          <button id="stop-run" type="button" class="pill">Stoppen und auswerten</button>
+          <button id="cancel-run" type="button" class="pill">Abbrechen</button>
+        </div>
+      </div>
+      <ul id="run-facts" class="chips left"></ul>
+      <div id="run-rounds"></div>
+      <div id="run-proposal"></div>
+      <p class="item-note">Zwischenstand, alle 3 Sekunden aktualisiert. Er kann sich noch ändern.</p>
+    </section>
+    <section id="request-card" class="composer-card">
+      <div id="scenario-field" class="field" hidden>
+        <label for="scenario" class="field-label">Szenario</label>
+        <select id="scenario"><option value="">Eigene Anfrage</option></select>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Eingabeart">
+        <button id="tab-form" type="button" role="tab" aria-selected="true" aria-controls="panel-form">Formular</button>
+        <button id="tab-json" type="button" role="tab" aria-selected="false" aria-controls="panel-json">JSON</button>
+      </div>
+      <form id="panel-form" class="request-form" role="tabpanel" aria-labelledby="tab-form">
+        <label class="field"><span class="field-label">Frage</span>
+          <textarea id="f-question" rows="5" placeholder="Was soll verhandelt werden?"></textarea></label>
+        <fieldset class="field"><legend class="field-label">Institutionen</legend>
+          <div id="f-actors" class="checks"></div></fieldset>
+        <label class="field"><span class="field-label">Stichtag</span>
+          <input id="f-date" type="date"></label>
+        <div class="field"><span class="field-label">Annahmen <span class="optional">optional</span></span>
+          <ul id="f-assumptions" class="form-list"></ul>
+          <button id="add-assumption" type="button" class="pill small">+ Annahme</button></div>
+        <div class="field"><span class="field-label">Harte Beschränkungen <span class="optional">optional</span></span>
+          <ul id="f-constraints" class="form-list"></ul>
+          <button id="add-constraint" type="button" class="pill small">+ Beschränkung</button></div>
+      </form>
+      <div id="panel-json" class="field" role="tabpanel" aria-labelledby="tab-json" hidden>
+        <label for="request" class="field-label">Anfrage oder Ergebnis als JSON</label>
+        <textarea id="request" spellcheck="false" rows="15"></textarea>
+        <button id="open-pasted" type="button" class="pill small">Als Ergebnis öffnen ›</button>
+      </div>
       <div class="actions">
-        <button id="start" type="button" class="pill primary" disabled>Debatte starten</button>
-        <button id="open-pasted" type="button" class="pill">Als Ergebnis öffnen ›</button>
+        <button id="start" type="button" class="pill primary" disabled>debAIte starten</button>
         <label class="pill file">Ergebnis-Datei öffnen ›
           <input id="file" type="file" accept=".json,application/json">
         </label>
-        <button id="sample" type="button" class="pill">Beispiel einsetzen</button>
       </div>
       <p id="notice" role="status"></p>
     </section>
@@ -45,7 +83,7 @@
 
     <div class="window">
       <aside class="sidebar">
-        <h2 class="sidebar-title">Chats</h2>
+        <div class="brand"><img src="logo.svg" alt="" width="32" height="32"><span>deb<span class="ai">AI</span>te</span></div>
         <ul id="chat-list"></ul>
       </aside>
       <section class="conversation">
@@ -54,6 +92,10 @@
           <div id="chat-title" class="chat-title"></div>
         </header>
         <div id="log" class="log" tabindex="0" aria-live="polite"></div>
+        <form id="composer" class="composer" hidden>
+          <input id="ask-input" type="text" maxlength="1500" autocomplete="off" placeholder="Frage zur debAIte stellen" aria-label="Frage an den Meta-Moderator">
+          <button id="ask-send" type="submit" class="pill">Senden ›</button>
+        </form>
         <footer class="stepper">
           <button id="prev" type="button" class="pill" title="Vorige Runde (Pfeil links)">‹ Zurück</button>
           <span id="step-label"></span>
@@ -65,6 +107,13 @@
           <button id="close" type="button" class="pill" title="Zur Eingabe (Esc)">Eingabe</button>
         </footer>
       </section>
+      <aside id="thread" class="thread" hidden>
+        <header class="thread-head">
+          <h2 id="thread-title"></h2>
+          <button id="thread-close" type="button" class="pill" aria-label="Thread schließen">×</button>
+        </header>
+        <div id="thread-log" class="log" tabindex="0"></div>
+      </aside>
     </div>
   </div>
   <script src="chats.js"></script>

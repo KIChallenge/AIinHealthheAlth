@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "actors": [
+    "Gesundheitsministerium",
+    "Sozialversicherung",
+    "Ärztekammer"
+  ],
+  "question": "Entwickeln Sie einen gemeinsamen Vorschlag für einen zeitlich begrenzten Pilotversuch zu Telemedizin und digital unterstützter Ersteinschätzung in der ambulanten Versorgung Österreichs. Prüfen Sie anhand der verfügbaren Quellen, für welche Leistungen und Zielgruppen diese Angebote geeignet sein könnten und wann persönliche Betreuung erforderlich bleibt. Verhandeln Sie Teilnahmebedingungen, ärztliche Verantwortung, Vergütung, Finanzierung, technische Unterstützung und die Einbindung in bestehende Versorgungsabläufe. Berücksichtigen Sie Patientensicherheit, Datenschutz, Barrierefreiheit und den Zugang für Menschen ohne digitale Ausstattung oder ausreichende digitale Kenntnisse. Vergleichen Sie erwartete Entlastungen mit möglichen Zusatzkontakten, Mehrarbeit und Folgekosten, ohne Einsparungen oder kürzere Wartezeiten vorwegzunehmen. Legen Sie messbare Erfolgskriterien, Abbruchkriterien und Bedingungen für eine spätere Ausweitung fest. Alle Maßnahmen müssen innerhalb des zum Referenzdatum geltenden Rechtsrahmens liegen; schlagen Sie keine Gesetzesänderungen vor. Belegen Sie Argumente mit Quellen und kennzeichnen Sie Annahmen, rechtliche Unsicherheiten, fehlende Evidenz und verbleibende Interessenkonflikte.",
+  "reference_date": "2026-11-05",
+  "scenario_assumptions": [],
+  "hard_constraints": []
+}

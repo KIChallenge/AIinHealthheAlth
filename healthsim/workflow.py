@@ -9,6 +9,7 @@ Stopping is decided by `close_round` and the deadline checks, not by the recursi
 import hashlib
 import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Annotated, TypedDict
 
 from langgraph.graph import END, START, StateGraph
@@ -269,6 +270,10 @@ def build_workflow(deps: Deps):
     def phase_deadline(state):
         return state["finalization_deadline_at"] if in_finalization(state) else state["deliberation_deadline_at"]
 
+    def stop_requested(state):
+        """The operator asked to end the deliberation now and go to finalisation."""
+        return Path(settings.state_dir, f"stop-{state['debate_id']}").exists()
+
     def emit(state, event_id, role, phase, visibility, type_, refs=(), causes=(), payload=None):
         return events.emit(state["debate_id"], event_id, clock.time(), role, state.get("round") or 0, phase,
                            visibility, type_, refs, causes, payload)
@@ -281,6 +286,9 @@ def build_workflow(deps: Deps):
         for attempt in (0, 1):
             if deadlines.expired(deadline):
                 failure = "Phasenfrist abgelaufen."
+                break
+            if not in_finalization(state) and stop_requested(state):
+                failure = "Beratung wurde gestoppt."
                 break
             rejected = None
             try:
@@ -1050,7 +1058,7 @@ def build_workflow(deps: Deps):
                                            "Verlauf geführt."))
         if frozen is None:
             warnings.update(warning_update("Es liegt kein vollständiger Vorschlag vor; es wird keine Einigung ausgewiesen."))
-        stop = state.get("stop_reason") or "deliberation_deadline"
+        stop = state.get("stop_reason") or ("operator_stop" if stop_requested(state) else "deliberation_deadline")
         emit(state, "einfrieren", "controller", "freeze", "public", "candidate_frozen", [frozen] if frozen else [],
              payload={"stop_reason": stop})
         return {"stop_reason": stop, "frozen_key": frozen, "proposals": proposals, "warnings": warnings,
@@ -1126,7 +1134,7 @@ def build_workflow(deps: Deps):
     def guarded(state, target):
         if state.get("fatal"):
             return "build_output"
-        if deadlines.expired(state["deliberation_deadline_at"]):
+        if deadlines.expired(state["deliberation_deadline_at"]) or stop_requested(state):
             return "freeze"
         return target(state)
 
@@ -1189,7 +1197,7 @@ def build_workflow(deps: Deps):
     def route_round(state):
         if state.get("fatal"):
             return "build_output"
-        if state.get("stop_reason") or deadlines.expired(state["deliberation_deadline_at"]):
+        if state.get("stop_reason") or deadlines.expired(state["deliberation_deadline_at"]) or stop_requested(state):
             return "freeze"
         return to_actors("negotiate_actor", state)
 

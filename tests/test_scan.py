@@ -279,4 +279,4 @@ def test_shipped_configuration_is_valid():
                                        "Ärztekammer": "aerztekammer"}
     options = load_import_options()
     assert options.exclusions[0].pattern == "*_Pressespiegel_gesamt.md"
-    assert options.akteure_list_only == ["Krankenhäuser", "Patientenvertretung"]
+    assert options.akteure_list_only == ["Krankenhäuser", "Patientenvertretung", "Bundesländer", "Finanzministerium", "WK & AK", "Gesetzgeber", "Industrie", "Landeswirtschaftskammer"]

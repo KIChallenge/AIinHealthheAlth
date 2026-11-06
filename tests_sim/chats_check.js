@@ -4,6 +4,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { buildChats, visible } = require(path.join(__dirname, "..", "frontend", "chats.js"));
 
+const walk = (messages) => messages.flatMap((m) => [m, ...(m.replies || [])]);
+
 for (const file of process.argv.slice(2)) {
   const result = JSON.parse(fs.readFileSync(file, "utf8"));
   const data = buildChats(result);
@@ -14,13 +16,15 @@ for (const file of process.argv.slice(2)) {
   }
   const group = data.chats[0];
   assert.strictEqual(group.kind, "group");
-  assert.deepStrictEqual(data.chats.filter((c) => c.kind === "actor").map((c) => c.id), result.actors.map((a) => a.actor_id));
-  assert.deepStrictEqual(data.chats.filter((c) => c.kind === "reviewer").map((c) => c.name), ["TruthSeeker", "LegalEye", "EthicMind"]);
+  const privates = data.chats.filter((c) => c.kind === "private");
+  assert.strictEqual(privates.length, result.actors.length * 3, "one chat per reviewer and actor");
+  assert.strictEqual(data.chats[data.chats.length - 1].kind, "meta");
   assert.strictEqual(data.steps[0].id, "vorbereitung");
   assert.strictEqual(data.steps[data.steps.length - 1].id, "abschluss");
 
   for (const chat of data.chats) {
-    assert.strictEqual(new Set(chat.messages.map((m) => m.id)).size, chat.messages.length, "unique ids");
+    const all = walk(chat.messages);
+    assert.strictEqual(new Set(all.map((m) => m.id)).size, all.length, "unique ids");
     // "Weiter" only ever appends: earlier messages stay in place
     let before = [];
     for (let step = 0; step < data.steps.length; step += 1) {
@@ -29,16 +33,26 @@ for (const file of process.argv.slice(2)) {
       before = shown;
     }
     assert.strictEqual(before.length, chat.messages.length, "every message reachable");
-    for (const message of chat.messages) {
+    for (const message of all) {
       assert.ok(message.step >= 0 && message.step < data.steps.length);
-      // only the moderator speaks from the user's side, and only in the group
+      // the moderator speaks only from the user's side, and only in the group
       if (message.side === "out") {
         assert.strictEqual(message.role, "moderator");
         assert.strictEqual(chat.kind, "group");
-      } else if (message.side === "in") {
+      } else if (message.side !== "system") {
         assert.notStrictEqual(message.role, "moderator");
       }
+      if (message.side === "peer") assert.strictEqual(message.role, "reviewer");
     }
+    for (const parent of chat.messages) for (const reply of parent.replies || []) assert.strictEqual(reply.step, parent.step);
+  }
+
+  // Threads exist where the debate has follow-ups
+  if (result.proposal_history.length) assert.ok(walk(group.messages).length > group.messages.length, "group has threads");
+  for (const proposal of result.proposal_history) {
+    const post = group.messages.find((m) => m.tag === `Vorschlag, Fassung ${proposal.version}`);
+    assert.ok(post, `proposal ${proposal.version}`);
+    if (proposal.review_complete) assert.ok(post.replies.length > 0, `reviews under proposal ${proposal.version}`);
   }
 
   // Privacy: before publication the group shows no actor or reviewer material
@@ -54,21 +68,22 @@ for (const file of process.argv.slice(2)) {
     }
   }
 
-  // Each actor's chat holds only that actor's own material
-  for (const actor of result.actors) {
-    const chat = data.chats.find((c) => c.id === actor.actor_id);
-    const others = chat.messages.filter((m) => m.role === "actor" && m.senderId !== actor.actor_id);
-    assert.strictEqual(others.length, 0, actor.actor_id);
+  // A private chat holds exactly its two parties, and each confidential review reaches its chat
+  for (const chat of privates) {
+    const [reviewer, actor] = chat.id.split(":");
+    for (const m of walk(chat.messages)) {
+      if (m.side !== "system") assert.ok(m.senderId === reviewer || m.senderId === actor, `${chat.id}: ${m.sender}`);
+    }
+    const text = JSON.stringify(chat.messages);
+    for (const review of result.reviews.filter((r) => r.reviewer === reviewer && r.actor_id === actor)) {
+      for (const f of review.findings) assert.ok(text.includes(f.reason), f.finding_id);
+    }
   }
 
   // Nothing is dropped from the group: every negotiation item and round decision appears
-  const texts = group.messages.map((m) => m.text);
-  for (const item of result.negotiation) assert.ok(texts.includes(item.text), item.item_id);
+  for (const item of result.negotiation) assert.ok(groupText.includes(JSON.stringify(item.text)), item.item_id);
   for (const decision of result.decisions.filter((d) => !d.decision_id.startsWith("D-final"))) {
-    assert.ok(texts.includes(decision.reason), decision.decision_id);
-  }
-  for (const proposal of result.proposal_history) {
-    assert.ok(group.messages.some((m) => m.tag === `Vorschlag, Fassung ${proposal.version}`), proposal.version);
+    assert.ok(groupText.includes(JSON.stringify(decision.reason)), decision.decision_id);
   }
 
   // Header numbers come from stored assessments and match the exact rule

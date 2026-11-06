@@ -75,6 +75,17 @@ def test_malformed_akteure_is_rejected(value, message):
         fm(f"---\nakteure: {value}\n---\n")
 
 
+def test_explicitly_empty_optional_field_counts_as_absent():
+    meta = fm('---\ntitel: "T"\ntyp: ""\nland: "AT"\n---\n')
+    assert meta == {"title": "T", "country": "AT"}
+
+
+@pytest.mark.parametrize("block", ['---\ntitel: ""\n---\n', '---\nid: ""\n---\n'])
+def test_empty_title_and_id_stay_errors(block):
+    with pytest.raises(FrontMatterError, match="is empty"):
+        fm(block)
+
+
 def test_unclosed_front_matter_is_rejected():
     with pytest.raises(FrontMatterError, match="no closing"):
         split_front_matter("---\ntitle: x\n\n# Heading\n")

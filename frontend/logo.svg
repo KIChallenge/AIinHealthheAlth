@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="debAIte">
+  <!-- Two speech bubbles in debate; the overlap is where a position is negotiated. -->
+  <path fill="#1c1e21" d="M10 6h28a8 8 0 0 1 8 8v16a8 8 0 0 1-8 8H21L10 47v-9a8 8 0 0 1-8-8V14a8 8 0 0 1 8-8z"/>
+  <path fill="#d9fdd3" stroke="#1c1e21" stroke-width="2.5" d="M28 21h26a8 8 0 0 1 8 8v15a8 8 0 0 1-8 8v9l-11-9H28a8 8 0 0 1-8-8V29a8 8 0 0 1 8-8z"/>
+  <circle cx="31.5" cy="36.5" r="3" fill="#1c1e21"/>
+  <circle cx="41" cy="36.5" r="3" fill="#1c1e21"/>
+  <circle cx="50.5" cy="36.5" r="3" fill="#1c1e21"/>
+</svg>

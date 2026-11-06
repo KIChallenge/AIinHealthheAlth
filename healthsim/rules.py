@@ -6,7 +6,7 @@ import re
 from .llm_models import (ALLOWED_ASSESSMENTS, Argument, Claim, EvolutionOutput, FinalOutput, Profile,
                          ReportOutput, ReviewOutput)
 
-WORD_LIMITS = {"ordinary": 100, "profile": 300, "priorities": 600, "assessment": 100,
+WORD_LIMITS = {"ordinary": 300, "profile": 300, "priorities": 600, "assessment": 300,
                "final_summary": 600, "conclusion": 2000, "evolution": 800}
 
 
@@ -62,6 +62,11 @@ def render_report(report: ReportOutput):
 
 def word_problem(text, limit_name, label):
     limit = WORD_LIMITS[limit_name]
+    words = count_words(text)
+    return [f"{label}: {words} Wörter überschreiten das Limit von {limit}."] if words > limit else []
+
+
+def word_problem_limit(text, limit, label):
     words = count_words(text)
     return [f"{label}: {words} Wörter überschreiten das Limit von {limit}."] if words > limit else []
 

@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "actors": [
+    "Gesundheitsministerium",
+    "Sozialversicherung",
+    "Ärztekammer"
+  ],
+  "question": "Entwickeln Sie einen gemeinsamen Vorschlag für die Weiterentwicklung der Honorierung vertragsärztlicher Leistungen in Österreich. Ziel ist, die Attraktivität der Kassenversorgung, ausreichend Zeit für medizinisch notwendige Behandlungen und eine finanzierbare Versorgung miteinander zu verbinden. Leiten Sie Ihre Ausgangspositionen und Prioritäten aus den verfügbaren institutionellen Quellen ab. Vergleichen Sie bestehende Vergütungsformen und mögliche, rechtlich zulässige Anpassungen, etwa für längere Beratungsgespräche, Versorgungskoordination oder Leistungen in unterversorgten Regionen. Prüfen Sie Auswirkungen auf Einkommen, Arbeitsbelastung, Leistungsanreize, Zugang und Gesamtausgaben. Verhandeln Sie konkrete Angebote, Gegenangebote und Bedingungen, ohne ein zusätzliches Budget als gegeben anzunehmen. Unterscheiden Sie die rechtlichen und vertraglichen Zuständigkeiten der drei Institutionen; schreiben Sie keiner Institution Befugnisse zu, die sie nicht hat. Alle Maßnahmen müssen innerhalb des zum Referenzdatum geltenden Rechtsrahmens liegen; schlagen Sie keine Gesetzesänderungen vor. Belegen Sie Argumente mit Quellen und kennzeichnen Sie Annahmen, rechtliche Unsicherheiten, fehlende Kostendaten und ungelöste Interessenkonflikte.",
+  "reference_date": "2026-11-05",
+  "scenario_assumptions": [],
+  "hard_constraints": []
+}

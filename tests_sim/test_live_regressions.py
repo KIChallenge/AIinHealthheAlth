@@ -109,7 +109,7 @@ def test_missing_constraint_check_is_still_rejected(harness):
 
 def noisy_overrides():
     """First attempts break the rules the way the live model did; repairs then succeed."""
-    filler = " ".join(["Begründung"] * 120)
+    filler = " ".join(["Begründung"] * 320)
 
     def review(prompt, number):
         data = fake.review(prompt)
@@ -163,7 +163,7 @@ def test_final_assessments_use_the_final_allowance(harness):
     def final(prompt, number):
         data = fake.final(prompt)
         for item in data["assessments"]:
-            item["reason"] = " ".join(["Bewertung"] * 80)
+            item["reason"] = " ".join(["Bewertung"] * 200)
         return data
 
     result = harness(overrides={"FinalOutput": final}).run()

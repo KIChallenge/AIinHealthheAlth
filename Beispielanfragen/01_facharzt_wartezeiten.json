@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "actors": [
+    "Gesundheitsministerium",
+    "Sozialversicherung",
+    "Ärztekammer"
+  ],
+  "question": "Entwickeln Sie einen gemeinsamen Vorschlag, wie die Wartezeiten auf Facharzttermine in Österreich innerhalb von fünf Jahren um mindestens 20 % reduziert werden könnten, ohne die Gesundheitsausgaben im selben Zeitraum um mehr als 5 % zu erhöhen. Diese Zahlen sind vorgegebene Szenarioziele und keine belegten Wirkungen. Legen Sie vor der Bewertung eine gemeinsame Ausgangsbasis, den betrachteten Versorgungsbereich, die Messung der Wartezeiten und die Preisbasis der Ausgaben fest. Vergleichen Sie zusätzliche Kassenstellen, bessere Terminorganisation, längere Öffnungszeiten und geeignete digitale Angebote. Berücksichtigen Sie regionale Unterschiede, Behandlungsqualität, Personalbedarf und Arbeitsbelastung. Verhandeln Sie Finanzierung, Zuständigkeiten und überprüfbare Erfolgskriterien. Alle vorgeschlagenen Maßnahmen müssen innerhalb des zum Referenzdatum geltenden Rechtsrahmens liegen; schlagen Sie keine Gesetzesänderungen vor. Belegen Sie Argumente mit Quellen und kennzeichnen Sie Annahmen, rechtliche Unsicherheiten und offene Datenfragen. Falls die Zielerreichung nicht nachweisbar ist, legen Sie dies offen und benennen Sie tragfähige Teilmaßnahmen sowie verbleibende Konflikte.",
+  "reference_date": "2026-11-05",
+  "scenario_assumptions": [],
+  "hard_constraints": []
+}

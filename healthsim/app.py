@@ -67,7 +67,11 @@ class Runtime:
         self.events.save_debate(debate_id, request_json, self.clock.time())
         result = await self._run_graph(debate_id, {"debate_id": debate_id, "request": json.loads(request_json)})
         self.events.save_result(debate_id, json.dumps(result, ensure_ascii=False))
+        self._clear_stop(debate_id)
         return result
+
+    def _clear_stop(self, debate_id):
+        Path(self.settings.state_dir, f"stop-{debate_id}").unlink(missing_ok=True)
 
     async def resume(self, debate_id):
         stored = self.events.debate(debate_id)
@@ -77,6 +81,7 @@ class Runtime:
             return json.loads(stored["result"])
         result = await self._run_graph(debate_id, None)
         self.events.save_result(debate_id, json.dumps(result, ensure_ascii=False))
+        self._clear_stop(debate_id)
         return result
 
 

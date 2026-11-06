@@ -20,9 +20,9 @@ MODEL_CONTEXT_TOKENS = 400_000
 MODEL_MAX_INPUT_TOKENS = 272_000
 MODEL_MAX_OUTPUT_TOKENS = 128_000
 MAX_CONCURRENCY = 9
-# Project values. 45 s and 60 s are an operator decision and replace the 60 s and 90 s of the spec.
-EXPECTED_TIMEOUTS = {"llm_request_timeout": 45.0, "llm_final_report_timeout": 60.0,
-                     "deliberation_timeout": 600.0, "finalization_timeout": 180.0}
+# Project values. These are operator decisions and replace the 60 s, 90 s and 600 s of the spec.
+EXPECTED_TIMEOUTS = {"llm_request_timeout": 1800.0, "llm_final_report_timeout": 1800.0,
+                     "deliberation_timeout": 1620.0, "finalization_timeout": 180.0}
 ROLES = ("actor", "truthseeker", "legaleye", "ethicmind", "meta")
 IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 

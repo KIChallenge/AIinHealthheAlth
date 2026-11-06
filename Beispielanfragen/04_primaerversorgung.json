@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "actors": [
+    "Gesundheitsministerium",
+    "Sozialversicherung",
+    "Ärztekammer"
+  ],
+  "question": "Verhandeln Sie einen gemeinsamen Vorschlag zur Verbesserung der wohnortnahen Primärversorgung in Österreich. Prüfen Sie, unter welchen Bedingungen zusätzliche Primärversorgungseinheiten gegenüber der Stärkung bestehender Einzel- und Gruppenpraxen einen nachvollziehbaren Mehrwert bieten. Leiten Sie regionale Versorgungsprobleme aus den verfügbaren Quellen ab, statt einen flächendeckenden Mangel vorauszusetzen. Vergleichen Sie Erreichbarkeit, Öffnungszeiten, Versorgungskontinuität, Teamarbeit, Personalbedarf sowie Investitions- und Betriebskosten. Berücksichtigen Sie mögliche Auswirkungen auf bestehende Ordinationen und die Arbeitsbelastung der beteiligten Berufsgruppen. Verhandeln Sie Kriterien für Standortentscheidungen, Finanzierung, Zusammenarbeit und Erfolgskontrolle. Kennzeichnen Sie Entscheidungen, die die Mitwirkung nicht beteiligter Institutionen, etwa der Bundesländer, benötigen; setzen Sie deren Zustimmung nicht voraus. Alle Maßnahmen müssen innerhalb des zum Referenzdatum geltenden Rechtsrahmens und der bestehenden beruflichen Befugnisse liegen; schlagen Sie keine Gesetzesänderungen vor. Belegen Sie Argumente mit Quellen und machen Sie Annahmen, rechtliche Unsicherheiten, Datenlücken sowie verbleibende Konflikte sichtbar.",
+  "reference_date": "2026-11-05",
+  "scenario_assumptions": [],
+  "hard_constraints": []
+}

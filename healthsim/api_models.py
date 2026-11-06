@@ -415,7 +415,7 @@ class DebateResult(Strict):
     schema_version: str
     debate_id: str
     status: Literal["completed", "incomplete", "needs_clarification", "invalid_input", "failed"]
-    stop_reason: Literal["satisfaction_threshold", "deliberation_deadline", "execution_error"] | None
+    stop_reason: Literal["satisfaction_threshold", "deliberation_deadline", "operator_stop", "execution_error"] | None
     request: DebateRequest | None
     task: TaskRecord | None
     model: ModelRecord | None

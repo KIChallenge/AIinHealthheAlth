@@ -191,7 +191,7 @@ def test_oversized_output_gets_one_repair_and_rejected_version_is_kept(harness):
     def long_first(prompt, number):
         data = fake.negotiation(prompt)
         if number == 1:
-            data["items"][0]["text"] = " ".join(["Wort"] * 120)
+            data["items"][0]["text"] = " ".join(["Wort"] * 320)
         return data
 
     h = harness(overrides={"NegotiationOutput": long_first})
@@ -206,7 +206,7 @@ def test_failed_repair_marks_incomplete_and_keeps_actor(harness):
     def always_long(prompt, number):
         data = fake.initial(prompt)
         if "für Ärztekammer" in prompt:
-            data["argument"]["claims"][0]["begruendung"] = " ".join(["Wort"] * 150)
+            data["argument"]["claims"][0]["begruendung"] = " ".join(["Wort"] * 350)
         return data
 
     h = harness(overrides={"InitialOutput": always_long}, DELIBERATION_TIMEOUT_SECONDS=120, delay=2)
@@ -493,6 +493,42 @@ def test_late_response_cannot_change_outcome(harness):
     assert not result["negotiation"] and "CandidateOutput" not in counts(h)
 
 
+def stop_at_negotiation(h, call):
+    def negotiate(prompt, number):
+        if number == call:
+            (h.settings.state_dir / "stop-debatte-1").write_text("stop", encoding="utf-8")
+        return fake.negotiation(prompt)
+    return negotiate
+
+
+def test_operator_stop_freezes_the_last_complete_proposal_and_finalises(harness):
+    h = harness()
+    h.adapter.overrides = {"AssessOutput": assess_with(lambda n, p: "partly_met"), "NegotiationOutput": stop_at_negotiation(h, 6)}
+    result = h.run()
+    check_result(result)
+    assert result["status"] == "completed" and result["stop_reason"] == "operator_stop"
+    assert result["final_proposal"]["version"] == 1 and result["metrics"]["completed_rounds"] == 1
+    assert counts(h)["CandidateOutput"] == 1
+    assert all(a["final_standpoint"] for a in result["actors"]) and result["report"]["Konflikte"]
+
+
+def test_operator_stop_before_any_proposal_invents_no_agreement(harness):
+    h = harness()
+    h.adapter.overrides = {"NegotiationOutput": stop_at_negotiation(h, 1)}
+    result = h.run()
+    check_result(result)
+    assert result["stop_reason"] == "operator_stop" and result["final_proposal"] is None
+    assert any("keine Einigung" in w["message"] for w in result["warnings"])
+    assert "CandidateOutput" not in counts(h)
+
+
+def test_stop_signal_is_removed_after_the_run(harness):
+    h = harness()
+    h.adapter.overrides = {"NegotiationOutput": stop_at_negotiation(h, 1)}
+    h.run()
+    assert not (h.settings.state_dir / "stop-debatte-1").exists()
+
+
 def test_finalisation_timeout_gives_partial_result(harness):
     def final(prompt, number):
         h.clock.advance(1000)
@@ -555,7 +591,7 @@ def test_durable_resume_keeps_deadlines_and_is_idempotent(tmp_path):
     with pytest.raises(BaseException):
         asyncio.run(first())
     before = h.events("d")
-    deadline = next(e for e in before if e["type"] == "rulebook_released")["at"] + 600
+    deadline = next(e for e in before if e["type"] == "rulebook_released")["at"] + h.settings.deliberation_timeout
     h.clock.advance(50)
     h.runtime.events.close()
     runtime = Runtime(h.settings, h.adapter, h.sources, clock=h.clock, use_lock=False)

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "debate_id": "34ddfb01d0a44cd6bcb8ae47abed0a25",
+  "debate_id": "7feeb57479934bb49a43f753f0db9e11",
   "status": "completed",
   "stop_reason": "satisfaction_threshold",
   "request": {
@@ -44,25 +44,25 @@
       "rate_limit_tps": 200000,
       "rate_limit_rpm": null,
       "rate_limit_tpm": null,
-      "request_timeout_seconds": 45.0,
-      "final_report_timeout_seconds": 60.0,
+      "request_timeout_seconds": 1800.0,
+      "final_report_timeout_seconds": 1800.0,
       "max_retries": 1,
-      "input_budget_tokens": 32768,
-      "max_output_tokens": 4096,
-      "initial_max_output_tokens": 8192,
-      "final_max_output_tokens": 16384
+      "input_budget_tokens": 272000,
+      "max_output_tokens": 128000,
+      "initial_max_output_tokens": 128000,
+      "final_max_output_tokens": 128000
     }
   },
   "timing": {
-    "deliberation_started_at": "2026-11-05T22:12:29+00:00",
-    "deliberation_deadline_at": "2026-11-05T22:22:29+00:00",
-    "deliberation_ended_at": "2026-11-05T22:12:30+00:00",
-    "finalization_started_at": "2026-11-05T22:12:30+00:00",
-    "finalization_deadline_at": "2026-11-05T22:15:30+00:00",
-    "finalization_ended_at": "2026-11-05T22:12:30+00:00",
-    "deliberation_elapsed_seconds": 0.33,
-    "finalization_elapsed_seconds": 0.05,
-    "deliberation_budget_seconds": 600.0,
+    "deliberation_started_at": "2026-11-06T00:02:45+00:00",
+    "deliberation_deadline_at": "2026-11-06T00:29:45+00:00",
+    "deliberation_ended_at": "2026-11-06T00:02:46+00:00",
+    "finalization_started_at": "2026-11-06T00:02:46+00:00",
+    "finalization_deadline_at": "2026-11-06T00:05:46+00:00",
+    "finalization_ended_at": "2026-11-06T00:02:46+00:00",
+    "deliberation_elapsed_seconds": 0.265,
+    "finalization_elapsed_seconds": 0.034,
+    "deliberation_budget_seconds": 1620.0,
     "finalization_budget_seconds": 180.0
   },
   "usage": {
@@ -73,7 +73,7 @@
     "retries": 0,
     "repairs": 0,
     "throttled": 0,
-    "queue_seconds": 0.002,
+    "queue_seconds": 0.001,
     "calls_without_usage": 0,
     "missing_measurements": [
       "LLM_RATE_LIMIT_RPM",
@@ -114,7 +114,7 @@
     "proposal_id": "PROP-1",
     "version": 2,
     "round": 2,
-    "created_at": "2026-11-05T22:12:29+00:00",
+    "created_at": "2026-11-06T00:02:45+00:00",
     "clauses": [
       {
         "clause_id": "KL-v2-1",
@@ -221,7 +221,7 @@
           "target_id": "PROP-1-v1",
           "target_version": 1,
           "round": 1,
-          "at": "2026-11-05T22:12:29+00:00",
+          "at": "2026-11-06T00:02:45+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -232,7 +232,7 @@
           "target_id": "PROP-1-v2",
           "target_version": 2,
           "round": 2,
-          "at": "2026-11-05T22:12:29+00:00",
+          "at": "2026-11-06T00:02:45+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -243,7 +243,7 @@
           "target_id": "PROP-1-v2",
           "target_version": 2,
           "round": 2,
-          "at": "2026-11-05T22:12:30+00:00",
+          "at": "2026-11-06T00:02:46+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -343,7 +343,7 @@
           "target_id": "PROP-1-v1",
           "target_version": 1,
           "round": 1,
-          "at": "2026-11-05T22:12:29+00:00",
+          "at": "2026-11-06T00:02:45+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -354,7 +354,7 @@
           "target_id": "PROP-1-v2",
           "target_version": 2,
           "round": 2,
-          "at": "2026-11-05T22:12:29+00:00",
+          "at": "2026-11-06T00:02:45+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -365,7 +365,7 @@
           "target_id": "PROP-1-v2",
           "target_version": 2,
           "round": 2,
-          "at": "2026-11-05T22:12:30+00:00",
+          "at": "2026-11-06T00:02:46+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -465,7 +465,7 @@
           "target_id": "PROP-1-v1",
           "target_version": 1,
           "round": 1,
-          "at": "2026-11-05T22:12:29+00:00",
+          "at": "2026-11-06T00:02:45+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -476,7 +476,7 @@
           "target_id": "PROP-1-v2",
           "target_version": 2,
           "round": 2,
-          "at": "2026-11-05T22:12:29+00:00",
+          "at": "2026-11-06T00:02:45+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -487,7 +487,7 @@
           "target_id": "PROP-1-v2",
           "target_version": 2,
           "round": 2,
-          "at": "2026-11-05T22:12:30+00:00",
+          "at": "2026-11-06T00:02:46+00:00",
           "kind": "accept",
           "conditions": [],
           "reason": "Der Vorschlag ist tragfähig."
@@ -1799,7 +1799,7 @@
       "proposal_id": "PROP-1",
       "version": 1,
       "round": 1,
-      "created_at": "2026-11-05T22:12:29+00:00",
+      "created_at": "2026-11-06T00:02:45+00:00",
       "clauses": [
         {
           "clause_id": "KL-v1-1",
@@ -1824,7 +1824,7 @@
       "proposal_id": "PROP-1",
       "version": 2,
       "round": 2,
-      "created_at": "2026-11-05T22:12:29+00:00",
+      "created_at": "2026-11-06T00:02:45+00:00",
       "clauses": [
         {
           "clause_id": "KL-v2-1",
@@ -2131,7 +2131,7 @@
       "target_id": "PROP-1-v1",
       "target_version": 1,
       "round": 1,
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2142,7 +2142,7 @@
       "target_id": "PROP-1-v1",
       "target_version": 1,
       "round": 1,
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2153,7 +2153,7 @@
       "target_id": "PROP-1-v1",
       "target_version": 1,
       "round": 1,
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2164,7 +2164,7 @@
       "target_id": "PROP-1-v2",
       "target_version": 2,
       "round": 2,
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2175,7 +2175,7 @@
       "target_id": "PROP-1-v2",
       "target_version": 2,
       "round": 2,
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2186,7 +2186,7 @@
       "target_id": "PROP-1-v2",
       "target_version": 2,
       "round": 2,
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2197,7 +2197,7 @@
       "target_id": "PROP-1-v2",
       "target_version": 2,
       "round": 2,
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2208,7 +2208,7 @@
       "target_id": "PROP-1-v2",
       "target_version": 2,
       "round": 2,
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2219,7 +2219,7 @@
       "target_id": "PROP-1-v2",
       "target_version": 2,
       "round": 2,
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "kind": "accept",
       "conditions": [],
       "reason": "Der Vorschlag ist tragfähig."
@@ -2228,7 +2228,7 @@
   "timeline": [
     {
       "event_id": "regelwerk",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "meta",
       "round": 0,
       "phase": "deliberation",
@@ -2239,7 +2239,7 @@
     },
     {
       "event_id": "ARG-gesundheitsministerium-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 0,
       "phase": "preparation",
@@ -2252,7 +2252,7 @@
     },
     {
       "event_id": "ARG-sozialversicherung-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 0,
       "phase": "preparation",
@@ -2265,7 +2265,7 @@
     },
     {
       "event_id": "ARG-aerztekammer-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 0,
       "phase": "preparation",
@@ -2278,7 +2278,7 @@
     },
     {
       "event_id": "barriere:vorbereitung",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 0,
       "phase": "preparation",
@@ -2289,7 +2289,7 @@
     },
     {
       "event_id": "R-initial-0-v0-truthseeker-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 0,
       "phase": "review",
@@ -2302,7 +2302,7 @@
     },
     {
       "event_id": "R-initial-0-v0-legaleye-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 0,
       "phase": "review",
@@ -2315,7 +2315,7 @@
     },
     {
       "event_id": "R-initial-0-v0-ethicmind-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 0,
       "phase": "review",
@@ -2328,7 +2328,7 @@
     },
     {
       "event_id": "R-initial-0-v0-truthseeker-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 0,
       "phase": "review",
@@ -2341,7 +2341,7 @@
     },
     {
       "event_id": "R-initial-0-v0-legaleye-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 0,
       "phase": "review",
@@ -2354,7 +2354,7 @@
     },
     {
       "event_id": "R-initial-0-v0-ethicmind-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 0,
       "phase": "review",
@@ -2367,7 +2367,7 @@
     },
     {
       "event_id": "R-initial-0-v0-truthseeker-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 0,
       "phase": "review",
@@ -2380,7 +2380,7 @@
     },
     {
       "event_id": "R-initial-0-v0-legaleye-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 0,
       "phase": "review",
@@ -2393,7 +2393,7 @@
     },
     {
       "event_id": "R-initial-0-v0-ethicmind-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 0,
       "phase": "review",
@@ -2406,7 +2406,7 @@
     },
     {
       "event_id": "barriere:initial:0:0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 0,
       "phase": "review",
@@ -2417,7 +2417,7 @@
     },
     {
       "event_id": "ARG-gesundheitsministerium-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 0,
       "phase": "revision",
@@ -2432,7 +2432,7 @@
     },
     {
       "event_id": "ARG-sozialversicherung-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 0,
       "phase": "revision",
@@ -2447,7 +2447,7 @@
     },
     {
       "event_id": "ARG-aerztekammer-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 0,
       "phase": "revision",
@@ -2462,7 +2462,7 @@
     },
     {
       "event_id": "barriere:revision",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 0,
       "phase": "revision",
@@ -2473,7 +2473,7 @@
     },
     {
       "event_id": "R-second-0-v0-truthseeker-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 0,
       "phase": "review",
@@ -2486,7 +2486,7 @@
     },
     {
       "event_id": "R-second-0-v0-legaleye-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 0,
       "phase": "review",
@@ -2499,7 +2499,7 @@
     },
     {
       "event_id": "R-second-0-v0-ethicmind-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 0,
       "phase": "review",
@@ -2512,7 +2512,7 @@
     },
     {
       "event_id": "R-second-0-v0-truthseeker-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 0,
       "phase": "review",
@@ -2525,7 +2525,7 @@
     },
     {
       "event_id": "R-second-0-v0-legaleye-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 0,
       "phase": "review",
@@ -2538,7 +2538,7 @@
     },
     {
       "event_id": "R-second-0-v0-ethicmind-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 0,
       "phase": "review",
@@ -2551,7 +2551,7 @@
     },
     {
       "event_id": "R-second-0-v0-truthseeker-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 0,
       "phase": "review",
@@ -2564,7 +2564,7 @@
     },
     {
       "event_id": "R-second-0-v0-legaleye-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 0,
       "phase": "review",
@@ -2577,7 +2577,7 @@
     },
     {
       "event_id": "R-second-0-v0-ethicmind-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 0,
       "phase": "review",
@@ -2590,7 +2590,7 @@
     },
     {
       "event_id": "barriere:second:0:0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 0,
       "phase": "review",
@@ -2601,7 +2601,7 @@
     },
     {
       "event_id": "publikation",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 1,
       "phase": "publication",
@@ -2619,7 +2619,7 @@
     },
     {
       "event_id": "NEG-1-gesundheitsministerium-1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 1,
       "phase": "negotiation",
@@ -2632,7 +2632,7 @@
     },
     {
       "event_id": "NEG-1-sozialversicherung-1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 1,
       "phase": "negotiation",
@@ -2645,7 +2645,7 @@
     },
     {
       "event_id": "NEG-1-aerztekammer-1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 1,
       "phase": "negotiation",
@@ -2658,7 +2658,7 @@
     },
     {
       "event_id": "PROP-1-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "meta",
       "round": 1,
       "phase": "candidate",
@@ -2672,7 +2672,7 @@
     },
     {
       "event_id": "R-candidate-1-v1-truthseeker-alle-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 1,
       "phase": "review",
@@ -2685,7 +2685,7 @@
     },
     {
       "event_id": "R-candidate-1-v1-legaleye-alle-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 1,
       "phase": "review",
@@ -2698,7 +2698,7 @@
     },
     {
       "event_id": "R-candidate-1-v1-ethicmind-alle-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 1,
       "phase": "review",
@@ -2711,7 +2711,7 @@
     },
     {
       "event_id": "barriere:candidate:1:1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 1,
       "phase": "review",
@@ -2722,7 +2722,7 @@
     },
     {
       "event_id": "AS-1-PR-gesundheitsministerium-1-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 1,
       "phase": "assessment",
@@ -2737,7 +2737,7 @@
     },
     {
       "event_id": "AS-1-PR-gesundheitsministerium-2-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 1,
       "phase": "assessment",
@@ -2752,7 +2752,7 @@
     },
     {
       "event_id": "D-1-gesundheitsministerium-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 1,
       "phase": "assessment",
@@ -2767,7 +2767,7 @@
     },
     {
       "event_id": "AS-1-PR-sozialversicherung-1-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 1,
       "phase": "assessment",
@@ -2782,7 +2782,7 @@
     },
     {
       "event_id": "AS-1-PR-sozialversicherung-2-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 1,
       "phase": "assessment",
@@ -2797,7 +2797,7 @@
     },
     {
       "event_id": "D-1-sozialversicherung-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 1,
       "phase": "assessment",
@@ -2812,7 +2812,7 @@
     },
     {
       "event_id": "AS-1-PR-aerztekammer-1-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 1,
       "phase": "assessment",
@@ -2827,7 +2827,7 @@
     },
     {
       "event_id": "AS-1-PR-aerztekammer-2-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 1,
       "phase": "assessment",
@@ -2842,7 +2842,7 @@
     },
     {
       "event_id": "D-1-aerztekammer-v1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 1,
       "phase": "assessment",
@@ -2857,7 +2857,7 @@
     },
     {
       "event_id": "barriere:bewertung:1:1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 1,
       "phase": "assessment",
@@ -2868,7 +2868,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-truthseeker-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 1,
       "phase": "review",
@@ -2881,7 +2881,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-legaleye-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 1,
       "phase": "review",
@@ -2894,7 +2894,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-ethicmind-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 1,
       "phase": "review",
@@ -2907,7 +2907,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-truthseeker-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 1,
       "phase": "review",
@@ -2920,7 +2920,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-legaleye-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 1,
       "phase": "review",
@@ -2933,7 +2933,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-ethicmind-sozialversicherung-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 1,
       "phase": "review",
@@ -2946,7 +2946,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-truthseeker-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 1,
       "phase": "review",
@@ -2959,7 +2959,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-legaleye-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 1,
       "phase": "review",
@@ -2972,7 +2972,7 @@
     },
     {
       "event_id": "R-assessment-1-v1-ethicmind-aerztekammer-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 1,
       "phase": "review",
@@ -2985,7 +2985,7 @@
     },
     {
       "event_id": "barriere:assessment:1:1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 1,
       "phase": "review",
@@ -2996,7 +2996,7 @@
     },
     {
       "event_id": "runde:1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 1,
       "phase": "assessment",
@@ -3009,7 +3009,7 @@
     },
     {
       "event_id": "NEG-2-gesundheitsministerium-1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 2,
       "phase": "negotiation",
@@ -3022,7 +3022,7 @@
     },
     {
       "event_id": "NEG-2-sozialversicherung-1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 2,
       "phase": "negotiation",
@@ -3035,7 +3035,7 @@
     },
     {
       "event_id": "NEG-2-aerztekammer-1",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 2,
       "phase": "negotiation",
@@ -3048,7 +3048,7 @@
     },
     {
       "event_id": "PROP-1-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "meta",
       "round": 2,
       "phase": "candidate",
@@ -3064,7 +3064,7 @@
     },
     {
       "event_id": "R-candidate-2-v2-truthseeker-alle-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 2,
       "phase": "review",
@@ -3077,7 +3077,7 @@
     },
     {
       "event_id": "R-candidate-2-v2-legaleye-alle-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "legaleye",
       "round": 2,
       "phase": "review",
@@ -3090,7 +3090,7 @@
     },
     {
       "event_id": "R-candidate-2-v2-ethicmind-alle-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "ethicmind",
       "round": 2,
       "phase": "review",
@@ -3103,7 +3103,7 @@
     },
     {
       "event_id": "barriere:candidate:2:2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 2,
       "phase": "review",
@@ -3114,7 +3114,7 @@
     },
     {
       "event_id": "AS-2-PR-gesundheitsministerium-1-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 2,
       "phase": "assessment",
@@ -3129,7 +3129,7 @@
     },
     {
       "event_id": "AS-2-PR-gesundheitsministerium-2-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 2,
       "phase": "assessment",
@@ -3144,7 +3144,7 @@
     },
     {
       "event_id": "D-2-gesundheitsministerium-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "gesundheitsministerium",
       "round": 2,
       "phase": "assessment",
@@ -3159,7 +3159,7 @@
     },
     {
       "event_id": "AS-2-PR-sozialversicherung-1-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 2,
       "phase": "assessment",
@@ -3174,7 +3174,7 @@
     },
     {
       "event_id": "AS-2-PR-sozialversicherung-2-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 2,
       "phase": "assessment",
@@ -3189,7 +3189,7 @@
     },
     {
       "event_id": "D-2-sozialversicherung-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "sozialversicherung",
       "round": 2,
       "phase": "assessment",
@@ -3204,7 +3204,7 @@
     },
     {
       "event_id": "AS-2-PR-aerztekammer-1-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 2,
       "phase": "assessment",
@@ -3219,7 +3219,7 @@
     },
     {
       "event_id": "AS-2-PR-aerztekammer-2-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 2,
       "phase": "assessment",
@@ -3234,7 +3234,7 @@
     },
     {
       "event_id": "D-2-aerztekammer-v2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "aerztekammer",
       "round": 2,
       "phase": "assessment",
@@ -3249,7 +3249,7 @@
     },
     {
       "event_id": "barriere:bewertung:2:2",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "controller",
       "round": 2,
       "phase": "assessment",
@@ -3260,7 +3260,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-truthseeker-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:45+00:00",
       "role": "truthseeker",
       "round": 2,
       "phase": "review",
@@ -3273,7 +3273,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-legaleye-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:29+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "legaleye",
       "round": 2,
       "phase": "review",
@@ -3286,7 +3286,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-ethicmind-gesundheitsministerium-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "ethicmind",
       "round": 2,
       "phase": "review",
@@ -3299,7 +3299,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-truthseeker-sozialversicherung-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "truthseeker",
       "round": 2,
       "phase": "review",
@@ -3312,7 +3312,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-legaleye-sozialversicherung-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "legaleye",
       "round": 2,
       "phase": "review",
@@ -3325,7 +3325,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-ethicmind-sozialversicherung-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "ethicmind",
       "round": 2,
       "phase": "review",
@@ -3338,7 +3338,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-truthseeker-aerztekammer-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "truthseeker",
       "round": 2,
       "phase": "review",
@@ -3351,7 +3351,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-legaleye-aerztekammer-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "legaleye",
       "round": 2,
       "phase": "review",
@@ -3364,7 +3364,7 @@
     },
     {
       "event_id": "R-assessment-2-v2-ethicmind-aerztekammer-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "ethicmind",
       "round": 2,
       "phase": "review",
@@ -3377,7 +3377,7 @@
     },
     {
       "event_id": "barriere:assessment:2:2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "controller",
       "round": 2,
       "phase": "review",
@@ -3388,7 +3388,7 @@
     },
     {
       "event_id": "runde:2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "controller",
       "round": 2,
       "phase": "assessment",
@@ -3401,7 +3401,7 @@
     },
     {
       "event_id": "einfrieren",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "controller",
       "round": 2,
       "phase": "freeze",
@@ -3414,7 +3414,7 @@
     },
     {
       "event_id": "AS-final-PR-gesundheitsministerium-1-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "gesundheitsministerium",
       "round": 2,
       "phase": "finalization",
@@ -3429,7 +3429,7 @@
     },
     {
       "event_id": "AS-final-PR-gesundheitsministerium-2-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "gesundheitsministerium",
       "round": 2,
       "phase": "finalization",
@@ -3444,7 +3444,7 @@
     },
     {
       "event_id": "D-final-gesundheitsministerium-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "gesundheitsministerium",
       "round": 2,
       "phase": "finalization",
@@ -3459,7 +3459,7 @@
     },
     {
       "event_id": "abschluss:gesundheitsministerium",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "gesundheitsministerium",
       "round": 2,
       "phase": "finalization",
@@ -3470,7 +3470,7 @@
     },
     {
       "event_id": "AS-final-PR-sozialversicherung-1-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "sozialversicherung",
       "round": 2,
       "phase": "finalization",
@@ -3485,7 +3485,7 @@
     },
     {
       "event_id": "AS-final-PR-sozialversicherung-2-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "sozialversicherung",
       "round": 2,
       "phase": "finalization",
@@ -3500,7 +3500,7 @@
     },
     {
       "event_id": "D-final-sozialversicherung-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "sozialversicherung",
       "round": 2,
       "phase": "finalization",
@@ -3515,7 +3515,7 @@
     },
     {
       "event_id": "abschluss:sozialversicherung",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "sozialversicherung",
       "round": 2,
       "phase": "finalization",
@@ -3526,7 +3526,7 @@
     },
     {
       "event_id": "AS-final-PR-aerztekammer-1-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "aerztekammer",
       "round": 2,
       "phase": "finalization",
@@ -3541,7 +3541,7 @@
     },
     {
       "event_id": "AS-final-PR-aerztekammer-2-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "aerztekammer",
       "round": 2,
       "phase": "finalization",
@@ -3556,7 +3556,7 @@
     },
     {
       "event_id": "D-final-aerztekammer-v2",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "aerztekammer",
       "round": 2,
       "phase": "finalization",
@@ -3571,7 +3571,7 @@
     },
     {
       "event_id": "abschluss:aerztekammer",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "aerztekammer",
       "round": 2,
       "phase": "finalization",
@@ -3582,7 +3582,7 @@
     },
     {
       "event_id": "R-final-2-v2-truthseeker-alle-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "truthseeker",
       "round": 2,
       "phase": "finalization",
@@ -3595,7 +3595,7 @@
     },
     {
       "event_id": "R-final-2-v2-legaleye-alle-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "legaleye",
       "round": 2,
       "phase": "finalization",
@@ -3608,7 +3608,7 @@
     },
     {
       "event_id": "R-final-2-v2-ethicmind-alle-0",
-      "at": "2026-11-05T22:12:30+00:00",
+      "at": "2026-11-06T00:02:46+00:00",
       "role": "ethicmind",
       "round": 2,
       "phase": "finalization",

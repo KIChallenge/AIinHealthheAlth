@@ -260,6 +260,12 @@ class EvolutionOutput(Contract):
     refs: list[str]
 
 
+class MetaAnswer(Contract):
+    antwort: str
+    refs: list[str]            # ids from the debate record that support the answer
+    keine_grundlage: bool      # true if the record does not answer the question
+
+
 class ConnectionProbe(Contract):
     antwort: str
 

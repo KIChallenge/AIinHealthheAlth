@@ -52,24 +52,40 @@ nothing about Azure or Neo4j:
 Stdout carries one JSON object and nothing else. Logs go to stderr. The callable entry points are
 `healthsim.app.run_text`, `resume_debate` and `check_connections`.
 
-## Debate chat
+## debAIte chat
 
-A local page for JSON input and for following a debate round by round, built like a group chat:
+The product name is debAIte; the Python package stays `healthsim`. A local page for JSON input and for following a debate round by round, built like a group chat:
 
 ```powershell
 .venv\Scripts\python -m healthsim serve            # http://127.0.0.1:8765
 .venv\Scripts\python -m healthsim serve --llm fake --sources fixture --fixture examples\fixture_sources.json
 ```
 
-- **Input:** paste or drop a request JSON and start a debate, or open a result file or a saved debate.
+- **Input:** a form or the raw JSON, as two tabs that stay in sync. The form covers the question,
+  institutions (from `config/actors.json`), reference date, assumptions and hard constraints, including
+  numeric ones. You can also drop a file, or open a result file or a saved debate.
   Starting asks for confirmation, because a debate uses Azure quota and takes up to 13 minutes.
+- **While it runs:** a live view replaces the form, with phase, runtime, results per round and the
+  current proposal, read from the events every 3 seconds. Only debates started from this page can be
+  controlled here.
+- **Stoppen und auswerten:** ends the deliberation early. No new deliberation calls start, running
+  ones finish, the last fully assessed proposal is frozen and the normal finalisation runs. The
+  result has `stop_reason: operator_stop`. Without a fully assessed proposal, no proposal is shown as
+  agreed.
+- **Abbrechen:** stops the debate at once, including child processes, after a confirmation. A
+  cancelled debate has no final result.
+- **Scenarios:** a dropdown fills the input with one of the five requests in `Beispielanfragen/`.
+  New JSON files in that folder appear there automatically.
 - **You are the moderator:** the meta-moderator's proposals and reports appear as your own outgoing
   messages. The institutions and reviewers are the other participants.
-- **Group chat "Debatte":** only what was published in the debate. Each round shows negotiation, your
-  proposal, the clause reviews and the decisions. Preparation stays private until publication, as in
-  the real workflow.
-- **Individual chats:** one per institution (profile, priorities, confidential feedback, assessments)
-  and one per reviewer (all of its reports).
+- **Group chat "Debatte":** only what was published in the debate. Preparation stays private until
+  publication, as in the real workflow.
+- **Threads:** as in Slack, follow-ups sit under their message: reviews and challenges under a
+  proposal, the rating of each priority under a decision, priorities and arguments under a
+  standpoint.
+- **Private chats:** one for each reviewer and actor pair (nine with three actors), holding the
+  confidential reviews and challenges between the two. You read along.
+- **Meta-moderator chat:** ask questions about a saved debate. See below.
 - **Above the chat:** the original question, the current step, the reference date, the proposal
   version and the met priorities per institution.
 - **`Weiter`** appends the next round to the chat and jumps to it. `Zurück` goes back a round. The
@@ -89,7 +105,17 @@ The page also works without the server: open `frontend/index.html` and load a re
 like `http://127.0.0.1:8765/?debatte=<debate_id>#4` opens a saved debate at the fourth step.
 
 Every message is built from stored records; no chat text is invented. Moderator messages exist only
-for what the meta-moderator actually wrote, so individual chats have no outgoing messages.
+for what the meta-moderator actually wrote, so private chats have no green messages.
+
+### Questions to the meta-moderator
+
+The meta-moderator answers from the stored debate record only: no source search, no new negotiation
+and no proposals to change law. Each question is one `medium`-reasoning call with up to 40,000 tokens
+of record (`RECORD_TOKENS` in `healthsim/ask.py`), plus the last six exchanges. If the record had to
+be shortened, the model is told so. Questions and answers are kept as private events, and the stored
+result stays unchanged. Questions wait until no debate is running, because a call takes the same
+process lock. Answers are limited to 300 words. A result opened from a file can be read, but not
+asked about.
 
 The server binds to 127.0.0.1, serves only the fixed frontend files, rejects foreign `Host` headers
 and accepts only `application/json` on POST. It runs one debate at a time as a CLI child process.
@@ -125,9 +151,10 @@ Precedence: process environment, then `.env`, then `config/simulator.json`.
 | `graph_mapping` | Property names of the source graph, validated as plain identifiers |
 | `retrieval`, `limits` | Search sizes, maximum clauses, correction limit |
 
-The operation timeouts are 45 s (ordinary) and 60 s (final report). This is a project decision and
-replaces the 60 s and 90 s of the original specification. Other values are honoured and reported as
-a warning in every result.
+Project values, chosen after the first live debates and replacing the specification's values:
+27 minutes of deliberation, 3 minutes of finalisation, `medium` reasoning, per-call timeouts of 30
+minutes and token limits at the model maximum. Other time values are honoured and reported as a
+warning in every result. At these limits a full debate has used about 5M tokens.
 
 ## Workflow
 
@@ -169,7 +196,7 @@ on a hard failure or when the finalisation deadline has passed.
 - **Words:** whitespace-separated units of everything the model wrote, including citations.
   Program labels, enum values, ids and JSON punctuation are not counted.
 - **Words for proposals:** the spec sets no allowance for a whole candidate. This application
-  allows up to 8 clauses of at most 100 words each.
+  allows up to 8 clauses of at most 300 words each.
 - **Repairs:** one mechanical repair per output. The rejected version and reason are kept in the
   event record. If the repair fails, the contribution is marked incomplete.
 - **Existing-law scope:** requests for legal change are stopped at intake. Proposals are checked

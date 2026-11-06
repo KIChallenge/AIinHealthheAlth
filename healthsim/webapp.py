@@ -18,11 +18,19 @@ from pathlib import Path
 
 from .api_models import Message
 from .app import invalid_result, new_debate_id
+from .ask import Asker, AskError
 from .intake import parse_request
 from .settings import ROOT, read_env_file
 
 FRONTEND = ROOT / "frontend"
+SCENARIOS = ROOT / "Beispielanfragen"
+SCENARIO_LABELS = {"01_facharzt_wartezeiten": "Facharzt-Wartezeiten um 20 % senken",
+                   "02_gesundheitsausgaben_2035": "Gesundheitsausgaben bis 2035 senken",
+                   "03_honorarverhandlungen": "Honorierung der Vertragsärzte",
+                   "04_primaerversorgung": "Wohnortnahe Primärversorgung",
+                   "05_telemedizin_triage": "Pilot für Telemedizin und Triage"}
 STATIC = {"/": ("index.html", "text/html"), "/index.html": ("index.html", "text/html"),
+          "/logo.svg": ("logo.svg", "image/svg+xml"),
           "/app.js": ("app.js", "text/javascript"), "/chats.js": ("chats.js", "text/javascript"),
           "/styles.css": ("styles.css", "text/css")}
 MAX_BODY = 1_000_000
@@ -33,6 +41,26 @@ def state_dir():
     value = os.environ.get("STATE_DIR") or read_env_file(ROOT / ".env").get("STATE_DIR") or "./state"
     path = Path(value)
     return path if path.is_absolute() else ROOT / path
+
+
+def actor_names():
+    """Institutions for the form, from the same configuration the graph was built with."""
+    try:
+        return [a["name"] for a in json.loads((ROOT / "config" / "actors.json").read_text(encoding="utf-8"))]
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
+
+
+def scenarios():
+    """Example requests for the dropdown, from fixed files in Beispielanfragen/."""
+    out = []
+    for path in sorted(SCENARIOS.glob("*.json")):
+        try:
+            request = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        out.append({"id": path.stem, "label": SCENARIO_LABELS.get(path.stem, path.stem.replace("_", " ")), "request": request})
+    return out
 
 
 class Store:
@@ -69,6 +97,36 @@ class Store:
         rows = self._rows("SELECT COUNT(*) FROM events WHERE at >= ?", since)
         return rows[0][0] if rows else 0
 
+    def progress(self, since):
+        """Interim state of the debate started at `since`, from its events. Read-only."""
+        rows = self._rows("SELECT debate_id FROM debates WHERE created_at >= ? ORDER BY created_at DESC LIMIT 1", since - 2)
+        if not rows:
+            return None
+        debate_id = rows[0][0]
+        last = self._rows("SELECT phase, round FROM events WHERE debate_id=? ORDER BY seq DESC LIMIT 1", debate_id)
+        counts = dict(self._rows("SELECT type, COUNT(*) FROM events WHERE debate_id=? GROUP BY type", debate_id))
+        rounds = [{"round": number, **{k: payload[k] for k in ("complete", "streak", "satisfaction") if k in payload}}
+                  for number, payload in ((n, json.loads(p)) for n, p in self._rows(
+                      "SELECT round, payload FROM events WHERE debate_id=? AND type='round_closed' ORDER BY seq", debate_id))]
+        proposals = self._rows("SELECT payload FROM events WHERE debate_id=? AND type='proposal_created' ORDER BY seq DESC LIMIT 1", debate_id)
+        proposal = None
+        if proposals:
+            data = json.loads(proposals[0][0])
+            proposal = {"version": data["version"], "round": data["round"], "meta_update": data["meta_update"],
+                        "clauses": [c["text"] for c in data["clauses"]]}
+        return {"debate_id": debate_id, "phase": last[0][0] if last else None, "round": last[0][1] if last else 0,
+                "events": sum(counts.values()), "rejected": counts.get("validation_failure", 0),
+                "decisions": counts.get("decision_recorded", 0), "rounds": rounds[-6:], "proposal": proposal}
+
+
+def kill_tree(process):
+    """On Windows the venv launcher starts the real interpreter as a child, so stop the whole tree."""
+    if sys.platform == "win32":
+        subprocess.run(["taskkill", "/F", "/T", "/PID", str(process.pid)], capture_output=True, check=False)
+    else:
+        process.terminate()
+    process.wait(timeout=10)
+
 
 class Runner:
     """One debate at a time, as a CLI child process."""
@@ -80,13 +138,15 @@ class Runner:
         self.started = None
         self.output = None
         self.finished = None
+        self.cancelled = False
+        self.stopping = False
 
     def start(self, raw):
         with self.lock:
             if self.process is not None and self.process.poll() is None:
                 return False
             self.output = Path(tempfile.mkdtemp(prefix="healthsim-")) / "result.json"
-            self.started, self.finished = time.time(), None
+            self.started, self.finished, self.stopping = time.time(), None, False
             self.process = subprocess.Popen(
                 [sys.executable, "-m", "healthsim", "run", "--input", "-", "--output", str(self.output), *self.cli_args],
                 stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=ROOT)
@@ -97,17 +157,41 @@ class Runner:
     def status(self, store):
         with self.lock:
             if self.process is None:
-                return {"running": False, "result": None}
+                cancelled, self.cancelled = self.cancelled, False
+                return {"running": False, "result": None, "cancelled": cancelled}
             if self.process.poll() is None:
                 return {"running": True, "elapsed_seconds": time.time() - self.started,
-                        "events": store.newest_events(self.started)}
+                        "events": store.newest_events(self.started), "progress": store.progress(self.started),
+                        "stopping": self.stopping}
             if self.finished is None and self.output.is_file():
                 self.finished = json.loads(self.output.read_text(encoding="utf-8"))
             result, self.finished, self.process = self.finished, None, None
-            return {"running": False, "result": result}
+            return {"running": False, "result": result, "cancelled": False}
+
+    def request_stop(self, store):
+        """Ends the deliberation; the child freezes the last candidate and finalises as usual."""
+        with self.lock:
+            if self.process is None or self.process.poll() is not None:
+                return "not_running"
+            progress = store.progress(self.started)
+            if progress is None:
+                return "starting"
+            Path(self.directory, f"stop-{progress['debate_id']}").write_text("stop", encoding="utf-8")
+            self.stopping = True
+            return "stopping"
+
+    def cancel(self):
+        """Stops the running debate, including child processes. Returns False if none is running."""
+        with self.lock:
+            if self.process is None or self.process.poll() is not None:
+                return False
+            kill_tree(self.process)
+            self.process, self.finished = None, None
+            self.cancelled = True
+            return True
 
 
-def make_handler(store, runner, allowed_hosts):
+def make_handler(store, runner, allowed_hosts, asker=None):
     class Handler(BaseHTTPRequestHandler):
         server_version = "healthsim"
 
@@ -153,23 +237,59 @@ def make_handler(store, runner, allowed_hosts):
                     self._json(404, {"message": "Ergebnis nicht gefunden."})
             elif path == "/api/run":
                 self._json(200, runner.status(store))
+            elif path == "/api/scenarios":
+                self._json(200, scenarios())
+            elif path == "/api/actors":
+                self._json(200, actor_names())
+            elif path.startswith("/api/ask/") and asker:
+                self._json(200, asker.history(path.rsplit("/", 1)[1]))
             else:
                 self._json(404, {"message": "Nicht gefunden."})
 
+        def _ask(self, raw):
+            if asker is None:
+                self._json(404, {"message": "Nachfragen sind hier nicht verfügbar."})
+                return
+            try:
+                body = json.loads(raw)
+                debate_id = str(body["debate_id"])
+                self._json(200, asker.answer(debate_id, body.get("question"), store.result(debate_id)))
+            except (ValueError, KeyError, TypeError):
+                self._json(400, {"message": "Die Nachfrage ist ungültig."})
+            except AskError as exc:
+                self._json(exc.status, {"message": exc.message})
+
         def do_POST(self):
-            if not self._local():
-                return
-            if self.path != "/api/run":
-                self._json(404, {"message": "Nicht gefunden."})
-                return
             length = int(self.headers.get("Content-Length") or 0)
             if length > MAX_BODY:
                 self.close_connection = True
                 self._json(413, {"message": "Die Anfrage ist zu groß."})
                 return
             raw = self.rfile.read(length).decode("utf-8", "replace")      # read first, then answer
+            if not self._local():
+                return
+            if self.path not in ("/api/run", "/api/ask", "/api/cancel", "/api/stop"):
+                self._json(404, {"message": "Nicht gefunden."})
+                return
             if self.headers.get("Content-Type", "").split(";")[0].strip() != "application/json":
                 self._json(415, {"message": "Erwartet wird application/json."})
+                return
+            if self.path == "/api/ask":
+                self._ask(raw)
+                return
+            if self.path == "/api/stop":
+                outcome = runner.request_stop(store)
+                if outcome == "stopping":
+                    self._json(200, {"stopping": True})
+                else:
+                    message = "Die debAIte startet noch. Bitte gleich noch einmal." if outcome == "starting" else "Es läuft keine debAIte."
+                    self._json(409, {"message": message})
+                return
+            if self.path == "/api/cancel":
+                if runner.cancel():
+                    self._json(200, {"cancelled": True})
+                else:
+                    self._json(409, {"message": "Es läuft keine debAIte."})
                 return
             _, errors = parse_request(raw)
             if errors:     # no child process and no cost for a request that cannot run
@@ -178,7 +298,7 @@ def make_handler(store, runner, allowed_hosts):
             if runner.start(raw):
                 self._json(202, {"started": True})
             else:
-                self._json(409, {"message": "Es läuft bereits eine Debatte."})
+                self._json(409, {"message": "Es läuft bereits eine debAIte."})
 
     return Handler
 
@@ -186,11 +306,12 @@ def make_handler(store, runner, allowed_hosts):
 def serve(port=8765, cli_args=(), directory=None, ready=None):
     directory = Path(directory or state_dir())
     store, runner = Store(directory), Runner(directory, cli_args)
+    llm = cli_args[cli_args.index("--llm") + 1] if "--llm" in cli_args else "azure"
     allowed = {f"127.0.0.1:{port}", f"localhost:{port}"}
-    server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(store, runner, allowed))
+    server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(store, runner, allowed, Asker(directory, llm)))
     if ready:
         ready(server)
-    print(f"Debatten-Player: http://127.0.0.1:{port}", file=sys.stderr)
+    print(f"debAIte: http://127.0.0.1:{port}", file=sys.stderr)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

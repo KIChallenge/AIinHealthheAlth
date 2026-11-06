@@ -2371,6 +2371,7 @@
           "enum": [
             "satisfaction_threshold",
             "deliberation_deadline",
+            "operator_stop",
             "execution_error"
           ],
           "type": "string"

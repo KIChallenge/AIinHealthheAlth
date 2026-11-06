@@ -68,14 +68,15 @@ def test_invalid_configuration_is_rejected_in_german(change, message):
 def test_environment_overrides_file_default_and_deviations_are_reported():
     s = load_settings(env(LLM_REQUEST_TIMEOUT_SECONDS="30"), env_file=NO_ENV_FILE)
     assert s.llm_request_timeout == 30
-    assert any("30 s statt 45 s" in d for d in s.deviations())
+    assert any("30 s statt 1800 s" in d for d in s.deviations())
 
 
-def test_project_timeouts_give_no_warning():
-    assert load_settings(env(), env_file=NO_ENV_FILE).deviations() == []
-    defaults = {k: v for k, v in env().items() if "TIMEOUT" not in k}
+def test_project_values_are_the_defaults_and_give_no_warning():
+    defaults = {k: v for k, v in env().items() if "TIMEOUT" not in k and k != "LLM_REASONING_EFFORT"}
     s = load_settings(defaults, env_file=NO_ENV_FILE)
-    assert (s.llm_request_timeout, s.llm_final_report_timeout) == (45, 60)
+    assert s.deviations() == []
+    assert (s.llm_request_timeout, s.llm_final_report_timeout, s.deliberation_timeout, s.finalization_timeout) == (1800, 1800, 1620, 180)
+    assert (s.max_output, s.input_budget, s.reasoning_effort) == (128000, 272000, "medium")
 
 
 def test_neo4j_user_alias_and_secrets_stay_out_of_views(tmp_path):

@@ -197,7 +197,9 @@ def parse_front_matter(lines):
         else:
             value = str(value).strip()
             if not value:
-                raise FrontMatterError(f"line {offset}: {raw_key} is empty")
+                if key in ("title", "id"):
+                    raise FrontMatterError(f"line {offset}: {raw_key} is empty")
+                continue      # an explicitly empty optional field means "not given"
             if key == "id" and not PERSISTENT_ID_RE.match(value):
                 raise FrontMatterError(
                     f"line {offset}: id {value!r} must match {PERSISTENT_ID_RE.pattern}")
