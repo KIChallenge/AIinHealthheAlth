@@ -1021,16 +1021,27 @@ def build_workflow(deps: Deps):
                 updated[a["assessment_id"]] = {**a, "reviewer_objections": found}
             per_actor.append(rules.satisfaction(aid, [mine[i]["status"] if i in mine else "unclear" for i in ids],
                                                 disputed))
-        streak = rules.next_streak(state.get("success_streak") or 0, complete, per_actor)
+        rounds = state.get("rounds") or {}
+        no_proposal = not current_candidate
+        if no_proposal:
+            # Without a new version nobody could compare it with their own position: the round says so,
+            # the satisfaction of the version still in force carries over and the streak stays as it was.
+            before = [rounds[r]["satisfaction"] for r in sorted(rounds, key=int) if int(r) < round_no]
+            per_actor = before[-1] if before else per_actor
+            streak = state.get("success_streak") or 0
+            emit(state, f"keine-fassung:{round_no}", "controller", "candidate", "public", "no_proposal",
+                 [key] if key else [], payload={"in_force": key})
+        else:
+            streak = rules.next_streak(state.get("success_streak") or 0, complete, per_actor)
         completed = (state.get("completed_rounds") or 0) + (1 if complete else 0)
         stop = "satisfaction_threshold" if streak >= 2 else None
         emit(state, f"runde:{round_no}", "controller", "assessment", "public", "round_closed", [key] if key else [],
              payload={"complete": complete, "assessed": assessed, "streak": streak, "satisfaction": per_actor,
+                      "no_proposal": no_proposal,
                       "unfinished_reviews": [r["review_id"] for r in done
                                              if r["status"] != "complete" or r["coverage"] != "complete"]})
         fingerprint = hashlib.sha256(prompts.dumps(
             [c["text"] for c in proposal["clauses"]] if proposal else []).encode("utf-8")).hexdigest()[:12]
-        rounds = state.get("rounds") or {}
         unchanged = bool(rounds) and rounds.get(str(round_no - 1), {}).get("fingerprint") == fingerprint
         blockage = ("Positionen und Vorschlag blieben über zwei Runden unverändert. Bitte nennt neue Belege, "
                     "Zugeständnisse oder begründet die fortbestehende Differenz.") if unchanged else None
@@ -1039,6 +1050,7 @@ def build_workflow(deps: Deps):
                 "stop_reason": stop, "blockage": blockage,
                 "round": round_no if stop else round_no + 1,
                 "rounds": {str(round_no): {"complete": complete, "assessed": assessed, "proposal": key,
+                                           "no_proposal": no_proposal,
                                            "satisfaction": per_actor,
                                            "streak": streak, "fingerprint": fingerprint}},
                 "stage": "round_closed"}

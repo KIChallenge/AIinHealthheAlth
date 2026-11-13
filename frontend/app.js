@@ -1,6 +1,6 @@
 /* Input screen and debate chat. All text from results goes in through textContent, so generated
    content can never inject markup. */
-const { buildChats, visible, memberChat, findPassage, council: COUNCIL, labels: L } = window.DebateChats;
+const { buildChats, visible, memberChat, findPassage, buildReport, buildPlenum, reportTree, reportHtml, council: COUNCIL, labels: L } = window.DebateChats;
 const READ_MS = 2000;       // how long a message stands before the next one starts typing
 const TYPING_MS = 900;
 const OPERATORS = ["<", "<=", "=", ">=", ">"];
@@ -320,15 +320,165 @@ function metaNodes() {
   return nodes;
 }
 
+/* The report belongs to the end of a debate: while one runs there is no final version to judge. */
+function reportReady() {
+  return Boolean(view.result && view.result.task && !view.result.live && !live.id);
+}
+
+function reportNodes(node) {
+  return typeof node === "object" ? h(node.tag, node.cls ? { class: node.cls } : null, node.kids.map(reportNodes)) : node;
+}
+
+function drawReport() {
+  $("report-body").replaceChildren(reportNodes(reportTree(buildReport(view.result))));
+}
+
+async function saveReport() {
+  const css = (await (await fetch("styles.css")).text()).match(/\/\* report:start \*\/([\s\S]*)\/\* report:end \*\//)[1];
+  const html = reportHtml(reportTree(buildReport(view.result)), css);
+  const link = h("a", { href: URL.createObjectURL(new Blob([html], { type: "text/html" })), download: `gesamt-report-${view.result.debate_id.slice(0, 8)}.html` });
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 10000);        // the browser reads it after the click
+}
+
+function openReport() {
+  stopPlayer();
+  Object.assign(view, { report: true, plenum: false, thread: null, json: false });
+  render(true);
+}
+
+/* ---- plenum: the stakeholders around one table, coloured by the same rules as the report ---- */
+const plenumPlay = { timer: null };
+const PLENUM_MS = 2500;
+
+function plenumReady() {
+  return Boolean(view.result && view.result.task && view.data.steps.some((s) => s.round));
+}
+
+function stopPlenum() {
+  clearTimeout(plenumPlay.timer);
+  plenumPlay.timer = null;
+}
+
+function openPlenum() {
+  stopPlayer();
+  if (!view.data.steps[view.step].round && view.step === 0) view.step = Math.min(1, view.data.steps.length - 1);
+  Object.assign(view, { plenum: true, report: false, thread: null, json: false, focus: null });
+  render(true);
+}
+
+function plenumGo(step) {
+  view.step = Math.max(0, Math.min(step, view.data.steps.length - 1));
+  render(false);
+}
+
+function togglePlenumPlay() {
+  if (plenumPlay.timer) { stopPlenum(); render(false); return; }
+  if (view.step >= view.data.steps.length - 1) view.step = Math.min(1, view.data.steps.length - 1);
+  const tick = () => {
+    render(false);
+    if (view.step >= view.data.steps.length - 1) { stopPlenum(); render(false); return; }
+    plenumPlay.timer = setTimeout(() => { view.step += 1; tick(); }, PLENUM_MS);
+  };
+  plenumPlay.timer = setTimeout(tick, 0);
+}
+
+function setFocus(kind, id) {
+  view.focus = view.focus && view.focus.kind === kind && view.focus.id === id ? null : { kind, id };
+  render(false);
+}
+
+const lampNode = (key) => text("span", L.LIGHTS[key].name, `lamp ${key}`);
+
+function drawPlenum() {
+  const step = view.data.steps[view.step];
+  const atEnd = view.step === view.data.steps.length - 1;
+  $("plenum-step").textContent = step.label;
+  $("plenum-prev").disabled = view.step === 0;
+  $("plenum-next").disabled = atEnd;
+  $("plenum-play").textContent = plenumPlay.timer ? "Anhalten" : "Abspielen";
+  $("plenum-play").setAttribute("aria-pressed", String(Boolean(plenumPlay.timer)));
+  if (!step.round && step.id !== "abschluss") {
+    $("plenum-body").replaceChildren(text("p", "In der Vorbereitung gibt es noch keine Fassung. Mit Weiter beginnt die erste Runde.", "plenum-empty"));
+    return;
+  }
+  const p = buildPlenum(view.result, step.round || null);
+  const focus = view.focus;
+  const clause = focus && focus.kind === "clause" ? p.clauses.find((c) => c.id === focus.id) : null;
+  const person = focus && focus.kind === "actor" ? p.stakeholders.find((s) => s.id === focus.id) : null;
+  const notes = [
+    p.noProposal ? `Keine neue Fassung in dieser Runde. Es gilt weiter Fassung ${p.version}, der Konsens bleibt auf dem Stand der Vorrunde.` : null,
+    p.pending ? `Fassung ${p.pending} liegt vor, ist aber noch nicht bewertet. Gezeigt wird die zuletzt bewertete Fassung ${p.version}.` : null,
+    p.unassessed ? `Fassung ${p.version} ist noch nicht bewertet, die Farben der Stakeholder sind vorläufig.` : null,
+    p.version === null ? "Es gibt noch keine Fassung, also nichts zu bewerten." : null,
+  ].filter(Boolean);
+
+  const n = p.stakeholders.length;
+  const seats = p.stakeholders.map((s, i) => {
+    const angle = -Math.PI / 2 + (2 * Math.PI * i) / Math.max(n, 1);
+    const light = clause ? clause.perActor[s.id] : s.light;
+    const state = clause ? (light ? L.LIGHTS[light].name : "nicht verknüpft") : `${s.met} von ${s.total} erfüllt`;
+    const seat = h("button", { type: "button", class: `seat ${light || "none"}${person && person.id === s.id ? " chosen" : ""}`,
+      "aria-pressed": String(Boolean(person && person.id === s.id)), onclick: () => setFocus("actor", s.id) },
+    text("span", s.name, "seat-name"), text("span", state, "seat-state"), clause ? null : text("span", s.decision, "seat-decision"));
+    seat.style.left = `${(50 + 41 * Math.cos(angle)).toFixed(2)}%`;        // CSSOM, which the page's CSP allows
+    seat.style.top = `${(50 + 38 * Math.sin(angle)).toFixed(2)}%`;
+    return seat;
+  });
+  const center = clause
+    ? h("div", { class: "plenum-center" }, text("p", `Punkt ${clause.number}`, "report-label"), lampNode(clause.light),
+      text("p", clause.title, "plenum-center-title"))
+    : h("div", { class: "plenum-center" }, text("p", p.final ? "Gesamtkonsens, Abschluss" : `Gesamtkonsens, ${step.label}`, "report-label"),
+      lampNode(p.overall.light), text("p", p.version ? `Fassung ${p.version}` : "Keine Fassung", "plenum-center-title"),
+      p.clauses.length ? h("p", { class: "plenum-counts" }, ["gruen", "gelb", "rot"].map((k) => text("span", `${p.counts[k]} ${L.LIGHTS[k].name}`, `count ${k}`))) : null);
+
+  const detail = clause
+    ? h("section", { class: "report-card plenum-detail" }, h("div", { class: "report-card-head" }, text("h4", `Punkt ${clause.number}`), lampNode(clause.light)),
+      text("p", clause.text), h("ul", { class: "report-reasons" }, clause.reasons.map((r) => text("li", r))),
+      text("p", "Die Plätze zeigen, wie weit die mit diesem Punkt verknüpften Prioritäten je Stakeholder erfüllt sind.", "report-note"))
+    : person
+      ? h("section", { class: "report-card plenum-detail" }, h("div", { class: "report-card-head" }, text("h4", person.name), lampNode(person.light)),
+        text("p", `${person.decision}, ${person.met} von ${person.total} Prioritäten erfüllt`, "report-title"),
+        person.reason ? text("p", person.reason) : null,
+        h("ul", { class: "plenum-mine" }, p.clauses.filter((c) => c.perActor[person.id]).map((c) =>
+          h("li", null, lampNode(c.perActor[person.id]), ` Punkt ${c.number}: ${c.title}`))))
+      : text("p", "Wähle einen Punkt oder einen Stakeholder, um zu sehen, wer wo steht.", "report-note");
+
+  $("plenum-body").replaceChildren(h("div", { class: "report plenum" },
+    notes.length ? h("div", { class: "report-warning" }, notes.map((note) => text("p", note))) : null,
+    h("div", { class: "plenum-room" }, h("div", { class: "plenum-table" }, center), seats),
+    detail,
+    p.clauses.length ? h("section", { class: "report-section" }, text("h3", "Punkte der Fassung"),
+      h("ul", { class: "plenum-clauses" }, p.clauses.map((c) => h("li", null, h("button", { type: "button",
+        class: `plenum-clause${clause && clause.id === c.id ? " chosen" : ""}`, "aria-pressed": String(Boolean(clause && clause.id === c.id)),
+        onclick: () => setFocus("clause", c.id) }, text("span", `${c.number}. ${c.title}`), lampNode(c.light)))))) : null,
+    h("section", { class: "report-legend" }, ["gruen", "gelb", "rot"].map((k) => h("p", null, lampNode(k), ` ${L.LIGHTS[k].title}`)))));
+}
+
 function render(jump) {
   const chat = currentChat();
-  const isMeta = chat.kind === "meta";
-  document.body.dataset.screen = isMeta ? "meta" : "group";
-  for (const [id, active] of [["chat-gruppe", !isMeta], ["chat-meta", isMeta]]) {
+  const screen = view.report ? "report" : view.plenum ? "plenum" : chat.kind === "meta" ? "meta" : "group";
+  const isMeta = screen === "meta";
+  document.body.dataset.screen = screen;
+  for (const [id, active] of [["chat-gruppe", screen === "group"], ["chat-meta", isMeta], ["chat-plenum", screen === "plenum"], ["chat-report", screen === "report"]]) {
     $(id).classList.toggle("active", active);
     $(id).setAttribute("aria-current", String(active));
   }
   $("chat-meta").hidden = !view.data.chats.some((c) => c.kind === "meta");
+  $("chat-plenum").hidden = !plenumReady();
+  $("chat-report").hidden = !reportReady();
+  $("report-step").hidden = !reportReady() || view.step !== view.data.steps.length - 1;
+  if (screen !== "plenum") stopPlenum();
+  if (view.report) {
+    drawReport();
+    $("report-body").scrollTop = 0;
+    return;
+  }
+  if (view.plenum) {
+    drawPlenum();
+    if (jump) $("plenum-body").scrollTop = 0;
+    return;
+  }
   renderHeader(chat);
   const log = $("log");
   $("composer").hidden = !isMeta;
@@ -369,7 +519,7 @@ function render(jump) {
 
 function selectChat(id) {
   stopPlayer();
-  Object.assign(view, { chat: id, thread: null, json: false });
+  Object.assign(view, { chat: id, thread: null, json: false, report: false, plenum: false });
   render(true);
 }
 
@@ -502,7 +652,7 @@ async function refreshRunning() {
 
 function openResult(result, stored) {
   const chat = new URLSearchParams(location.search).get("chat") || "gruppe";
-  Object.assign(view, { result, data: buildChats(result), chat, thread: null, json: false, stored: Boolean(stored), turns: [] });
+  Object.assign(view, { result, data: buildChats(result), chat, thread: null, json: false, stored: Boolean(stored), turns: [], report: false, plenum: false, focus: null });
   document.body.dataset.view = "chat";
   const wanted = Number(location.hash.slice(1));
   go(Number.isInteger(wanted) && wanted >= 1 ? wanted - 1 : 0);
@@ -832,7 +982,8 @@ function renderProgress(status) {
   $("run-rounds").replaceChildren(...(rounds.length ? [h("table", { class: "run-table" },
     h("thead", null, h("tr", null, text("th", "Runde"), actors.map((a) => text("th", names[a] || a)), text("th", "Fertig"))),
     h("tbody", null, rounds.map((r) => h("tr", null, text("td", r.round),
-      r.satisfaction.map((s) => text("td", `${s.met_count} von ${s.priority_count}`)), text("td", r.complete ? "ja" : "nein")))))]
+      r.satisfaction.map((s) => text("td", `${s.met_count} von ${s.priority_count}`)),
+      text("td", r.no_proposal ? "keine Fassung" : r.complete ? "ja" : "nein")))))]
     : [text("p", "Noch keine Runde abgeschlossen.", "item-note")]));
   $("run-proposal").replaceChildren(...(p.proposal ? [text("p", `Aktueller Vorschlag, Fassung ${p.proposal.version}`, "run-title"),
     h("ol", null, p.proposal.clauses.map((clause) => text("li", clause)))] : []));
@@ -906,6 +1057,14 @@ $("download").addEventListener("click", downloadResult);
 $("home").addEventListener("click", closeChat);
 $("chat-gruppe").addEventListener("click", () => selectChat("gruppe"));
 $("chat-meta").addEventListener("click", () => selectChat("meta"));
+$("chat-report").addEventListener("click", openReport);
+$("chat-plenum").addEventListener("click", openPlenum);
+$("plenum-prev").addEventListener("click", () => { stopPlenum(); plenumGo(view.step - 1); });
+$("plenum-next").addEventListener("click", () => { stopPlenum(); plenumGo(view.step + 1); });
+$("plenum-play").addEventListener("click", togglePlenumPlay);
+$("report-step").addEventListener("click", openReport);
+$("report-print").addEventListener("click", () => window.print());
+$("report-save").addEventListener("click", saveReport);
 $("thread-close").addEventListener("click", closeThread);
 $("source-close").addEventListener("click", () => $("source").close());
 $("source-full").addEventListener("click", openWholeDocument);
@@ -936,6 +1095,16 @@ document.addEventListener("keydown", (event) => {
   if ($("source").open) return;       // the dialog closes itself on Esc
   if (["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)) return;
   if (event.key === " " && event.target.tagName === "BUTTON") return;       // Space presses the focused button
+  if (view.report) {
+    if (event.key === "Escape") selectChat("gruppe");
+    return;
+  }
+  if (view.plenum) {
+    const keys = { ArrowRight: () => plenumGo(view.step + 1), ArrowLeft: () => plenumGo(view.step - 1),
+      Home: () => plenumGo(0), End: () => plenumGo(view.data.steps.length - 1), Escape: () => selectChat("gruppe") };
+    if (keys[event.key]) { event.preventDefault(); stopPlenum(); keys[event.key](); }
+    return;
+  }
   const inThread = Boolean(view.thread);
   const isGroup = currentChat().kind === "group";
   const actions = {

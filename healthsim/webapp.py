@@ -173,7 +173,7 @@ class Store:
         rows = lambda query, *params: self._rows_in(directory, query, *params)
         last = rows("SELECT phase, round FROM events WHERE debate_id=? ORDER BY seq DESC LIMIT 1", debate_id)
         counts = dict(rows("SELECT type, COUNT(*) FROM events WHERE debate_id=? GROUP BY type", debate_id))
-        rounds = [{"round": number, **{k: payload[k] for k in ("complete", "streak", "satisfaction") if k in payload}}
+        rounds = [{"round": number, **{k: payload[k] for k in ("complete", "streak", "satisfaction", "no_proposal") if k in payload}}
                   for number, payload in ((n, json.loads(p)) for n, p in rows(
                       "SELECT round, payload FROM events WHERE debate_id=? AND type='round_closed' ORDER BY seq", debate_id))]
         proposals = rows("SELECT payload FROM events WHERE debate_id=? AND type='proposal_created' ORDER BY seq DESC LIMIT 1", debate_id)

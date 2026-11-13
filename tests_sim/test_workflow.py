@@ -769,3 +769,22 @@ def test_reports_may_cite_challenges(harness):
     if result.challenges:
         result.debate_evolution.refs = [result.challenges[0].challenge_id]
         assert collect_reference_problems(result) == []
+
+
+def test_round_without_a_version_is_declared_and_keeps_the_consensus(harness):
+    def candidate(prompt, number):
+        data = fake.candidate(prompt)
+        if number in (2, 3):        # round 2: the answer and its one repair are both invalid
+            data["clauses"][0]["text"] = "Das ASVG soll novelliert werden, um die Versorgung zu sichern."
+        return data
+
+    h = harness(overrides={"CandidateOutput": candidate})
+    result = h.run()
+    assert sorted(p["round"] for p in result["proposal_history"]) == [1, 3]
+    assert [e["round"] for e in result["timeline"] if e["type"] == "no_proposal"] == [2]
+    closed = {e["round"]: e["payload"] for e in h.events() if e["type"] == "round_closed"}
+    assert closed[2]["no_proposal"] and not closed[1]["no_proposal"] and not closed[3]["no_proposal"]
+    assert closed[2]["satisfaction"] == closed[1]["satisfaction"]          # not back to 0
+    assert all(s["met_count"] > 0 for s in closed[2]["satisfaction"])
+    assert closed[2]["streak"] == closed[1]["streak"] == 1                  # neither reset nor counted
+    assert result["stop_reason"] == "satisfaction_threshold" and result["metrics"]["completed_rounds"] == 2

@@ -78,6 +78,14 @@ The product name is debAIte; the Python package stays `healthsim`. A local page 
   New JSON files in that folder appear there automatically.
 - **Side menu:** always visible, with an icon and a name for each chat, `Gruppe` and
   `Meta-Moderator`. The open chat is highlighted. `Zur Eingabe` goes back to the input.
+- **Plenum:** once the first round has started, `Plenum` in the side menu seats every stakeholder around one table, coloured
+  green, yellow or red by the same rules as the closing report, applied to the debate as it stood after the chosen round.
+  `Zurück`, `Weiter` and `Abspielen` move through the rounds. Choosing a point recolours the seats by how far that point meets
+  each stakeholder's linked priorities; choosing a seat shows that stakeholder's decision and points. A round without a version
+  keeps the last one, and a version nobody has assessed yet is named but not coloured.
+- **Closing report:** once a debate has ended, `Gesamt-Report` in the side menu and on the last step shows the overall consensus and every
+  stakeholder in green, yellow and red. The colours follow fixed rules over stored records, no model is asked, and the rules are printed in
+  the report. It prints to PDF and saves as one HTML file. It judges the frozen version, not a newer one a deadline left unreviewed.
 - **You are the moderator:** the meta-moderator's proposals and reports appear as your own messages
   on the right. The institutions are on the left.
 - **Group chat:** only what was published in the debate. Preparation stays private until publication,

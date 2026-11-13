@@ -82,6 +82,14 @@
         <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-9l-5 4v-4H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><circle cx="8" cy="10.500" r="1.400" class="dot"/><circle cx="12" cy="10.500" r="1.400" class="dot"/><circle cx="16" cy="10.500" r="1.400" class="dot"/></svg>
         <span>Meta-Moderator</span>
       </button>
+      <button id="chat-plenum" type="button" class="rail-item" title="Plenum" aria-label="Plenum" hidden>
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill-rule="evenodd" d="M12 8c3.900 0 7 1.800 7 4s-3.100 4-7 4-7-1.800-7-4 3.100-4 7-4zm0 2c-2.800 0-5 .900-5 2s2.200 2 5 2 5-.900 5-2-2.200-2-5-2z"/><circle cx="12" cy="4" r="2"/><circle cx="12" cy="20" r="2"/><circle cx="2.500" cy="12" r="2"/><circle cx="21.500" cy="12" r="2"/></svg>
+        <span>Plenum</span>
+      </button>
+      <button id="chat-report" type="button" class="rail-item" title="Gesamt-Report" aria-label="Gesamt-Report" hidden>
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><circle cx="12" cy="9" r="1.800" class="dot"/><circle cx="12" cy="13.500" r="1.800" class="dot"/><circle cx="12" cy="18" r="1.800" class="dot"/></svg>
+        <span>Gesamt-Report</span>
+      </button>
       <button id="home" type="button" class="rail-item rail-bottom" title="Zur Eingabe (Esc)">
         <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M11 5 4 12l7 7v-5h9v-4h-9z"/></svg>
         <span>Zur Eingabe</span>
@@ -109,6 +117,28 @@
         </div>
       </header>
 
+      <section id="report" class="report-screen" aria-label="Gesamt-Report">
+        <div class="report-tools">
+          <h2>Gesamt-Report</h2>
+          <span class="spacer"></span>
+          <button id="report-print" type="button" class="pill">Als PDF drucken</button>
+          <button id="report-save" type="button" class="pill primary">Als HTML speichern</button>
+        </div>
+        <div id="report-body" class="report-body" tabindex="0"></div>
+      </section>
+
+      <section id="plenum" class="plenum-screen" aria-label="Plenum">
+        <div class="report-tools">
+          <h2>Plenum</h2>
+          <span class="spacer"></span>
+          <button id="plenum-prev" type="button" class="pill" title="Vorige Runde (Pfeil links)">Zurück</button>
+          <span id="plenum-step" class="plenum-step"></span>
+          <button id="plenum-next" type="button" class="pill" title="Nächste Runde (Pfeil rechts)">Weiter</button>
+          <button id="plenum-play" type="button" class="pill primary" aria-pressed="false">Abspielen</button>
+        </div>
+        <div id="plenum-body" class="plenum-body" tabindex="0"></div>
+      </section>
+
       <div class="window">
         <section class="conversation">
           <header class="chat-head"><div id="chat-title" class="chat-title"></div></header>
@@ -122,6 +152,7 @@
             <span id="step-label"></span>
             <button id="next" type="button" class="pill primary" title="Nächste Runde (Pfeil rechts)">Weiter</button>
             <span class="spacer"></span>
+            <button id="report-step" type="button" class="pill primary" hidden>Gesamt-Report</button>
             <button id="json-toggle" type="button" class="pill" aria-pressed="false" title="JSON dieser Runde (J)">JSON</button>
             <button id="download" type="button" class="pill">Download</button>
           </footer>

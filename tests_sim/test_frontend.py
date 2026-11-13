@@ -30,6 +30,20 @@ def test_chats_build_from_every_result_shape():
     assert run.returncode == 0, run.stderr[-1500:]
 
 
+@pytest.mark.skipif(shutil.which("node") is None, reason="node nicht installiert")
+def test_report_builds_from_every_result_shape():
+    files = [str(p) for p in RESULTS]
+    files += [str(p) for p in sorted((ROOT / "state").glob("live_result*.json"))]
+    run = subprocess.run(["node", str(ROOT / "tests_sim" / "report_check.js"), *files], capture_output=True, text=True, timeout=30)
+    assert run.returncode == 0, run.stderr[-1500:]
+
+
+def test_saved_report_carries_its_own_styles():
+    css = (FRONTEND / "styles.css").read_text(encoding="utf-8")
+    block = css[css.index("/* report:start */"):css.index("/* report:end */")]
+    assert "var(--" not in re.sub(r"var\(--r-[a-z-]+\)", "", block)       # nothing from outside the block
+
+
 def test_generated_text_is_never_inserted_as_markup():
     source = (FRONTEND / "app.js").read_text(encoding="utf-8")
     assert not re.search(r"innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\(", source)
@@ -89,10 +103,13 @@ def test_the_question_is_never_cut_off():
     assert "overflow-y: auto" in rules          # never hidden: what exceeds the cap can be scrolled
 
 
-def test_rail_offers_exactly_the_two_chats():
+def test_rail_offers_the_two_chats_the_plenum_and_the_report():
     html = (FRONTEND / "index.html").read_text(encoding="utf-8")
-    assert re.findall(r'class="rail-item"', html) == ['class="rail-item"'] * 2
+    assert re.findall(r'class="rail-item"', html) == ['class="rail-item"'] * 4
     assert 'id="chat-gruppe"' in html and 'id="chat-meta"' in html
+    assert re.search(r'id="chat-report"[^>]* hidden>', html)        # only once a debate has ended
+    assert "<span>Gesamt-Report</span>" in html                     # text beside the icon
+    assert re.search(r'id="chat-plenum"[^>]* hidden>', html) and "<span>Plenum</span>" in html
     assert "aria-label=\"Gruppe\"" in html and "aria-label=\"Meta-Moderator\"" in html
 
 
